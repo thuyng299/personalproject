@@ -1,7 +1,9 @@
 package com.nonit.personalproject.rest;
 
+import com.nonit.personalproject.dto.SupplierAndProductStatsDTO;
 import com.nonit.personalproject.dto.SupplierCreateDTO;
 import com.nonit.personalproject.dto.SupplierDTO;
+import com.nonit.personalproject.dto.SupplierStatsDTO;
 import com.nonit.personalproject.serviceimpl.SupplierServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -40,5 +42,20 @@ public class SupplierResource implements SupplierAPI{
     @Override
     public ResponseEntity<SupplierDTO> findBySupplierName(String supplierName) {
         return ResponseEntity.ok(supplierServiceImpl.findBySupplierName(supplierName));
+    }
+
+    @Override
+    public ResponseEntity<List<SupplierStatsDTO>> getSupplierAndItsProduct(String inputName) {
+        return ResponseEntity.ok(supplierServiceImpl.getSupplierAndItsProduct(inputName));
+    }
+
+    @Override
+    public ResponseEntity<List<SupplierStatsDTO>> getProductAndItsSuppliers(String inputProductName) {
+        return ResponseEntity.ok(supplierServiceImpl.getProductAndItsSuppliers(inputProductName));
+    }
+
+    @Override
+    public ResponseEntity<List<SupplierAndProductStatsDTO>> getSuppliersAndTotalPurchaseTime() {
+        return ResponseEntity.ok(supplierServiceImpl.getSuppliersAndTotalPurchaseTime());
     }
 }

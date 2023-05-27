@@ -1,7 +1,10 @@
 package com.nonit.personalproject.service;
 
+import com.nonit.personalproject.dto.SupplierAndProductStatsDTO;
 import com.nonit.personalproject.dto.SupplierCreateDTO;
 import com.nonit.personalproject.dto.SupplierDTO;
+import com.nonit.personalproject.dto.SupplierStatsDTO;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -11,4 +14,7 @@ public interface SupplierService {
     SupplierDTO createSupplier (Long countryId, SupplierCreateDTO supplierCreateDTO);
     void deleteSupplier (Long supplierId);
     SupplierDTO findBySupplierName (String supplierName);
+    List<SupplierStatsDTO> getSupplierAndItsProduct(String inputName);
+    List<SupplierStatsDTO> getProductAndItsSuppliers (String inputProductName);
+    List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTime ();
 }

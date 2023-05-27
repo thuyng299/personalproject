@@ -1,12 +1,16 @@
 package com.nonit.personalproject.serviceimpl;
 
+import com.nonit.personalproject.dto.SupplierAndProductStatsDTO;
 import com.nonit.personalproject.dto.SupplierCreateDTO;
 import com.nonit.personalproject.dto.SupplierDTO;
+import com.nonit.personalproject.dto.SupplierStatsDTO;
 import com.nonit.personalproject.entity.Country;
+import com.nonit.personalproject.entity.Product;
 import com.nonit.personalproject.entity.Supplier;
 import com.nonit.personalproject.exception.WarehouseException;
 import com.nonit.personalproject.mapper.SupplierMapper;
 import com.nonit.personalproject.repository.CountryRepository;
+import com.nonit.personalproject.repository.ProductRepository;
 import com.nonit.personalproject.repository.SupplierRepository;
 import com.nonit.personalproject.service.SupplierService;
 import lombok.RequiredArgsConstructor;
@@ -85,5 +89,28 @@ public class SupplierServiceImpl implements SupplierService {
             throw WarehouseException.badRequest("InvalidName", "Supplier name cannot be null!");
         }
         return supplierMapper.toDto(supplier);
+    }
+
+    @Override
+    public List<SupplierStatsDTO> getSupplierAndItsProduct(String inputName) {
+        if (inputName == null || inputName.isBlank()){
+            throw WarehouseException.badRequest("InvalidName", "Supplier name must not be null!");
+        }
+        inputName = "%" + inputName + "%";
+        return supplierRepository.getSupplierAndItsProduct(inputName);
+    }
+
+    @Override
+    public List<SupplierStatsDTO> getProductAndItsSuppliers (String inputProductName) {
+        if (inputProductName == null || inputProductName.isBlank()){
+            throw WarehouseException.badRequest("InvalidName", "Product name must not be null!");
+        }
+        inputProductName = "%" + inputProductName + "%";
+        return supplierRepository.getProductAndItsSuppliers(inputProductName);
+    }
+
+    @Override
+    public List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTime() {
+        return supplierRepository.getSuppliersAndTotalPurchaseTime();
     }
 }
