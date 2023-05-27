@@ -33,4 +33,7 @@ public interface IncomingsDetailAPI {
     @GetMapping("/inputproduct-purchasetime-amount") // localhost:8080/incomingsdetails/inputproduct-purchasetime-amount?inputId=15&inputDate=2022-08-27
     ResponseEntity<PurchaseTimeStatDTO> getPurchaseTimeAndAmountOfSpecificProductAndDate(@RequestParam("inputId") Long inputId,
                                                                                          @RequestParam("inputDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inputDate);
+    @GetMapping("/purchaseamountbetweendates") // localhost:8080/incomingsdetails/purchaseamountbetweendates?fromDate=2022-01-21&toDate=2022-07-21
+    ResponseEntity<List<PurchaseTimeStatDTO>> getPurchaseTimeAndAmountBetweenDates(@RequestParam("fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate fromDate,
+                                                                                   @RequestParam("toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate);
 }

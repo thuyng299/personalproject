@@ -22,5 +22,7 @@ public interface IncomingsDetailRepository extends JpaRepository<IncomingsDetail
     @Query("select new com.nonit.personalproject.dto.PurchaseTimeStatDTO (id.product.productId, p.productName, count(id.product.productId), sum(id.incomingsAmount)) from GoodsReceivedNote grn, IncomingsDetail id, Product p where grn.grnId = id.goodsReceivedNote.grnId and p.productId = id.product.productId and id.product.productId = :inputId and grn.incomingsDate < :inputDate group by id.product.productId, p.productName")
     PurchaseTimeStatDTO getPurchaseTimeAndAmountOfSpecificProductAndDate(@Param("inputId") Long inputId,
                                                                          @Param("inputDate") LocalDate inputDate);
-
+    @Query("select new com.nonit.personalproject.dto.PurchaseTimeStatDTO (id.product.productId, p.productName, count(id.product.productId), sum(id.incomingsAmount)) from GoodsReceivedNote grn, IncomingsDetail id, Product p where grn.grnId = id.goodsReceivedNote.grnId and p.productId = id.product.productId and grn.incomingsDate between :fromDate and :toDate group by id.product.productId, p.productName order by id.product.productId")
+    List<PurchaseTimeStatDTO> getPurchaseTimeAndAmountBetweenDates(@Param("fromDate") LocalDate fromDate,
+                                                             @Param("toDate") LocalDate toDate);
 }

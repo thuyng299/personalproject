@@ -60,4 +60,12 @@ public class OutcomingsDetailServiceImpl implements OutcomingsDetailService {
         }
         return outcomingsDetailRepository.getNumberOfSalesTimeAndAmountOfSpecificProductAndDate(inputId, inputDate);
     }
+
+    @Override
+    public List<SalesTimeStatDTO> getNumberOfSalesTimeAndAmountBetweenDates(LocalDate fromDate, LocalDate toDate) {
+        if (fromDate.isAfter(LocalDate.now()) || toDate.isAfter(LocalDate.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
+        }
+        return outcomingsDetailRepository.getNumberOfSalesTimeAndAmountBetweenDates(fromDate, toDate);
+    }
 }

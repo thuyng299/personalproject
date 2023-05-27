@@ -19,4 +19,5 @@ public interface IncomingsDetailService {
     List<PurchaseTimeStatDTO> getNumberOfPurchaseTimeAndAmount();
     PurchaseTimeStatDTO getPurchaseTimeAndAmountOfSpecificProduct(Long inputId);
     PurchaseTimeStatDTO getPurchaseTimeAndAmountOfSpecificProductAndDate(Long inputId, LocalDate inputDate);
+    List<PurchaseTimeStatDTO> getPurchaseTimeAndAmountBetweenDates(LocalDate fromDate, LocalDate toDate);
 }

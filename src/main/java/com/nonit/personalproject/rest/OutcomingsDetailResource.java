@@ -34,4 +34,9 @@ public class OutcomingsDetailResource implements OutcomingsDetailAPI{
     public ResponseEntity<SalesTimeStatDTO> getNumberOfSalesTimeAndAmountOfSpecificProductAndDate(Long inputId, LocalDate inputDate) {
         return ResponseEntity.ok(outcomingsDetailServiceImpl.getNumberOfSalesTimeAndAmountOfSpecificProductAndDate(inputId, inputDate));
     }
+
+    @Override
+    public ResponseEntity<List<SalesTimeStatDTO>> getNumberOfSalesTimeAndAmountBetweenDates(LocalDate fromDate, LocalDate toDate) {
+        return ResponseEntity.ok(outcomingsDetailServiceImpl.getNumberOfSalesTimeAndAmountBetweenDates(fromDate, toDate));
+    }
 }

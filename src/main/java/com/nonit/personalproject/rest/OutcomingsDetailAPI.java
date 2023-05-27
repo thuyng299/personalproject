@@ -22,4 +22,7 @@ public interface OutcomingsDetailAPI {
     @GetMapping("/inputproduct-salestime-amount") // localhost:8080/outcomingsdetails/inputproduct-salestime-amount?inputId=15&inputDate=2023-01-21
     ResponseEntity<SalesTimeStatDTO> getNumberOfSalesTimeAndAmountOfSpecificProductAndDate(@RequestParam("inputId") Long inputId,
                                                                                            @RequestParam("inputDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inputDate);
+    @GetMapping("/salesamountbetweendates") // localhost:8080/outcomingsdetails/salesamountbetweendates?fromDate=2023-01-03&toDate=2023-01-19
+    ResponseEntity<List<SalesTimeStatDTO>> getNumberOfSalesTimeAndAmountBetweenDates (@RequestParam("fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate fromDate,
+                                                                                      @RequestParam("toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate);
 }

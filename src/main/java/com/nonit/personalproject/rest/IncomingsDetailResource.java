@@ -69,4 +69,12 @@ public class IncomingsDetailResource implements IncomingsDetailAPI{
     public ResponseEntity<PurchaseTimeStatDTO> getPurchaseTimeAndAmountOfSpecificProductAndDate(Long inputId, LocalDate inputDate) {
         return ResponseEntity.ok(incomingsDetailServiceImpl.getPurchaseTimeAndAmountOfSpecificProductAndDate(inputId, inputDate));
     }
+
+    @Override
+    public ResponseEntity<List<PurchaseTimeStatDTO>> getPurchaseTimeAndAmountBetweenDates(LocalDate fromDate, LocalDate toDate) {
+        if (fromDate == null || toDate == null){
+            throw new IllegalArgumentException("Invalid date! Date cannot be null.");
+        }
+        return ResponseEntity.ok(incomingsDetailServiceImpl.getPurchaseTimeAndAmountBetweenDates(fromDate, toDate));
+    }
 }

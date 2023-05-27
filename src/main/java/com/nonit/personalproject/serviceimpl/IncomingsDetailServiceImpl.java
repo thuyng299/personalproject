@@ -139,4 +139,12 @@ public class IncomingsDetailServiceImpl implements IncomingsDetailService {
         }
         return incomingsDetailRepository.getPurchaseTimeAndAmountOfSpecificProductAndDate(inputId, inputDate);
     }
+
+    @Override
+    public List<PurchaseTimeStatDTO> getPurchaseTimeAndAmountBetweenDates(LocalDate fromDate, LocalDate toDate) {
+        if (fromDate.isAfter(LocalDate.now()) || toDate.isAfter(LocalDate.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
+        }
+        return incomingsDetailRepository.getPurchaseTimeAndAmountBetweenDates(fromDate, toDate);
+    }
 }

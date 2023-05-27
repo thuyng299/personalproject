@@ -12,4 +12,5 @@ public interface OutcomingsDetailService {
     List<SalesTimeStatDTO> getNumberOfSalesTimeAndAmount();
     SalesTimeStatDTO getNumberOfSalesTimeAndAmountOfSpecificProduct(Long inputId);
     SalesTimeStatDTO getNumberOfSalesTimeAndAmountOfSpecificProductAndDate (Long inputId, LocalDate inputDate);
+    List<SalesTimeStatDTO> getNumberOfSalesTimeAndAmountBetweenDates (LocalDate fromDate, LocalDate toDate);
 }
