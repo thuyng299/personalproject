@@ -1,5 +1,6 @@
 package com.nonit.personalproject.repository;
 
+import com.nonit.personalproject.dto.StockStatsDTO;
 import com.nonit.personalproject.entity.IncomingsDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,8 +12,7 @@ import java.util.List;
 
 @Repository
 public interface IncomingsDetailRepository extends JpaRepository<IncomingsDetail, Long> {
-    @Query(value = "select id.product_id, p.product_name, sum(incomings_amount) from goods_received_note grn , incomings_detail id, product p where grn.grn_id = id.grn_id and id.product_id = p.product_id and grn.incomings_date < :date" +
-            "group by id.product_id, p.product_name order by id.product_id ", nativeQuery = true)
-    List<Object[]> getNumberOfProductIncomings(@Param("date") LocalDate date);
+    @Query("select new com.nonit.personalproject.dto.StockStatsDTO (id.product.productId, p.productName, sum(id.incomingsAmount)) from GoodsReceivedNote grn, IncomingsDetail id, Product p where grn.grnId = id.goodsReceivedNote.grnId and p.productId = id.product.productId and grn.incomingsDate < :date group by id.product.productId, p.productName order by id.product.productId")
+    List<StockStatsDTO> getNumberOfProductIncomings(@Param("date") LocalDate date);
 
 }

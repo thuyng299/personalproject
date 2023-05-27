@@ -2,6 +2,7 @@ package com.nonit.personalproject.serviceimpl;
 
 import com.nonit.personalproject.dto.IncomingsDetailCreateDTO;
 import com.nonit.personalproject.dto.IncomingsDetailDTO;
+import com.nonit.personalproject.dto.StockStatsDTO;
 import com.nonit.personalproject.entity.*;
 import com.nonit.personalproject.exception.WarehouseException;
 import com.nonit.personalproject.mapper.IncomingsDetailMapper;
@@ -45,6 +46,7 @@ public class IncomingsDetailServiceImpl implements IncomingsDetailService {
     public IncomingsDetailDTO createIncomingsDetail(Long grnId, IncomingsDetailCreateDTO incomingsDetailCreateDTO) {
         GoodsReceivedNote goodsReceivedNote = goodsReceivedNoteRepository.findById(grnId).orElseThrow(WarehouseException::GRNNotFound);
         WarehouseArea area = warehouseAreaRepository.findById(goodsReceivedNote.getWarehouseArea().getAreaId()).orElseThrow(WarehouseException::WarehouseAreaNotFound);
+        // Auto set product id based on GRN's area id (since 1 area is for only 1 product id)
         Product product = productRepository.findByWarehouseAreaAreaId(area.getAreaId());
 
         if (incomingsDetailCreateDTO.getIncomingsAmount() <= 0){
@@ -58,7 +60,7 @@ public class IncomingsDetailServiceImpl implements IncomingsDetailService {
                 .goodsReceivedNote(goodsReceivedNote)
                 .product(product)
                 .build();
-
+        // Auto set expiration date based on GRN date
         if (product.getProductCategory().equals(ProductCategory.RAW_MATERIALS)) {
             incomingsDetail.setExpirationDate(goodsReceivedNote.getIncomingsDate().plusYears(2L));
         } else if (product.getProductCategory().equals(ProductCategory.FINISHED_GOODS)) {
@@ -79,7 +81,7 @@ public class IncomingsDetailServiceImpl implements IncomingsDetailService {
                 .productCost(incomingsDetailCreateDTO.getProductCost())
                 .goodsReceivedNote(goodsReceivedNote)
                 .build();
-
+        // Warehouse staff can input product id by themselves but if it's wrong, the system will force to be right by searching id on product table
         if (goodsReceivedNote.getWarehouseArea().getAreaId().equals(product.getWarehouseArea().getAreaId())) {
             incomingsDetail.setProduct(product);
             if (product.getProductCategory().equals(ProductCategory.RAW_MATERIALS)) {
@@ -106,9 +108,12 @@ public class IncomingsDetailServiceImpl implements IncomingsDetailService {
         log.info("delete incomings by id {}", incomingsId);
         incomingsDetailRepository.deleteById(incomingsId);
     }
-
+    // Stock stat before input date
     @Override
-    public List<Object[]> getNumberOfProductIncomings(LocalDate date) {
+    public List<StockStatsDTO> getNumberOfProductIncomings(LocalDate date) {
+        if (date.isAfter(LocalDate.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDate.now());
+        }
         return incomingsDetailRepository.getNumberOfProductIncomings(date);
     }
 }

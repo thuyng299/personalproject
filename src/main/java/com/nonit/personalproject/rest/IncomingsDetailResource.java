@@ -2,12 +2,14 @@ package com.nonit.personalproject.rest;
 
 import com.nonit.personalproject.dto.IncomingsDetailCreateDTO;
 import com.nonit.personalproject.dto.IncomingsDetailDTO;
+import com.nonit.personalproject.dto.StockStatsDTO;
 import com.nonit.personalproject.serviceimpl.IncomingsDetailServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,5 +43,10 @@ public class IncomingsDetailResource implements IncomingsDetailAPI{
     public ResponseEntity<Void> deleteIncomingsDetail(Long incomingsId) {
         incomingsDetailServiceImpl.deleteIncomingsDetail(incomingsId);
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<List<StockStatsDTO>> getNumberOfProductIncomings(LocalDate date) {
+        return ResponseEntity.ok(incomingsDetailServiceImpl.getNumberOfProductIncomings(date));
     }
 }

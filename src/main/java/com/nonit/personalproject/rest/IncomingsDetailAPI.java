@@ -2,9 +2,12 @@ package com.nonit.personalproject.rest;
 
 import com.nonit.personalproject.dto.IncomingsDetailCreateDTO;
 import com.nonit.personalproject.dto.IncomingsDetailDTO;
+import com.nonit.personalproject.dto.StockStatsDTO;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,4 +23,6 @@ public interface IncomingsDetailAPI {
                                                              @RequestParam("productId") Optional<Long> productId);
     @DeleteMapping("/{incomingsId}")
     ResponseEntity<Void> deleteIncomingsDetail(@PathVariable("incomingsId") Long incomingsId);
+    @GetMapping("/product-stock")
+    ResponseEntity<List<StockStatsDTO>> getNumberOfProductIncomings(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
 }
