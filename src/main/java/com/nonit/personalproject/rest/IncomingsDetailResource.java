@@ -3,8 +3,13 @@ package com.nonit.personalproject.rest;
 import com.nonit.personalproject.dto.IncomingsDetailCreateDTO;
 import com.nonit.personalproject.dto.IncomingsDetailDTO;
 import com.nonit.personalproject.dto.IncomingsAmountStatsDTO;
+import com.nonit.personalproject.dto.PurchaseTimeStatDTO;
+import com.nonit.personalproject.exception.NullInputProductIdException;
+import com.nonit.personalproject.exception.ResponseException;
+import com.nonit.personalproject.exception.WarehouseException;
 import com.nonit.personalproject.serviceimpl.IncomingsDetailServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,5 +53,15 @@ public class IncomingsDetailResource implements IncomingsDetailAPI{
     @Override
     public ResponseEntity<List<IncomingsAmountStatsDTO>> getNumberOfProductIncomings(LocalDate date) {
         return ResponseEntity.ok(incomingsDetailServiceImpl.getNumberOfProductIncomings(date));
+    }
+
+    @Override
+    public ResponseEntity<List<PurchaseTimeStatDTO>> getNumberOfPurchaseTimeAndAmount() {
+        return ResponseEntity.ok(incomingsDetailServiceImpl.getNumberOfPurchaseTimeAndAmount());
+    }
+
+    @Override
+    public ResponseEntity<PurchaseTimeStatDTO> getPurchaseTimeAndAmountOfSpecificProduct(Long inputId) {
+        return ResponseEntity.ok(incomingsDetailServiceImpl.getPurchaseTimeAndAmountOfSpecificProduct(inputId));
     }
 }

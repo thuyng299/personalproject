@@ -3,7 +3,9 @@ package com.nonit.personalproject.serviceimpl;
 import com.nonit.personalproject.dto.IncomingsDetailCreateDTO;
 import com.nonit.personalproject.dto.IncomingsDetailDTO;
 import com.nonit.personalproject.dto.IncomingsAmountStatsDTO;
+import com.nonit.personalproject.dto.PurchaseTimeStatDTO;
 import com.nonit.personalproject.entity.*;
+import com.nonit.personalproject.exception.ResponseException;
 import com.nonit.personalproject.exception.WarehouseException;
 import com.nonit.personalproject.mapper.IncomingsDetailMapper;
 import com.nonit.personalproject.repository.GoodsReceivedNoteRepository;
@@ -13,6 +15,7 @@ import com.nonit.personalproject.repository.WarehouseAreaRepository;
 import com.nonit.personalproject.service.IncomingsDetailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -115,5 +118,16 @@ public class IncomingsDetailServiceImpl implements IncomingsDetailService {
             throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDate.now());
         }
         return incomingsDetailRepository.getNumberOfProductIncomings(date);
+    }
+
+    @Override
+    public List<PurchaseTimeStatDTO> getNumberOfPurchaseTimeAndAmount() {
+        return incomingsDetailRepository.getNumberOfPurchaseTimeAndAmount();
+    }
+
+    @Override
+    public PurchaseTimeStatDTO getPurchaseTimeAndAmountOfSpecificProduct(Long inputId) {
+        Product product = productRepository.findById(inputId).orElseThrow(() -> new ResponseException("NotFoundProductId", "Product not found with ID " + inputId, HttpStatus.NOT_FOUND));
+        return incomingsDetailRepository.getPurchaseTimeAndAmountOfSpecificProduct(inputId);
     }
 }

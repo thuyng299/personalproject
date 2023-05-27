@@ -12,6 +12,6 @@ import java.util.List;
 
 @RequestMapping(value = "/outcomingsdetails")
 public interface OutcomingsDetailAPI {
-    @GetMapping("/product-outgoing")
+    @GetMapping("/product-outgoing") // localhost:8080/outcomingsdetails/product-outgoing?date=2023-01-21
     ResponseEntity<List<OutgoingAmountStatsDTO>> getNumberOfProductOutgoings(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
 }

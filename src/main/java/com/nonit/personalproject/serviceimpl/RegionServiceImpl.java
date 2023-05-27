@@ -32,7 +32,7 @@ public class RegionServiceImpl implements RegionService {
 
     @Override
     public RegionDTO findRegionById(Long regionId) {
-        Region region = regionRepository.findById(regionId).orElseThrow(() -> new ResponseException("RegionNotFound", "Region not found with id " + regionId, HttpStatus.NOT_FOUND));
+        Region region = regionRepository.findById(regionId).orElseThrow(() -> new ResponseException("RegionNotFound", "Region not found with ID " + regionId, HttpStatus.NOT_FOUND));
         return regionMapper.toDto(region);
     }
 
