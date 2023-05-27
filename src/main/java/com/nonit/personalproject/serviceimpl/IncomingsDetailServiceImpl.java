@@ -130,4 +130,13 @@ public class IncomingsDetailServiceImpl implements IncomingsDetailService {
         Product product = productRepository.findById(inputId).orElseThrow(() -> new ResponseException("NotFoundProductId", "Product not found with ID " + inputId, HttpStatus.NOT_FOUND));
         return incomingsDetailRepository.getPurchaseTimeAndAmountOfSpecificProduct(inputId);
     }
+
+    @Override
+    public PurchaseTimeStatDTO getPurchaseTimeAndAmountOfSpecificProductAndDate(Long inputId, LocalDate inputDate) {
+        Product product = productRepository.findById(inputId).orElseThrow(() -> new ResponseException("NotFoundProductId", "Product not found with ID " + inputId, HttpStatus.NOT_FOUND));
+        if (inputDate.isAfter(LocalDate.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDate.now());
+        }
+        return incomingsDetailRepository.getPurchaseTimeAndAmountOfSpecificProductAndDate(inputId, inputDate);
+    }
 }

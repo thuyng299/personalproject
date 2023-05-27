@@ -30,4 +30,7 @@ public interface IncomingsDetailAPI {
     ResponseEntity<List<PurchaseTimeStatDTO>> getNumberOfPurchaseTimeAndAmount();
     @GetMapping("/product-purchasetime-amount") // localhost:8080/incomingsdetails/product-purchasetime-amount?inputId=30
     ResponseEntity<PurchaseTimeStatDTO> getPurchaseTimeAndAmountOfSpecificProduct(@RequestParam("inputId") Long inputId);
+    @GetMapping("/inputproduct-purchasetime-amount") // localhost:8080/incomingsdetails/inputproduct-purchasetime-amount?inputId=15&inputDate=2022-08-27
+    ResponseEntity<PurchaseTimeStatDTO> getPurchaseTimeAndAmountOfSpecificProductAndDate(@RequestParam("inputId") Long inputId,
+                                                                                         @RequestParam("inputDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inputDate);
 }

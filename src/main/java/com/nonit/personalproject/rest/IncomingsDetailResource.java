@@ -64,4 +64,9 @@ public class IncomingsDetailResource implements IncomingsDetailAPI{
     public ResponseEntity<PurchaseTimeStatDTO> getPurchaseTimeAndAmountOfSpecificProduct(Long inputId) {
         return ResponseEntity.ok(incomingsDetailServiceImpl.getPurchaseTimeAndAmountOfSpecificProduct(inputId));
     }
+
+    @Override
+    public ResponseEntity<PurchaseTimeStatDTO> getPurchaseTimeAndAmountOfSpecificProductAndDate(Long inputId, LocalDate inputDate) {
+        return ResponseEntity.ok(incomingsDetailServiceImpl.getPurchaseTimeAndAmountOfSpecificProductAndDate(inputId, inputDate));
+    }
 }
