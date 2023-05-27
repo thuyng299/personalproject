@@ -2,7 +2,7 @@ package com.nonit.personalproject.serviceimpl;
 
 import com.nonit.personalproject.dto.IncomingsDetailCreateDTO;
 import com.nonit.personalproject.dto.IncomingsDetailDTO;
-import com.nonit.personalproject.dto.StockStatsDTO;
+import com.nonit.personalproject.dto.IncomingsAmountStatsDTO;
 import com.nonit.personalproject.entity.*;
 import com.nonit.personalproject.exception.WarehouseException;
 import com.nonit.personalproject.mapper.IncomingsDetailMapper;
@@ -108,9 +108,9 @@ public class IncomingsDetailServiceImpl implements IncomingsDetailService {
         log.info("delete incomings by id {}", incomingsId);
         incomingsDetailRepository.deleteById(incomingsId);
     }
-    // Stock stat before input date
+    // Incomings amount for each product before input date
     @Override
-    public List<StockStatsDTO> getNumberOfProductIncomings(LocalDate date) {
+    public List<IncomingsAmountStatsDTO> getNumberOfProductIncomings(LocalDate date) {
         if (date.isAfter(LocalDate.now())){
             throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDate.now());
         }

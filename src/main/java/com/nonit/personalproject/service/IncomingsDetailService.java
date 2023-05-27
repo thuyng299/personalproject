@@ -2,7 +2,7 @@ package com.nonit.personalproject.service;
 
 import com.nonit.personalproject.dto.IncomingsDetailCreateDTO;
 import com.nonit.personalproject.dto.IncomingsDetailDTO;
-import com.nonit.personalproject.dto.StockStatsDTO;
+import com.nonit.personalproject.dto.IncomingsAmountStatsDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,5 +13,5 @@ public interface IncomingsDetailService {
     IncomingsDetailDTO createIncomingsDetail (Long grnId, IncomingsDetailCreateDTO incomingsDetailCreateDTO);
     IncomingsDetailDTO createIncomingsDetail (Long grnId, IncomingsDetailCreateDTO incomingsDetailCreateDTO, Long productId);
     void deleteIncomingsDetail (Long incomingsId);
-    List<StockStatsDTO> getNumberOfProductIncomings(LocalDate date);
+    List<IncomingsAmountStatsDTO> getNumberOfProductIncomings(LocalDate date);
 }

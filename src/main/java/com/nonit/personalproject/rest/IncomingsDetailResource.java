@@ -2,7 +2,7 @@ package com.nonit.personalproject.rest;
 
 import com.nonit.personalproject.dto.IncomingsDetailCreateDTO;
 import com.nonit.personalproject.dto.IncomingsDetailDTO;
-import com.nonit.personalproject.dto.StockStatsDTO;
+import com.nonit.personalproject.dto.IncomingsAmountStatsDTO;
 import com.nonit.personalproject.serviceimpl.IncomingsDetailServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +46,7 @@ public class IncomingsDetailResource implements IncomingsDetailAPI{
     }
 
     @Override
-    public ResponseEntity<List<StockStatsDTO>> getNumberOfProductIncomings(LocalDate date) {
+    public ResponseEntity<List<IncomingsAmountStatsDTO>> getNumberOfProductIncomings(LocalDate date) {
         return ResponseEntity.ok(incomingsDetailServiceImpl.getNumberOfProductIncomings(date));
     }
 }
