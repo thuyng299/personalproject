@@ -2,6 +2,7 @@ package com.nonit.personalproject.rest;
 
 import com.nonit.personalproject.dto.CustomerCreateDTO;
 import com.nonit.personalproject.dto.CustomerDTO;
+import com.nonit.personalproject.dto.CustomerStatsDTO;
 import com.nonit.personalproject.serviceimpl.CustomerServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,5 +36,15 @@ public class CustomerResource implements CustomerAPI{
     public ResponseEntity<Void> deleteCustomer(Long customerId) {
         customerServiceImpl.deleteCustomer(customerId);
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<List<CustomerStatsDTO>> getCustomerAndItsProduct(String inputName) {
+        return ResponseEntity.ok(customerServiceImpl.getCustomerAndItsProduct(inputName));
+    }
+
+    @Override
+    public ResponseEntity<List<CustomerStatsDTO>> getProductAndItsCustomers(String inputProductName) {
+        return ResponseEntity.ok(customerServiceImpl.getProductAndItsCustomers(inputProductName));
     }
 }

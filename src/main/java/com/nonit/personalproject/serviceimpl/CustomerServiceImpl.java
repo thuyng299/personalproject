@@ -2,6 +2,7 @@ package com.nonit.personalproject.serviceimpl;
 
 import com.nonit.personalproject.dto.CustomerCreateDTO;
 import com.nonit.personalproject.dto.CustomerDTO;
+import com.nonit.personalproject.dto.CustomerStatsDTO;
 import com.nonit.personalproject.entity.Country;
 import com.nonit.personalproject.entity.Customer;
 import com.nonit.personalproject.exception.WarehouseException;
@@ -74,5 +75,23 @@ public class CustomerServiceImpl implements CustomerService {
     public void deleteCustomer(Long customerId) {
         log.info("delete customer by id {}", customerId);
         customerRepository.deleteById(customerId);
+    }
+
+    @Override
+    public List<CustomerStatsDTO> getCustomerAndItsProduct(String inputName) {
+        if (inputName == null || inputName.isBlank()){
+            throw WarehouseException.badRequest("InvalidName", "Customer name must not be null!");
+        }
+        inputName = "%" + inputName + "%";
+        return customerRepository.getCustomerAndItsProduct(inputName);
+    }
+
+    @Override
+    public List<CustomerStatsDTO> getProductAndItsCustomers(String inputProductName) {
+        if (inputProductName == null || inputProductName.isBlank()){
+            throw WarehouseException.badRequest("InvalidName", "Product name must not be null!");
+        }
+        inputProductName = "%" + inputProductName + "%";
+        return customerRepository.getProductAndItsCustomers(inputProductName);
     }
 }
