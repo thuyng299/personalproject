@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -112,5 +113,39 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     public List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTime() {
         return supplierRepository.getSuppliersAndTotalPurchaseTime();
+    }
+
+    @Override
+    public List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTimeBetweenDates(LocalDate fromDate, LocalDate toDate) {
+        if (fromDate.isAfter(LocalDate.now()) || toDate.isAfter(LocalDate.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
+        }
+        return supplierRepository.getSuppliersAndTotalPurchaseTimeBetweenDates(fromDate, toDate);
+    }
+
+    @Override
+    public SupplierAndProductStatsDTO getSupplierAndTotalAmountBetweenDates(Long supplierId, LocalDate fromDate, LocalDate toDate) {
+        Supplier supplier = supplierRepository.findById(supplierId).orElseThrow(WarehouseException::SupplierNotFound);
+        if (fromDate.isAfter(LocalDate.now()) || toDate.isAfter(LocalDate.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
+        }
+        return supplierRepository.getSupplierAndTotalAmountBetweenDates(supplierId, fromDate, toDate);
+    }
+
+    @Override
+    public SupplierAndProductStatsDTO getSupplierAndTotalAmountBeforeDate(Long supplierId, LocalDate beforeDate) {
+        Supplier supplier = supplierRepository.findById(supplierId).orElseThrow(WarehouseException::SupplierNotFound);
+        if (beforeDate.isAfter(LocalDate.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
+        }
+        return supplierRepository.getSupplierAndTotalAmountBeforeDate(supplierId, beforeDate);
+    }
+
+    @Override
+    public List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTimeBeforeDate(LocalDate beforeDate) {
+        if (beforeDate.isAfter(LocalDate.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
+        }
+        return supplierRepository.getSuppliersAndTotalPurchaseTimeBeforeDate(beforeDate);
     }
 }
