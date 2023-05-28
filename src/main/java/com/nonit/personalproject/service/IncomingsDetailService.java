@@ -1,9 +1,6 @@
 package com.nonit.personalproject.service;
 
-import com.nonit.personalproject.dto.IncomingsDetailCreateDTO;
-import com.nonit.personalproject.dto.IncomingsDetailDTO;
-import com.nonit.personalproject.dto.IncomingsAmountStatsDTO;
-import com.nonit.personalproject.dto.PurchaseTimeStatDTO;
+import com.nonit.personalproject.dto.*;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
@@ -20,4 +17,6 @@ public interface IncomingsDetailService {
     PurchaseTimeStatDTO getPurchaseTimeAndAmountOfSpecificProduct(Long inputId);
     PurchaseTimeStatDTO getPurchaseTimeAndAmountOfSpecificProductAndDate(Long inputId, LocalDate inputDate);
     List<PurchaseTimeStatDTO> getPurchaseTimeAndAmountBetweenDates(LocalDate fromDate, LocalDate toDate);
+    List<Object[]> getCountDaysAndAmountBeforeExpire (Long inputCountDays);
+    List<ProductNearlyOutOfStockStatDTO> getProductNearlyOutOfStock (Double inputAmount);
 }

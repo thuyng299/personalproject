@@ -1,9 +1,6 @@
 package com.nonit.personalproject.rest;
 
-import com.nonit.personalproject.dto.IncomingsDetailCreateDTO;
-import com.nonit.personalproject.dto.IncomingsDetailDTO;
-import com.nonit.personalproject.dto.IncomingsAmountStatsDTO;
-import com.nonit.personalproject.dto.PurchaseTimeStatDTO;
+import com.nonit.personalproject.dto.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,4 +33,8 @@ public interface IncomingsDetailAPI {
     @GetMapping("/purchaseamountbetweendates") // localhost:8080/incomingsdetails/purchaseamountbetweendates?fromDate=2022-01-21&toDate=2022-07-21
     ResponseEntity<List<PurchaseTimeStatDTO>> getPurchaseTimeAndAmountBetweenDates(@RequestParam("fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate fromDate,
                                                                                    @RequestParam("toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate);
+    @GetMapping("/stocknearlyexpiring") // localhost:8080/incomingsdetails/stocknearlyexpiring?inputCountDays=30
+    ResponseEntity<List<Object[]>> getCountDaysAndAmountBeforeExpire(@RequestParam("inputCountDays") Long inputCountDays);
+    @GetMapping("/productsnearlyoutofstock") // localhost:8080/incomingsdetails/productsnearlyoutofstock?inputAmount=15000
+    ResponseEntity<List<ProductNearlyOutOfStockStatDTO>> getProductNearlyOutOfStock(@RequestParam("inputAmount") Double inputAmount);
 }

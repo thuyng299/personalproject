@@ -1,9 +1,6 @@
 package com.nonit.personalproject.serviceimpl;
 
-import com.nonit.personalproject.dto.IncomingsDetailCreateDTO;
-import com.nonit.personalproject.dto.IncomingsDetailDTO;
-import com.nonit.personalproject.dto.IncomingsAmountStatsDTO;
-import com.nonit.personalproject.dto.PurchaseTimeStatDTO;
+import com.nonit.personalproject.dto.*;
 import com.nonit.personalproject.entity.*;
 import com.nonit.personalproject.exception.ResponseException;
 import com.nonit.personalproject.exception.WarehouseException;
@@ -146,5 +143,21 @@ public class IncomingsDetailServiceImpl implements IncomingsDetailService {
             throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
         }
         return incomingsDetailRepository.getPurchaseTimeAndAmountBetweenDates(fromDate, toDate);
+    }
+
+    @Override
+    public List<Object[]> getCountDaysAndAmountBeforeExpire(Long inputCountDays) {
+        if (inputCountDays <= 0){
+            throw WarehouseException.badRequest("InvalidCountDays", "Count days cannot be 0 or less than 0");
+        }
+        return incomingsDetailRepository.getCountDaysAndAmountBeforeExpire(inputCountDays);
+    }
+
+    @Override
+    public List<ProductNearlyOutOfStockStatDTO> getProductNearlyOutOfStock(Double inputAmount) {
+        if (inputAmount < 500){
+            throw WarehouseException.badRequest("InvalidAmount", "Warehouse stock amount of each product must be greater than 500 kgs");
+        }
+        return incomingsDetailRepository.getProductNearlyOutOfStock(inputAmount);
     }
 }

@@ -1,9 +1,6 @@
 package com.nonit.personalproject.rest;
 
-import com.nonit.personalproject.dto.IncomingsDetailCreateDTO;
-import com.nonit.personalproject.dto.IncomingsDetailDTO;
-import com.nonit.personalproject.dto.IncomingsAmountStatsDTO;
-import com.nonit.personalproject.dto.PurchaseTimeStatDTO;
+import com.nonit.personalproject.dto.*;
 import com.nonit.personalproject.exception.NullInputProductIdException;
 import com.nonit.personalproject.exception.ResponseException;
 import com.nonit.personalproject.exception.WarehouseException;
@@ -73,5 +70,15 @@ public class IncomingsDetailResource implements IncomingsDetailAPI{
     @Override
     public ResponseEntity<List<PurchaseTimeStatDTO>> getPurchaseTimeAndAmountBetweenDates(LocalDate fromDate, LocalDate toDate) {
         return ResponseEntity.ok(incomingsDetailServiceImpl.getPurchaseTimeAndAmountBetweenDates(fromDate, toDate));
+    }
+
+    @Override
+    public ResponseEntity<List<Object[]>> getCountDaysAndAmountBeforeExpire(Long inputCountDays) {
+        return ResponseEntity.ok(incomingsDetailServiceImpl.getCountDaysAndAmountBeforeExpire(inputCountDays));
+    }
+
+    @Override
+    public ResponseEntity<List<ProductNearlyOutOfStockStatDTO>> getProductNearlyOutOfStock(Double inputAmount) {
+        return ResponseEntity.ok(incomingsDetailServiceImpl.getProductNearlyOutOfStock(inputAmount));
     }
 }
