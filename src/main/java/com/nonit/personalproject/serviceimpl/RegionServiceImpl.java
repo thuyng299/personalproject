@@ -74,4 +74,12 @@ public class RegionServiceImpl implements RegionService {
         return regionMapper.toDtos(regions);
     }
 
+    @Override
+    public RegionDTO updateRegion(Long regionId, RegionDTO regionDTO) {
+        log.info("update region by region id {}", regionId);
+        Region region = regionRepository.findById(regionId).orElseThrow(WarehouseException::RegionNotFound);
+        region.setRegionName(regionDTO.getRegionName());
+
+        return regionMapper.toDto(regionRepository.save(region));
+    }
 }

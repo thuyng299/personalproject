@@ -81,4 +81,24 @@ public class IncomingsDetailResource implements IncomingsDetailAPI{
     public ResponseEntity<List<ProductNearlyOutOfStockStatDTO>> getProductNearlyOutOfStock(Double inputAmount) {
         return ResponseEntity.ok(incomingsDetailServiceImpl.getProductNearlyOutOfStock(inputAmount));
     }
+
+    @Override
+    public ResponseEntity<List<StockAmountOfCategoryStatDTO>> getTotalStockAmountOfRawMaterial() {
+        return ResponseEntity.ok(incomingsDetailServiceImpl.getTotalStockAmountOfRawMaterial());
+    }
+
+    @Override
+    public ResponseEntity<List<StockAmountOfCategoryStatDTO>> getTotalStockAmountOfFinishedGood() {
+        return ResponseEntity.ok(incomingsDetailServiceImpl.getTotalStockAmountOfFinishedGood());
+    }
+
+    @Override
+    public ResponseEntity<List<StockAmountOfCategoryStatDTO>> getTotalStockAmountOfRawMaterialBeforeDate(LocalDate inputDate) {
+        return ResponseEntity.ok(incomingsDetailServiceImpl.getTotalStockAmountOfRawMaterialBeforeDate(inputDate));
+    }
+
+    @Override
+    public ResponseEntity<List<StockAmountOfCategoryStatDTO>> getTotalStockAmountOfFinishedGoodBeforeDate(LocalDate inputDate) {
+        return ResponseEntity.ok(incomingsDetailServiceImpl.getTotalStockAmountOfFinishedGoodBeforeDate(inputDate));
+    }
 }

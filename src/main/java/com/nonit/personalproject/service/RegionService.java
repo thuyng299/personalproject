@@ -11,5 +11,6 @@ public interface RegionService {
     void deleteRegion(Long regionId);
     RegionDTO findByRegionName(String regionName);
     List<RegionDTO> findByRegionIdOrRegionName(Long regionId, String regionName);
+    RegionDTO updateRegion (Long regionId, RegionDTO regionDTO);
 
 }

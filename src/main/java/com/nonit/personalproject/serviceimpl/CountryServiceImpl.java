@@ -65,4 +65,12 @@ public class CountryServiceImpl implements CountryService {
         }
         return countryMapper.toDto(country);
     }
+
+    @Override
+    public CountryDTO updateCountry(Long countryId, CountryDTO countryDTO) {
+        log.info("update country by country id {}", countryId);
+        Country country = countryRepository.findById(countryId).orElseThrow(WarehouseException::CountryNotFound);
+        country.setCountryName(countryDTO.getCountryName());
+        return null;
+    }
 }

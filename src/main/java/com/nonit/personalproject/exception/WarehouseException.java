@@ -22,6 +22,8 @@ public class WarehouseException {
     private static final String INCOMINGSDETAIL_NOT_FOUND_MSG = "Incomings Detail Not Found";
     private static final String GDN_NOT_FOUND_MSG_KEY = "GoodsDeliveryNoteNotExisted";
     private static final String GDN_NOT_FOUND_MSG = "Goods Delivery Note Not Found";
+    private static final String OUTCOMINGSDETAIL_NOT_FOUND_MSG_KEY = "OutcomingsDetailNotExisted";
+    private static final String OUTCOMINGSDETAIL_NOT_FOUND_MSG = "Outcomings Detail Not Found";
     public static ResponseException notFound(String messageKey, String message) {
         return new ResponseException(messageKey, message, HttpStatus.NOT_FOUND);
     }
@@ -62,6 +64,9 @@ public class WarehouseException {
     }
     public static ResponseException GDNNotFound(){
         return notFound(GDN_NOT_FOUND_MSG_KEY, GDN_NOT_FOUND_MSG);
+    }
+    public static ResponseException OutcomingsDetailNotFound(){
+        return notFound(OUTCOMINGSDETAIL_NOT_FOUND_MSG_KEY, OUTCOMINGSDETAIL_NOT_FOUND_MSG);
     }
 
 }

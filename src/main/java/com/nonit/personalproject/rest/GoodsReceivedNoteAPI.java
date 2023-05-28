@@ -16,6 +16,6 @@ public interface GoodsReceivedNoteAPI {
     @PostMapping("/{supplierId}")
     ResponseEntity<GoodsReceivedNoteDTO> createGoodsReceivedNote(@PathVariable("supplierId") Long supplierId,
                                                                  @RequestBody GoodsReceivedNoteCreateDTO goodsReceivedNoteCreateDTO);
-    @DeleteMapping
+    @DeleteMapping("/{grnId}")
     ResponseEntity<Void> deleteGoodsReceivedNote(@PathVariable("grnId") Long grnId);
 }

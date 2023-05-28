@@ -105,7 +105,7 @@ public class IncomingsDetailServiceImpl implements IncomingsDetailService {
 
     @Override
     public void deleteIncomingsDetail(Long incomingsId) {
-        log.info("delete incomings by id {}", incomingsId);
+        log.info("delete incomings detail by id {}", incomingsId);
         incomingsDetailRepository.deleteById(incomingsId);
     }
     // Incomings amount for each product before input date
@@ -159,5 +159,31 @@ public class IncomingsDetailServiceImpl implements IncomingsDetailService {
             throw WarehouseException.badRequest("InvalidAmount", "Warehouse stock amount of each product must be greater than 500 kgs");
         }
         return incomingsDetailRepository.getProductNearlyOutOfStock(inputAmount);
+    }
+
+    @Override
+    public List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfRawMaterial() {
+        return incomingsDetailRepository.getTotalStockAmountOfRawMaterial();
+    }
+
+    @Override
+    public List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfFinishedGood() {
+        return incomingsDetailRepository.getTotalStockAmountOfFinishedGood();
+    }
+
+    @Override
+    public List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfRawMaterialBeforeDate(LocalDate inputDate) {
+        if (inputDate.isAfter(LocalDate.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDate.now());
+        }
+        return incomingsDetailRepository.getTotalStockAmountOfRawMaterialBeforeDate(inputDate);
+    }
+
+    @Override
+    public List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfFinishedGoodBeforeDate(LocalDate inputDate) {
+        if (inputDate.isAfter(LocalDate.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDate.now());
+        }
+        return incomingsDetailRepository.getTotalStockAmountOfFinishedGoodBeforeDate(inputDate);
     }
 }

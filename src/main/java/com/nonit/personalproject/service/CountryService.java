@@ -10,4 +10,5 @@ public interface CountryService {
     CountryDTO createCountry (CountryDTO countryDTO, Long regionId);
     void deleteCountry (Long countryId);
     CountryDTO findByCountryName (String countryName);
+    CountryDTO updateCountry (Long countryId, CountryDTO countryDTO);
 }

@@ -25,4 +25,6 @@ public interface OutcomingsDetailAPI {
     @GetMapping("/salesamountbetweendates") // localhost:8080/outcomingsdetails/salesamountbetweendates?fromDate=2023-01-03&toDate=2023-01-19
     ResponseEntity<List<SalesTimeStatDTO>> getNumberOfSalesTimeAndAmountBetweenDates (@RequestParam("fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate fromDate,
                                                                                       @RequestParam("toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate);
+    @GetMapping("/top5customers") // localhost:8080/outcomingsdetails/top5customers?inputYear=2023
+    ResponseEntity<List<Object[]>> getTop5Customers(@RequestParam("inputYear") String inputYear);
 }

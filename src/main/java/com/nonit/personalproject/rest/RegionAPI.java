@@ -9,7 +9,6 @@ import java.util.List;
 
 @RequestMapping(value = "/regions")
 public interface RegionAPI {
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     ResponseEntity<List<RegionDTO>> getAllRegion();
     @PostMapping
@@ -23,4 +22,8 @@ public interface RegionAPI {
     @GetMapping("/regionidorname")
     ResponseEntity<List<RegionDTO>> findByRegionIdOrRegionName(@PathVariable("regionId") Long regionId,
                                                          @RequestParam("regionName") String regionName);
+    @PutMapping("/{regionId}")
+    ResponseEntity<RegionDTO> updateRegion(@PathVariable("regionId") Long regionId,
+                                           @RequestBody RegionDTO regionDTO);
+
 }

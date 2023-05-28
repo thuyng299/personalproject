@@ -1,5 +1,7 @@
 package com.nonit.personalproject.serviceimpl;
 
+import com.nonit.personalproject.dto.OutcomingsDetailCreateDTO;
+import com.nonit.personalproject.dto.OutcomingsDetailDTO;
 import com.nonit.personalproject.dto.OutgoingAmountStatsDTO;
 import com.nonit.personalproject.dto.SalesTimeStatDTO;
 import com.nonit.personalproject.entity.GoodsDeliveryNote;
@@ -7,6 +9,7 @@ import com.nonit.personalproject.entity.OutcomingsDetail;
 import com.nonit.personalproject.entity.Product;
 import com.nonit.personalproject.exception.ResponseException;
 import com.nonit.personalproject.exception.WarehouseException;
+import com.nonit.personalproject.mapper.OutcomingsDetailMapper;
 import com.nonit.personalproject.repository.GoodsDeliveryNoteRepository;
 import com.nonit.personalproject.repository.IncomingsDetailRepository;
 import com.nonit.personalproject.repository.OutcomingsDetailRepository;
@@ -32,6 +35,38 @@ public class OutcomingsDetailServiceImpl implements OutcomingsDetailService {
     private final ProductRepository productRepository;
     private final GoodsDeliveryNoteRepository goodsDeliveryNoteRepository;
     private final IncomingsDetailRepository incomingsDetailRepository;
+    private final OutcomingsDetailMapper outcomingsDetailMapper = OutcomingsDetailMapper.INSTANCE;
+
+    @Override
+    public List<OutcomingsDetailDTO> getAllOutcomingsDetail() {
+        List<OutcomingsDetail> outcomingsDetails = outcomingsDetailRepository.findAll();
+        if (outcomingsDetails.isEmpty()){
+            throw WarehouseException.OutcomingsDetailNotFound();
+        }
+        return outcomingsDetailMapper.toDtos(outcomingsDetails);
+    }
+
+    @Override
+    public OutcomingsDetailDTO findOutcomingsDetailById(Long outcomingsId) {
+        OutcomingsDetail outcomingsDetail = outcomingsDetailRepository.findById(outcomingsId).orElseThrow(WarehouseException::OutcomingsDetailNotFound);
+        return outcomingsDetailMapper.toDto(outcomingsDetail);
+    }
+
+    @Override
+    public OutcomingsDetailDTO createOutcomingsDetail(Long gdnId, OutcomingsDetailCreateDTO outcomingsDetailCreateDTO) {
+        return null;
+    }
+
+    @Override
+    public OutcomingsDetailDTO createOutcomingsDetail(Long gdnId, OutcomingsDetailCreateDTO outcomingsDetailCreateDTO, Long productId) {
+        return null;
+    }
+
+    @Override
+    public void deleteIncomingsDetail(Long outcomingsId) {
+        log.info("delete outcomings detail by id {}", outcomingsId);
+        outcomingsDetailRepository.deleteById(outcomingsId);
+    }
 
     @Override
     public List<OutgoingAmountStatsDTO> getNumberOfProductOutgoings(LocalDate date) {
@@ -67,5 +102,10 @@ public class OutcomingsDetailServiceImpl implements OutcomingsDetailService {
             throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
         }
         return outcomingsDetailRepository.getNumberOfSalesTimeAndAmountBetweenDates(fromDate, toDate);
+    }
+
+    @Override
+    public List<Object[]> getTop5Customers(String inputYear) {
+        return outcomingsDetailRepository.getTop5Customers(inputYear);
     }
 }

@@ -19,4 +19,8 @@ public interface IncomingsDetailService {
     List<PurchaseTimeStatDTO> getPurchaseTimeAndAmountBetweenDates(LocalDate fromDate, LocalDate toDate);
     List<Object[]> getCountDaysAndAmountBeforeExpire (Long inputCountDays);
     List<ProductNearlyOutOfStockStatDTO> getProductNearlyOutOfStock (Double inputAmount);
+    List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfRawMaterial();
+    List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfFinishedGood();
+    List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfRawMaterialBeforeDate(LocalDate inputDate);
+    List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfFinishedGoodBeforeDate(LocalDate inputDate);
 }

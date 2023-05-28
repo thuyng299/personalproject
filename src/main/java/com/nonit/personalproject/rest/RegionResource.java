@@ -1,6 +1,7 @@
 package com.nonit.personalproject.rest;
 
 import com.nonit.personalproject.dto.RegionDTO;
+import com.nonit.personalproject.entity.Region;
 import com.nonit.personalproject.serviceimpl.RegionServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +45,10 @@ public class RegionResource implements RegionAPI {
     @Override
     public ResponseEntity<List<RegionDTO>> findByRegionIdOrRegionName(Long regionId, String regionName) {
           return ResponseEntity.ok(regionServiceImpl.findByRegionIdOrRegionName(regionId, regionName));
+    }
+
+    @Override
+    public ResponseEntity<RegionDTO> updateRegion(Long regionId, RegionDTO regionDTO) {
+        return ResponseEntity.ok().body(regionServiceImpl.updateRegion(regionId, regionDTO));
     }
 }

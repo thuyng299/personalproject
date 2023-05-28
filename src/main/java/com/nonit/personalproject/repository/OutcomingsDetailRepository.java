@@ -27,4 +27,6 @@ public interface OutcomingsDetailRepository extends JpaRepository<OutcomingsDeta
     @Query("select new com.nonit.personalproject.dto.SalesTimeStatDTO (od.product.productId, p.productName, count(od.product.productId), sum(od.outcomingsAmount)) from GoodsDeliveryNote gdn, OutcomingsDetail od, Product p where gdn.gdnId = od.goodsDeliveryNote.gdnId and p.productId = od.product.productId and gdn.outcomingsDate between :fromDate and :toDate group by od.product.productId, p.productName order by od.product.productId")
     List<SalesTimeStatDTO> getNumberOfSalesTimeAndAmountBetweenDates (@Param("fromDate") LocalDate fromDate,
                                                                 @Param("toDate") LocalDate toDate);
+    @Query(value = "select c.customer_name, sum(od.outcomings_amount) from customer c , goods_delivery_note gdn , outcomings_detail od where c.customer_id = gdn.customer_id and gdn.gdn_id = od.gdn_id and to_char(gdn.outcomings_date, 'YYYY') = :inputYear group by c.customer_name, c.customer_id order by sum(od.outcomings_amount) desc limit 5", nativeQuery = true)
+    List<Object[]> getTop5Customers(@Param("inputYear") String inputYear);
 }

@@ -37,4 +37,12 @@ public interface IncomingsDetailAPI {
     ResponseEntity<List<Object[]>> getCountDaysAndAmountBeforeExpire(@RequestParam("inputCountDays") Long inputCountDays);
     @GetMapping("/productsnearlyoutofstock") // localhost:8080/incomingsdetails/productsnearlyoutofstock?inputAmount=15000
     ResponseEntity<List<ProductNearlyOutOfStockStatDTO>> getProductNearlyOutOfStock(@RequestParam("inputAmount") Double inputAmount);
+    @GetMapping("/totalstockofrawmaterial") // localhost:8080/incomingsdetails/totalstockofrawmaterial
+    ResponseEntity<List<StockAmountOfCategoryStatDTO>> getTotalStockAmountOfRawMaterial();
+    @GetMapping("/totalstockoffinishedgood") // localhost:8080/incomingsdetails/totalstockoffinishedgood
+    ResponseEntity<List<StockAmountOfCategoryStatDTO>> getTotalStockAmountOfFinishedGood();
+    @GetMapping("/totalstockofrawmaterialbeforedate") // localhost:8080/incomingsdetails/totalstockofrawmaterialbeforedate?inputDate=2022-07-21
+    ResponseEntity<List<StockAmountOfCategoryStatDTO>> getTotalStockAmountOfRawMaterialBeforeDate(@RequestParam("inputDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inputDate);
+    @GetMapping("/totalstockoffinishedgoodbeforedate") // localhost:8080/incomingsdetails/totalstockoffinishedgoodbeforedate?inputDate=2022-07-21
+    ResponseEntity<List<StockAmountOfCategoryStatDTO>> getTotalStockAmountOfFinishedGoodBeforeDate(@RequestParam("inputDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inputDate);
 }
