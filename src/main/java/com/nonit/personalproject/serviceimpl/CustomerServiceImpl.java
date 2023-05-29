@@ -1,5 +1,6 @@
 package com.nonit.personalproject.serviceimpl;
 
+import com.nonit.personalproject.dto.CustomerAndProductStatsDTO;
 import com.nonit.personalproject.dto.CustomerCreateDTO;
 import com.nonit.personalproject.dto.CustomerDTO;
 import com.nonit.personalproject.dto.CustomerStatsDTO;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -93,5 +95,44 @@ public class CustomerServiceImpl implements CustomerService {
         }
         inputProductName = "%" + inputProductName + "%";
         return customerRepository.getProductAndItsCustomers(inputProductName);
+    }
+
+    @Override
+    public List<CustomerAndProductStatsDTO> getCustomersAndTotalSalesTime() {
+        return customerRepository.getCustomersAndTotalSalesTime();
+    }
+
+    @Override
+    public List<CustomerAndProductStatsDTO> getCustomersAndTotalSalesTimeBetweenDates(LocalDate fromDate, LocalDate toDate) {
+        if (fromDate.isAfter(LocalDate.now()) || toDate.isAfter(LocalDate.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
+        }
+        return customerRepository.getCustomersAndTotalSalesTimeBetweenDates(fromDate, toDate);
+    }
+
+    @Override
+    public CustomerAndProductStatsDTO getCustomerAndTotalAmountBetweenDates(Long customerId, LocalDate fromDate, LocalDate toDate) {
+        Customer customer = customerRepository.findById(customerId).orElseThrow(WarehouseException::CustomerNotFound);
+        if (fromDate.isAfter(LocalDate.now()) || toDate.isAfter(LocalDate.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
+        }
+        return customerRepository.getCustomerAndTotalAmountBetweenDates(customerId, fromDate, toDate);
+    }
+
+    @Override
+    public CustomerAndProductStatsDTO getCustomerAndTotalAmountBeforeDate(Long customerId, LocalDate beforeDate) {
+        Customer customer = customerRepository.findById(customerId).orElseThrow(WarehouseException::CustomerNotFound);
+        if (beforeDate.isAfter(LocalDate.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
+        }
+        return customerRepository.getCustomerAndTotalAmountBeforeDate(customerId, beforeDate);
+    }
+
+    @Override
+    public List<CustomerAndProductStatsDTO> getCustomersAndTotalSalesTimeBeforeDate(LocalDate beforeDate) {
+        if (beforeDate.isAfter(LocalDate.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
+        }
+        return customerRepository.getCustomersAndTotalSalesTimeBeforeDate(beforeDate);
     }
 }

@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 public class CustomerAndProductStatsDTO {
     private Long customerId;
     private String customerName;
-    private Long totalPurchaseTime;
+    private Long totalSalesTime;
     private Double totalSalesAmount;
-    private Double totalPrice;
 }

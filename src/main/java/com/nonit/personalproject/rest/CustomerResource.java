@@ -1,5 +1,6 @@
 package com.nonit.personalproject.rest;
 
+import com.nonit.personalproject.dto.CustomerAndProductStatsDTO;
 import com.nonit.personalproject.dto.CustomerCreateDTO;
 import com.nonit.personalproject.dto.CustomerDTO;
 import com.nonit.personalproject.dto.CustomerStatsDTO;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -46,5 +48,30 @@ public class CustomerResource implements CustomerAPI{
     @Override
     public ResponseEntity<List<CustomerStatsDTO>> getProductAndItsCustomers(String inputProductName) {
         return ResponseEntity.ok(customerServiceImpl.getProductAndItsCustomers(inputProductName));
+    }
+
+    @Override
+    public ResponseEntity<List<CustomerAndProductStatsDTO>> getCustomersAndTotalSalesTime() {
+        return ResponseEntity.ok(customerServiceImpl.getCustomersAndTotalSalesTime());
+    }
+
+    @Override
+    public ResponseEntity<List<CustomerAndProductStatsDTO>> getCustomersAndTotalSalesTimeBetweenDates(LocalDate fromDate, LocalDate toDate) {
+        return ResponseEntity.ok(customerServiceImpl.getCustomersAndTotalSalesTimeBetweenDates(fromDate, toDate));
+    }
+
+    @Override
+    public ResponseEntity<CustomerAndProductStatsDTO> getCustomerAndTotalAmountBetweenDates(Long customerId, LocalDate fromDate, LocalDate toDate) {
+        return ResponseEntity.ok(customerServiceImpl.getCustomerAndTotalAmountBetweenDates(customerId, fromDate, toDate));
+    }
+
+    @Override
+    public ResponseEntity<CustomerAndProductStatsDTO> getCustomerAndTotalAmountBeforeDate(Long customerId, LocalDate beforeDate) {
+        return ResponseEntity.ok(customerServiceImpl.getCustomerAndTotalAmountBeforeDate(customerId, beforeDate));
+    }
+
+    @Override
+    public ResponseEntity<List<CustomerAndProductStatsDTO>> getCustomersAndTotalSalesTimeBeforeDate(LocalDate beforeDate) {
+        return ResponseEntity.ok(customerServiceImpl.getCustomersAndTotalSalesTimeBeforeDate(beforeDate));
     }
 }
