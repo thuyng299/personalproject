@@ -7,22 +7,27 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@PreAuthorize("hasAnyRole('ADMIN', 'USER', 'WAREHOUSE_STAFF')")
 @RequestMapping(value = "/regions")
 public interface RegionAPI {
     @GetMapping
     ResponseEntity<List<RegionDTO>> getAllRegion();
     @PostMapping
     ResponseEntity<RegionDTO> createRegion(@RequestBody RegionCreateDTO regionCreateDTO);
+
     @DeleteMapping("/{regionId}")
     ResponseEntity<Void> deleteRegion(@PathVariable("regionId") Long regionId);
-    @GetMapping("/{regionId}")
+
+    @GetMapping("/{regionId}") // localhost:8080/regions/3
     ResponseEntity<RegionDTO> findRegionById(@PathVariable("regionId") Long regionId);
-    @GetMapping("/name") //localhost:8080/regions/name?regionName=
+
+    @GetMapping("/name") //localhost:8080/regions/name?regionName=Oceania
     ResponseEntity<RegionDTO> findByRegionName(@RequestParam("regionName") String regionName);
-    @GetMapping("/regionidorname")
+
+    @GetMapping("/regionid-name/{regionId}") // localhost:8080/regions/regionid-name/6?regionName=Asia
     ResponseEntity<List<RegionDTO>> findByRegionIdOrRegionName(@PathVariable("regionId") Long regionId,
                                                          @RequestParam("regionName") String regionName);
+
     @PutMapping("/{regionId}")
     ResponseEntity<RegionDTO> updateRegion(@PathVariable("regionId") Long regionId,
                                            @RequestBody RegionCreateDTO regionCreateDTO);

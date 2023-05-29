@@ -60,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
                 .productName(productCreateDTO.getProductName())
                 .productCode(productCreateDTO.getProductCode())
                 .productDescription(productCreateDTO.getProductDescription())
-                .productCategory(ProductCategory.valueOf(productCreateDTO.getProductCategory()))
+                .productCategory(productCreateDTO.getProductCategory())
                 .warehouseArea(warehouseArea)
                 .build();
         product = productRepository.save(product);

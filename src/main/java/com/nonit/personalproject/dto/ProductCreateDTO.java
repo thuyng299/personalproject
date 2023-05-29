@@ -16,5 +16,5 @@ public class ProductCreateDTO {
     private String productName;
     private String productCode;
     private String productDescription;
-    private String productCategory;
+    private ProductCategory productCategory;
 }

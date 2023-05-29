@@ -12,22 +12,28 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 @RequestMapping(value = "/employees")
 public interface EmployeeAPI {
     @GetMapping
     ResponseEntity<List<EmployeeDTO>> getAllEmployee();
+
     @GetMapping("/{employeeId}")
     ResponseEntity<EmployeeDTO> findEmployeeById(@PathVariable("employeeId") Long employeeId);
+
     @PostMapping
     ResponseEntity<EmployeeDTO> createEmployee(@RequestBody EmployeeCreateDTO employeeCreateDTO);
+
     @DeleteMapping("/{employeeId}")
     ResponseEntity<Void> deleteEmployee(@PathVariable("employeeId") Long employeeId);
+
     @GetMapping("/firstname")
     ResponseEntity<List<EmployeeDTO>> findByFirstName(@RequestParam("firstName") String firstName);
+
     @PutMapping("/{employeeId}")
     ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable("employeeId") Long employeeId,
                                                @RequestBody EmployeeUpdateDTO employeeUpdateDTO);
+
     @GetMapping("/export-to-pdf")
     public void generatePdfFile (HttpServletResponse response) throws DocumentException, IOException;
 }
