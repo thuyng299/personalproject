@@ -53,45 +53,46 @@ public class OutcomingsDetailServiceImpl implements OutcomingsDetailService {
         GoodsDeliveryNote goodsDeliveryNote = goodsDeliveryNoteRepository.findById(gdnId).orElseThrow(WarehouseException::GDNNotFound);
         WarehouseArea area = warehouseAreaRepository.findById(goodsDeliveryNote.getWarehouseArea().getAreaId()).orElseThrow(WarehouseException::WarehouseAreaNotFound);
         Product product = productRepository.findByWarehouseAreaAreaId(area.getAreaId());
-//        OutcomingsDetail outcomingsDetail = OutcomingsDetail.builder()
-////                .outcomingsAmount(outcomingsDetailCreateDTO.getOutcomingsAmount())
-//                .productPrice(outcomingsDetailCreateDTO.getProductPrice())
-//                .discount(outcomingsDetailCreateDTO.getDiscount())
-//                .goodsDeliveryNote(goodsDeliveryNote)
-//                .product(product)
-//                .build();
+        OutcomingsDetail outcomingsDetail = OutcomingsDetail.builder()
+//                .outcomingsAmount(outcomingsDetailCreateDTO.getOutcomingsAmount())
+                .productPrice(outcomingsDetailCreateDTO.getProductPrice())
+                .discount(outcomingsDetailCreateDTO.getDiscount())
+                .goodsDeliveryNote(goodsDeliveryNote)
+                .product(product)
+                .build();
         // get GDN where product id equals to outcomings detail's product id
-        List<IncomingsProductStatDTO> incomingsProductStatDTOList = incomingsDetailRepository.getIncomingsAmountOfProduct(product.getProductId()); // product outcomings detail
-        Double totalRemainingAmount = incomingsProductStatDTOList.stream()
-                .mapToDouble(IncomingsProductStatDTO::getRemainingAmount)
-                .sum();
-        if (outcomingsDetailCreateDTO.getOutcomingsAmount() > totalRemainingAmount){  // product outcomings detail
-            throw WarehouseException.badRequest("InvalidStock", "Remaining stock amount");
-        }else {
-            for (int i = 0; i < incomingsProductStatDTOList.size(); i++) {
-                if (outcomingsDetailCreateDTO.getOutcomingsAmount() < incomingsProductStatDTOList.get(i).getRemainingAmount()) {
-                    OutcomingsDetail outcomingsDetail = OutcomingsDetail.builder()
-                            .outcomingsAmount(outcomingsDetailCreateDTO.getOutcomingsAmount())
-                            .productPrice(outcomingsDetailCreateDTO.getProductPrice())
-                            .discount(outcomingsDetailCreateDTO.getDiscount())
-                            .goodsDeliveryNote(goodsDeliveryNote)
-                            .product(product)
-                            .build();
-                    incomingsProductStatDTOList.get(i).setRemainingAmount(incomingsProductStatDTOList.get(i).getRemainingAmount() - outcomingsDetailCreateDTO.getOutcomingsAmount());
-                    outcomingsDetailRepository.save(outcomingsDetail);
-                } else if (outcomingsDetailCreateDTO.getOutcomingsAmount() > incomingsProductStatDTOList.get(i).getRemainingAmount()) {
-                    OutcomingsDetail outcomingsDetail = OutcomingsDetail.builder()
-                            .outcomingsAmount(incomingsProductStatDTOList.get(i).getRemainingAmount())
-                            .productPrice(outcomingsDetailCreateDTO.getProductPrice())
-                            .discount(outcomingsDetailCreateDTO.getDiscount())
-                            .goodsDeliveryNote(goodsDeliveryNote)
-                            .product(product)
-                            .build();
-                    outcomingsDetailRepository.save(outcomingsDetail);
-                }
-            }
-        }
-        return outcomingsDetailMapper.toDtos();
+//        List<IncomingsProductStatDTO> incomingsProductStatDTOList = incomingsDetailRepository.getIncomingsAmountOfProduct(product.getProductId()); // product outcomings detail
+//        Double totalRemainingAmount = incomingsProductStatDTOList.stream()
+//                .mapToDouble(IncomingsProductStatDTO::getRemainingAmount)
+//                .sum();
+//        if (outcomingsDetailCreateDTO.getOutcomingsAmount() > totalRemainingAmount){  // product outcomings detail
+//            throw WarehouseException.badRequest("InvalidStock", "Remaining stock amount");
+//        }else {
+//            for (int i = 0; i < incomingsProductStatDTOList.size(); i++) {
+//                if (outcomingsDetailCreateDTO.getOutcomingsAmount() < incomingsProductStatDTOList.get(i).getRemainingAmount()) {
+//                    OutcomingsDetail outcomingsDetail = OutcomingsDetail.builder()
+//                            .outcomingsAmount(outcomingsDetailCreateDTO.getOutcomingsAmount())
+//                            .productPrice(outcomingsDetailCreateDTO.getProductPrice())
+//                            .discount(outcomingsDetailCreateDTO.getDiscount())
+//                            .goodsDeliveryNote(goodsDeliveryNote)
+//                            .product(product)
+//                            .build();
+//                    incomingsProductStatDTOList.get(i).setRemainingAmount(incomingsProductStatDTOList.get(i).getRemainingAmount() - outcomingsDetailCreateDTO.getOutcomingsAmount());
+//                    outcomingsDetailRepository.save(outcomingsDetail);
+//                } else if (outcomingsDetailCreateDTO.getOutcomingsAmount() > incomingsProductStatDTOList.get(i).getRemainingAmount()) {
+//                    OutcomingsDetail outcomingsDetail = OutcomingsDetail.builder()
+//                            .outcomingsAmount(incomingsProductStatDTOList.get(i).getRemainingAmount())
+//                            .productPrice(outcomingsDetailCreateDTO.getProductPrice())
+//                            .discount(outcomingsDetailCreateDTO.getDiscount())
+//                            .goodsDeliveryNote(goodsDeliveryNote)
+//                            .product(product)
+//                            .build();
+//                    outcomingsDetailRepository.save(outcomingsDetail);
+//                }
+//            }
+//        }
+        outcomingsDetail = outcomingsDetailRepository.save(outcomingsDetail);
+        return outcomingsDetailMapper.toDto(outcomingsDetail);
     }
 
     @Override

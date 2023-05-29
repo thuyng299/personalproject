@@ -6,12 +6,14 @@ import com.nonit.personalproject.dto.SupplierDTO;
 import com.nonit.personalproject.dto.SupplierStatsDTO;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @RequestMapping(value = "/suppliers")
+@PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
 public interface SupplierAPI {
     @GetMapping
     ResponseEntity<List<SupplierDTO>> getAllSupplier();
