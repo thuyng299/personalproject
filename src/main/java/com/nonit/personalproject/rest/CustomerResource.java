@@ -1,9 +1,6 @@
 package com.nonit.personalproject.rest;
 
-import com.nonit.personalproject.dto.CustomerAndProductStatsDTO;
-import com.nonit.personalproject.dto.CustomerCreateDTO;
-import com.nonit.personalproject.dto.CustomerDTO;
-import com.nonit.personalproject.dto.CustomerStatsDTO;
+import com.nonit.personalproject.dto.*;
 import com.nonit.personalproject.serviceimpl.CustomerServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -74,4 +71,6 @@ public class CustomerResource implements CustomerAPI{
     public ResponseEntity<List<CustomerAndProductStatsDTO>> getCustomersAndTotalSalesTimeBeforeDate(LocalDate beforeDate) {
         return ResponseEntity.ok(customerServiceImpl.getCustomersAndTotalSalesTimeBeforeDate(beforeDate));
     }
+
+
 }

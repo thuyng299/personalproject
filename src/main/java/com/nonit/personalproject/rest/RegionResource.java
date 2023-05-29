@@ -1,5 +1,6 @@
 package com.nonit.personalproject.rest;
 
+import com.nonit.personalproject.dto.RegionCreateDTO;
 import com.nonit.personalproject.dto.RegionDTO;
 import com.nonit.personalproject.entity.Region;
 import com.nonit.personalproject.serviceimpl.RegionServiceImpl;
@@ -21,8 +22,8 @@ public class RegionResource implements RegionAPI {
     }
 
     @Override
-    public ResponseEntity<RegionDTO> createRegion(RegionDTO regionDTO) {
-        RegionDTO createdRegionDTO = regionServiceImpl.createRegion(regionDTO);
+    public ResponseEntity<RegionDTO> createRegion(RegionCreateDTO regionCreateDTO) {
+        RegionDTO createdRegionDTO = regionServiceImpl.createRegion(regionCreateDTO);
         return ResponseEntity.created(URI.create("/regions" + createdRegionDTO.getRegionId())).body(createdRegionDTO);
     }
 
@@ -48,7 +49,7 @@ public class RegionResource implements RegionAPI {
     }
 
     @Override
-    public ResponseEntity<RegionDTO> updateRegion(Long regionId, RegionDTO regionDTO) {
-        return ResponseEntity.ok().body(regionServiceImpl.updateRegion(regionId, regionDTO));
+    public ResponseEntity<RegionDTO> updateRegion(Long regionId, RegionCreateDTO regionCreateDTO) {
+        return ResponseEntity.ok().body(regionServiceImpl.updateRegion(regionId, regionCreateDTO));
     }
 }

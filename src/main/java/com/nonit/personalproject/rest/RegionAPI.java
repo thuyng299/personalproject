@@ -1,5 +1,6 @@
 package com.nonit.personalproject.rest;
 
+import com.nonit.personalproject.dto.RegionCreateDTO;
 import com.nonit.personalproject.dto.RegionDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,7 +13,7 @@ public interface RegionAPI {
     @GetMapping
     ResponseEntity<List<RegionDTO>> getAllRegion();
     @PostMapping
-    ResponseEntity<RegionDTO> createRegion(@RequestBody RegionDTO regionDTO);
+    ResponseEntity<RegionDTO> createRegion(@RequestBody RegionCreateDTO regionCreateDTO);
     @DeleteMapping("/{regionId}")
     ResponseEntity<Void> deleteRegion(@PathVariable("regionId") Long regionId);
     @GetMapping("/{regionId}")
@@ -24,6 +25,6 @@ public interface RegionAPI {
                                                          @RequestParam("regionName") String regionName);
     @PutMapping("/{regionId}")
     ResponseEntity<RegionDTO> updateRegion(@PathVariable("regionId") Long regionId,
-                                           @RequestBody RegionDTO regionDTO);
+                                           @RequestBody RegionCreateDTO regionCreateDTO);
 
 }

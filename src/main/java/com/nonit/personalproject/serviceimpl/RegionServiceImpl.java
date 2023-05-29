@@ -1,5 +1,6 @@
 package com.nonit.personalproject.serviceimpl;
 
+import com.nonit.personalproject.dto.RegionCreateDTO;
 import com.nonit.personalproject.dto.RegionDTO;
 import com.nonit.personalproject.entity.Region;
 import com.nonit.personalproject.exception.ResponseException;
@@ -37,12 +38,12 @@ public class RegionServiceImpl implements RegionService {
     }
 
     @Override
-    public RegionDTO createRegion(RegionDTO regionDTO){
-        if (regionDTO.getRegionName() == null || regionDTO.getRegionName().isEmpty() || regionDTO.getRegionName().isBlank()){
+    public RegionDTO createRegion(RegionCreateDTO regionCreateDTO){
+        if (regionCreateDTO.getRegionName() == null || regionCreateDTO.getRegionName().isBlank()){
             throw WarehouseException.badRequest("InvalidName", "Region name cannot be null!");
         }
         Region region = Region.builder()
-                .regionName(regionDTO.getRegionName())
+                .regionName(regionCreateDTO.getRegionName())
                 .build();
         region =  regionRepository.save(region);
         return regionMapper.toDto(region);
@@ -75,11 +76,10 @@ public class RegionServiceImpl implements RegionService {
     }
 
     @Override
-    public RegionDTO updateRegion(Long regionId, RegionDTO regionDTO) {
+    public RegionDTO updateRegion(Long regionId, RegionCreateDTO regionCreateDTO) {
         log.info("update region by region id {}", regionId);
         Region region = regionRepository.findById(regionId).orElseThrow(WarehouseException::RegionNotFound);
-        region.setRegionName(regionDTO.getRegionName());
-
+        region.setRegionName(regionCreateDTO.getRegionName());
         return regionMapper.toDto(regionRepository.save(region));
     }
 }

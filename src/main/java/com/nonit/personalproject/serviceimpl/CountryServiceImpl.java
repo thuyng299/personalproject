@@ -1,5 +1,6 @@
 package com.nonit.personalproject.serviceimpl;
 
+import com.nonit.personalproject.dto.CountryCreateDTO;
 import com.nonit.personalproject.dto.CountryDTO;
 import com.nonit.personalproject.entity.Country;
 import com.nonit.personalproject.entity.Region;
@@ -38,13 +39,13 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public CountryDTO createCountry(CountryDTO countryDTO, Long regionId) {
+    public CountryDTO createCountry(CountryCreateDTO countryCreateDTO, Long regionId) {
         Region region = regionRepository.findById(regionId).orElseThrow(WarehouseException::RegionNotFound);
-        if(countryDTO.getCountryName() == null || countryDTO.getCountryName().trim().isBlank() || countryDTO.getCountryName().isEmpty()){
+        if(countryCreateDTO.getCountryName() == null || countryCreateDTO.getCountryName().trim().isBlank() || countryCreateDTO.getCountryName().isEmpty()){
             throw WarehouseException.badRequest("InvalidName", "Country name cannot be null!");
         }
         Country country = Country.builder()
-                .countryName(countryDTO.getCountryName())
+                .countryName(countryCreateDTO.getCountryName())
                 .region(region)
                 .build();
         country = countryRepository.save(country);
@@ -67,10 +68,11 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public CountryDTO updateCountry(Long countryId, CountryDTO countryDTO) {
+    public CountryDTO updateCountry(Long countryId, CountryCreateDTO countryCreateDTO) {
         log.info("update country by country id {}", countryId);
         Country country = countryRepository.findById(countryId).orElseThrow(WarehouseException::CountryNotFound);
-        country.setCountryName(countryDTO.getCountryName());
-        return null;
+        country.setCountryName(countryCreateDTO.getCountryName());
+        countryMapper.mapFromDto(countryCreateDTO, country);
+        return countryMapper.toDto(countryRepository.save(country));
     }
 }

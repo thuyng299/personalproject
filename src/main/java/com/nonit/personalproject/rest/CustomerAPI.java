@@ -1,9 +1,6 @@
 package com.nonit.personalproject.rest;
 
-import com.nonit.personalproject.dto.CustomerAndProductStatsDTO;
-import com.nonit.personalproject.dto.CustomerCreateDTO;
-import com.nonit.personalproject.dto.CustomerDTO;
-import com.nonit.personalproject.dto.CustomerStatsDTO;
+import com.nonit.personalproject.dto.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,4 +37,5 @@ public interface CustomerAPI {
                                                                                    @RequestParam("beforeDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate beforeDate);
     @GetMapping("/customersbeforedate") // localhost:8080/customers/customersbeforedate?beforeDate=2023-01-11
     ResponseEntity<List<CustomerAndProductStatsDTO>> getCustomersAndTotalSalesTimeBeforeDate(@RequestParam("beforeDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate beforeDate);
+
 }
