@@ -42,4 +42,7 @@ public interface SupplierAPI {
                                                                                    @RequestParam("beforeDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate beforeDate);
     @GetMapping("/suppliersbeforedate") // localhost:8080/suppliers/suppliersbeforedate?beforeDate=2022-02-21
     ResponseEntity<List<SupplierAndProductStatsDTO>> getSuppliersAndTotalPurchaseTimeBeforeDate(@RequestParam("beforeDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate beforeDate);
+    @PutMapping("/{supplierId}")
+    ResponseEntity<SupplierDTO> updateSupplier (@PathVariable("supplierId") Long supplierId,
+                                                @RequestBody SupplierCreateDTO supplierCreateDTO);
 }

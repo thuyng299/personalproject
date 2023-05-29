@@ -1,19 +1,14 @@
 package com.nonit.personalproject.serviceimpl;
 
-import com.nonit.personalproject.dto.OutcomingsDetailCreateDTO;
-import com.nonit.personalproject.dto.OutcomingsDetailDTO;
-import com.nonit.personalproject.dto.OutgoingAmountStatsDTO;
-import com.nonit.personalproject.dto.SalesTimeStatDTO;
+import com.nonit.personalproject.dto.*;
 import com.nonit.personalproject.entity.GoodsDeliveryNote;
 import com.nonit.personalproject.entity.OutcomingsDetail;
 import com.nonit.personalproject.entity.Product;
+import com.nonit.personalproject.entity.WarehouseArea;
 import com.nonit.personalproject.exception.ResponseException;
 import com.nonit.personalproject.exception.WarehouseException;
 import com.nonit.personalproject.mapper.OutcomingsDetailMapper;
-import com.nonit.personalproject.repository.GoodsDeliveryNoteRepository;
-import com.nonit.personalproject.repository.IncomingsDetailRepository;
-import com.nonit.personalproject.repository.OutcomingsDetailRepository;
-import com.nonit.personalproject.repository.ProductRepository;
+import com.nonit.personalproject.repository.*;
 import com.nonit.personalproject.service.OutcomingsDetailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +30,7 @@ public class OutcomingsDetailServiceImpl implements OutcomingsDetailService {
     private final ProductRepository productRepository;
     private final GoodsDeliveryNoteRepository goodsDeliveryNoteRepository;
     private final IncomingsDetailRepository incomingsDetailRepository;
+    private final WarehouseAreaRepository warehouseAreaRepository;
     private final OutcomingsDetailMapper outcomingsDetailMapper = OutcomingsDetailMapper.INSTANCE;
 
     @Override
@@ -54,12 +50,71 @@ public class OutcomingsDetailServiceImpl implements OutcomingsDetailService {
 
     @Override
     public OutcomingsDetailDTO createOutcomingsDetail(Long gdnId, OutcomingsDetailCreateDTO outcomingsDetailCreateDTO) {
-        return null;
+        GoodsDeliveryNote goodsDeliveryNote = goodsDeliveryNoteRepository.findById(gdnId).orElseThrow(WarehouseException::GDNNotFound);
+        WarehouseArea area = warehouseAreaRepository.findById(goodsDeliveryNote.getWarehouseArea().getAreaId()).orElseThrow(WarehouseException::WarehouseAreaNotFound);
+        Product product = productRepository.findByWarehouseAreaAreaId(area.getAreaId());
+//        OutcomingsDetail outcomingsDetail = OutcomingsDetail.builder()
+////                .outcomingsAmount(outcomingsDetailCreateDTO.getOutcomingsAmount())
+//                .productPrice(outcomingsDetailCreateDTO.getProductPrice())
+//                .discount(outcomingsDetailCreateDTO.getDiscount())
+//                .goodsDeliveryNote(goodsDeliveryNote)
+//                .product(product)
+//                .build();
+        // get GDN where product id equals to outcomings detail's product id
+        List<IncomingsProductStatDTO> incomingsProductStatDTOList = incomingsDetailRepository.getIncomingsAmountOfProduct(product.getProductId()); // product outcomings detail
+        Double totalRemainingAmount = incomingsProductStatDTOList.stream()
+                .mapToDouble(IncomingsProductStatDTO::getRemainingAmount)
+                .sum();
+        if (outcomingsDetailCreateDTO.getOutcomingsAmount() > totalRemainingAmount){  // product outcomings detail
+            throw WarehouseException.badRequest("InvalidStock", "Remaining stock amount");
+        }else {
+            for (int i = 0; i < incomingsProductStatDTOList.size(); i++) {
+                if (outcomingsDetailCreateDTO.getOutcomingsAmount() < incomingsProductStatDTOList.get(i).getRemainingAmount()) {
+                    OutcomingsDetail outcomingsDetail = OutcomingsDetail.builder()
+                            .outcomingsAmount(outcomingsDetailCreateDTO.getOutcomingsAmount())
+                            .productPrice(outcomingsDetailCreateDTO.getProductPrice())
+                            .discount(outcomingsDetailCreateDTO.getDiscount())
+                            .goodsDeliveryNote(goodsDeliveryNote)
+                            .product(product)
+                            .build();
+                    incomingsProductStatDTOList.get(i).setRemainingAmount(incomingsProductStatDTOList.get(i).getRemainingAmount() - outcomingsDetailCreateDTO.getOutcomingsAmount());
+                    outcomingsDetailRepository.save(outcomingsDetail);
+                } else if (outcomingsDetailCreateDTO.getOutcomingsAmount() > incomingsProductStatDTOList.get(i).getRemainingAmount()) {
+                    OutcomingsDetail outcomingsDetail = OutcomingsDetail.builder()
+                            .outcomingsAmount(incomingsProductStatDTOList.get(i).getRemainingAmount())
+                            .productPrice(outcomingsDetailCreateDTO.getProductPrice())
+                            .discount(outcomingsDetailCreateDTO.getDiscount())
+                            .goodsDeliveryNote(goodsDeliveryNote)
+                            .product(product)
+                            .build();
+                    outcomingsDetailRepository.save(outcomingsDetail);
+                }
+            }
+        }
+        return outcomingsDetailMapper.toDtos();
     }
 
     @Override
     public OutcomingsDetailDTO createOutcomingsDetail(Long gdnId, OutcomingsDetailCreateDTO outcomingsDetailCreateDTO, Long productId) {
-        return null;
+        GoodsDeliveryNote goodsDeliveryNote = goodsDeliveryNoteRepository.findById(gdnId).orElseThrow(WarehouseException::GDNNotFound);
+        Product product = productRepository.findById(productId).orElseThrow(WarehouseException::ProductNotFound);
+
+        OutcomingsDetail outcomingsDetail = OutcomingsDetail.builder()
+                .outcomingsAmount(outcomingsDetailCreateDTO.getOutcomingsAmount())
+                .productPrice(outcomingsDetailCreateDTO.getProductPrice())
+                .discount(outcomingsDetailCreateDTO.getDiscount())
+                .goodsDeliveryNote(goodsDeliveryNote)
+                .build();
+
+        if (goodsDeliveryNote.getWarehouseArea().getAreaId().equals(product.getWarehouseArea().getAreaId())){
+            outcomingsDetail.setProduct(product);
+        }else {
+            WarehouseArea area = warehouseAreaRepository.findById(goodsDeliveryNote.getWarehouseArea().getAreaId()).orElseThrow(WarehouseException::WarehouseAreaNotFound);
+            product = productRepository.findByWarehouseAreaAreaId(area.getAreaId());
+            outcomingsDetail.setProduct(product);
+        }
+        outcomingsDetail = outcomingsDetailRepository.save(outcomingsDetail);
+        return outcomingsDetailMapper.toDto(outcomingsDetail);
     }
 
     @Override
@@ -107,5 +162,10 @@ public class OutcomingsDetailServiceImpl implements OutcomingsDetailService {
     @Override
     public List<Object[]> getTop5Customers(String inputYear) {
         return outcomingsDetailRepository.getTop5Customers(inputYear);
+    }
+
+    @Override
+    public List<PriceStatsDTO> getProductsTotalPrice() {
+        return outcomingsDetailRepository.getProductsTotalPrice();
     }
 }

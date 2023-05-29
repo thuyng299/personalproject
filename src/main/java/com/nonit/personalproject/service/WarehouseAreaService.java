@@ -10,4 +10,5 @@ public interface WarehouseAreaService {
     WarehouseAreaDTO findWarehouseAreaById (Long areaId);
     WarehouseAreaDTO createWarehouseArea (WarehouseAreaCreateDTO warehouseAreaCreateDTO);
     void deleteWarehouseArea (Long areaId);
+    WarehouseAreaDTO updateWarehouseArea (Long areaId, WarehouseAreaCreateDTO warehouseAreaCreateDTO);
 }

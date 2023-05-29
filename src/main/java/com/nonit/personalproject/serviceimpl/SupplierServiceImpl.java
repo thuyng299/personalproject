@@ -50,19 +50,22 @@ public class SupplierServiceImpl implements SupplierService {
             throw WarehouseException.badRequest("InvalidName", "Supplier name cannot be null!");
         }
         if (supplierRepository.existsBySupplierName(supplierCreateDTO.getSupplierName())){
-            throw WarehouseException.badRequest("SupplierNameExisted", "Supplier name already exists!");
+            throw WarehouseException.badRequest("SupplierNameExisted", "Supplier name is already taken!");
         }
         if (supplierCreateDTO.getSupplierEmail() == null || supplierCreateDTO.getSupplierEmail().trim().isBlank() || supplierCreateDTO.getSupplierEmail().isEmpty()){
             throw WarehouseException.badRequest("InvalidEmail", "Supplier email cannot be null!");
         }
         if (supplierRepository.existsBySupplierEmail(supplierCreateDTO.getSupplierEmail())){
-            throw WarehouseException.badRequest("SupplierEmailExisted", "Supplier email already exists!");
+            throw WarehouseException.badRequest("SupplierEmailExisted", "Supplier email is already taken!");
         }
         if (supplierCreateDTO.getSupplierCode() == null || supplierCreateDTO.getSupplierCode().isBlank() || supplierCreateDTO.getSupplierCode().isEmpty()){
             throw WarehouseException.badRequest("InvalidCode", "Supplier code cannot be null!");
         }
         if (supplierRepository.existsBySupplierCode(supplierCreateDTO.getSupplierCode())){
             throw WarehouseException.badRequest("SupplierCodeExisted", "Supplier code is already taken!");
+        }
+        if (supplierRepository.existsBySupplierPhone(supplierCreateDTO.getSupplierPhone())){
+            throw WarehouseException.badRequest("SupplierPhoneExisted", "Supplier phone is already taken!");
         }
 
         Supplier supplier = Supplier.builder()
@@ -147,5 +150,25 @@ public class SupplierServiceImpl implements SupplierService {
             throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
         }
         return supplierRepository.getSuppliersAndTotalPurchaseTimeBeforeDate(beforeDate);
+    }
+
+    @Override
+    public SupplierDTO updateSupplier(Long supplierId, SupplierCreateDTO supplierCreateDTO) {
+        log.info("update supplier by id {}", supplierId);
+        Supplier supplier = supplierRepository.findById(supplierId).orElseThrow(WarehouseException::SupplierNotFound);
+        if (supplierRepository.existsBySupplierName(supplierCreateDTO.getSupplierName())){
+            throw WarehouseException.badRequest("SupplierNameExisted", "Supplier name already exists!");
+        }
+        if (supplierRepository.existsBySupplierEmail(supplierCreateDTO.getSupplierEmail())){
+            throw WarehouseException.badRequest("SupplierEmailExisted", "Supplier email already exists!");
+        }
+        if (supplierRepository.existsBySupplierCode(supplierCreateDTO.getSupplierCode())){
+            throw WarehouseException.badRequest("SupplierCodeExisted", "Supplier code already exists!");
+        }
+        if (supplierRepository.existsBySupplierPhone(supplierCreateDTO.getSupplierPhone())){
+            throw WarehouseException.badRequest("SupplierPhoneExisted", "Supplier phone already exists!");
+        }
+        supplierMapper.mapFromDto(supplierCreateDTO,supplier);
+        return supplierMapper.toDto(supplierRepository.save(supplier));
     }
 }

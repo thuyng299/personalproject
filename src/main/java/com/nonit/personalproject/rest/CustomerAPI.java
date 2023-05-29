@@ -37,5 +37,7 @@ public interface CustomerAPI {
                                                                                    @RequestParam("beforeDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate beforeDate);
     @GetMapping("/customersbeforedate") // localhost:8080/customers/customersbeforedate?beforeDate=2023-01-11
     ResponseEntity<List<CustomerAndProductStatsDTO>> getCustomersAndTotalSalesTimeBeforeDate(@RequestParam("beforeDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate beforeDate);
-
+    @PutMapping("/{customerId}")
+    ResponseEntity<CustomerDTO> updateCustomer(@PathVariable("customerId") Long customerId,
+                                               @RequestBody CustomerCreateDTO customerCreateDTO);
 }

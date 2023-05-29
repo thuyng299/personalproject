@@ -1,19 +1,31 @@
 package com.nonit.personalproject.rest;
 
-import com.nonit.personalproject.dto.OutgoingAmountStatsDTO;
-import com.nonit.personalproject.dto.SalesTimeStatDTO;
+import com.nonit.personalproject.dto.*;
 import com.nonit.personalproject.serviceimpl.OutcomingsDetailServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 public class OutcomingsDetailResource implements OutcomingsDetailAPI{
     private final OutcomingsDetailServiceImpl outcomingsDetailServiceImpl;
+
+    @Override
+    public ResponseEntity<OutcomingsDetailDTO> createOutcomingsDetail(Long gdnId, OutcomingsDetailCreateDTO outcomingsDetailCreateDTO, Optional<Long> productId) {
+        OutcomingsDetailDTO createdoutcomingsDetailDTO;
+        if (productId.isPresent()){
+            createdoutcomingsDetailDTO = outcomingsDetailServiceImpl.createOutcomingsDetail(gdnId, outcomingsDetailCreateDTO, productId.get());
+        }else {
+            createdoutcomingsDetailDTO = outcomingsDetailServiceImpl.createOutcomingsDetail(gdnId, outcomingsDetailCreateDTO);
+        }
+        return ResponseEntity.created(URI.create("/outcomingsdetails" + createdoutcomingsDetailDTO.getOutcomingsId())).body(createdoutcomingsDetailDTO);
+    }
 
     @Override
     public ResponseEntity<List<OutgoingAmountStatsDTO>> getNumberOfProductOutgoings(LocalDate date) {
@@ -43,5 +55,10 @@ public class OutcomingsDetailResource implements OutcomingsDetailAPI{
     @Override
     public ResponseEntity<List<Object[]>> getTop5Customers(String inputYear) {
         return ResponseEntity.ok(outcomingsDetailServiceImpl.getTop5Customers(inputYear));
+    }
+
+    @Override
+    public ResponseEntity<List<PriceStatsDTO>> getProductsTotalPrice() {
+        return ResponseEntity.ok(outcomingsDetailServiceImpl.getProductsTotalPrice());
     }
 }

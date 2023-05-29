@@ -1,10 +1,11 @@
 package com.nonit.personalproject.mapper;
 
 import com.nonit.personalproject.dto.IncomingsDetailDTO;
+import com.nonit.personalproject.dto.IncomingsDetailUpdateDTO;
+import com.nonit.personalproject.dto.WarehouseAreaCreateDTO;
 import com.nonit.personalproject.entity.IncomingsDetail;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
+import com.nonit.personalproject.entity.WarehouseArea;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface IncomingsDetailMapper {
     @Mapping(source = "incomingsDetail.goodsReceivedNote.grnId", target = "grnId")
     IncomingsDetailDTO toDto (IncomingsDetail incomingsDetail);
     List<IncomingsDetailDTO> toDtos (List<IncomingsDetail> incomingsDetails);
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void mapFromDto (IncomingsDetailUpdateDTO incomingsDetailUpdateDTO, @MappingTarget IncomingsDetail incomingsDetail);
 }

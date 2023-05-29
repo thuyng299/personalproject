@@ -2,6 +2,7 @@ package com.nonit.personalproject.serviceimpl;
 
 import com.nonit.personalproject.dto.GoodsReceivedNoteCreateDTO;
 import com.nonit.personalproject.dto.GoodsReceivedNoteDTO;
+import com.nonit.personalproject.dto.GoodsReceivedNoteUpdateDTO;
 import com.nonit.personalproject.entity.Employee;
 import com.nonit.personalproject.entity.GoodsReceivedNote;
 import com.nonit.personalproject.entity.Supplier;
@@ -19,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -54,6 +56,9 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
         Supplier supplier = supplierRepository.findById(supplierId).orElseThrow(WarehouseException::SupplierNotFound);
         WarehouseArea warehouseArea = warehouseAreaRepository.findById(goodsReceivedNoteCreateDTO.getAreaId()).orElseThrow(WarehouseException::WarehouseAreaNotFound);
         Employee employee = employeeRepository.findByUsername(getCurrentUsername()).get();
+        if (goodsReceivedNoteCreateDTO.getIncomingsDate().isAfter(LocalDate.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDate.now());
+        }
         GoodsReceivedNote goodsReceivedNote = GoodsReceivedNote.builder()
                 .incomingsDate(goodsReceivedNoteCreateDTO.getIncomingsDate())
                 .supplier(supplier)
@@ -69,5 +74,20 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
     public void deleteGoodsReceivedNote(Long grnId) {
         log.info("delete goods received note by id {}", grnId);
         goodsReceivedNoteRepository.deleteById(grnId);
+    }
+
+    @Override
+    public GoodsReceivedNoteDTO updateGoodsReceivedNote(Long grnId, GoodsReceivedNoteUpdateDTO goodsReceivedNoteUpdateDTO) {
+        log.info("update goods received note {}", grnId);
+        GoodsReceivedNote goodsReceivedNote = goodsReceivedNoteRepository.findById(grnId).orElseThrow(WarehouseException::GRNNotFound);
+        WarehouseArea warehouseArea = warehouseAreaRepository.findById(goodsReceivedNoteUpdateDTO.getAreaId()).orElseThrow(WarehouseException::WarehouseAreaNotFound);
+        Supplier supplier = supplierRepository.findById(goodsReceivedNoteUpdateDTO.getSupplierId()).orElseThrow(WarehouseException::SupplierNotFound);
+        if (goodsReceivedNoteUpdateDTO.getIncomingsDate().isAfter(LocalDate.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDate.now());
+        }
+        goodsReceivedNote.setSupplier(supplier);
+        goodsReceivedNote.setWarehouseArea(warehouseArea);
+        goodsReceivedNoteMapper.mapFromDto(goodsReceivedNoteUpdateDTO, goodsReceivedNote);
+        return goodsReceivedNoteMapper.toDto(goodsReceivedNoteRepository.save(goodsReceivedNote));
     }
 }

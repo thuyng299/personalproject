@@ -15,5 +15,5 @@ public class OutcomingsDetailCreateDTO {
     private Double productPrice;
     private Double discount;
 //    private Long productId;
-    private Long incomingsId;
+//    private Long incomingsId;
 }

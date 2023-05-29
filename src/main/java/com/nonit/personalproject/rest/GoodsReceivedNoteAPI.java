@@ -2,6 +2,7 @@ package com.nonit.personalproject.rest;
 
 import com.nonit.personalproject.dto.GoodsReceivedNoteCreateDTO;
 import com.nonit.personalproject.dto.GoodsReceivedNoteDTO;
+import com.nonit.personalproject.dto.GoodsReceivedNoteUpdateDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,4 +19,7 @@ public interface GoodsReceivedNoteAPI {
                                                                  @RequestBody GoodsReceivedNoteCreateDTO goodsReceivedNoteCreateDTO);
     @DeleteMapping("/{grnId}")
     ResponseEntity<Void> deleteGoodsReceivedNote(@PathVariable("grnId") Long grnId);
+    @PutMapping("/{grnId}")
+    ResponseEntity<GoodsReceivedNoteDTO> updateGoodsReceivedNote(@PathVariable("grnId")Long grnId,
+                                                                 @RequestBody GoodsReceivedNoteUpdateDTO goodsReceivedNoteUpdateDTO);
 }

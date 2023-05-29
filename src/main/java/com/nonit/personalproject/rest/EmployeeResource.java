@@ -2,6 +2,7 @@ package com.nonit.personalproject.rest;
 
 import com.nonit.personalproject.dto.EmployeeCreateDTO;
 import com.nonit.personalproject.dto.EmployeeDTO;
+import com.nonit.personalproject.dto.EmployeeUpdateDTO;
 import com.nonit.personalproject.serviceimpl.EmployeeServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -40,5 +41,10 @@ public class EmployeeResource implements EmployeeAPI{
     public ResponseEntity<EmployeeDTO> createEmployee(EmployeeCreateDTO employeeCreateDTO) {
         EmployeeDTO createdEmployeeDTO = employeeServiceImpl.createEmployee(employeeCreateDTO);
         return ResponseEntity.created(URI.create("/employees" + createdEmployeeDTO.getEmployeeId())).body(createdEmployeeDTO);
+    }
+
+    @Override
+    public ResponseEntity<EmployeeDTO> updateEmployee(Long employeeId, EmployeeUpdateDTO employeeUpdateDTO) {
+        return ResponseEntity.ok().body(employeeServiceImpl.updateEmployee(employeeId, employeeUpdateDTO));
     }
 }

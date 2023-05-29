@@ -1,10 +1,11 @@
 package com.nonit.personalproject.mapper;
 
 import com.nonit.personalproject.dto.EmployeeDTO;
+import com.nonit.personalproject.dto.EmployeeUpdateDTO;
+import com.nonit.personalproject.dto.SupplierCreateDTO;
 import com.nonit.personalproject.entity.Employee;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
+import com.nonit.personalproject.entity.Supplier;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface EmployeeMapper {
     @Mapping(source = "role", target = "role")
     EmployeeDTO toDto (Employee employee);
     List<EmployeeDTO> toDtos (List<Employee> employees);
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void mapFromDto (EmployeeUpdateDTO employeeUpdateDTO, @MappingTarget Employee employee);
 }

@@ -1,9 +1,6 @@
 package com.nonit.personalproject.repository;
 
-import com.nonit.personalproject.dto.IncomingsAmountStatsDTO;
-import com.nonit.personalproject.dto.OutgoingAmountStatsDTO;
-import com.nonit.personalproject.dto.PurchaseTimeStatDTO;
-import com.nonit.personalproject.dto.SalesTimeStatDTO;
+import com.nonit.personalproject.dto.*;
 import com.nonit.personalproject.entity.OutcomingsDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +26,7 @@ public interface OutcomingsDetailRepository extends JpaRepository<OutcomingsDeta
                                                                 @Param("toDate") LocalDate toDate);
     @Query(value = "select c.customer_name, sum(od.outcomings_amount) from customer c , goods_delivery_note gdn , outcomings_detail od where c.customer_id = gdn.customer_id and gdn.gdn_id = od.gdn_id and to_char(gdn.outcomings_date, 'YYYY') = :inputYear group by c.customer_name, c.customer_id order by sum(od.outcomings_amount) desc limit 5", nativeQuery = true)
     List<Object[]> getTop5Customers(@Param("inputYear") String inputYear);
+    @Query("select new com.nonit.personalproject.dto.PriceStatsDTO (od.product.productId, p.productName, sum(od.outcomingsAmount), sum(od.productPrice * od.outcomingsAmount - od.productPrice * od.outcomingsAmount * od.discount)) from OutcomingsDetail od, Product p where p.productId = od.product.productId group by od.product.productId, p.productName order by sum(od.productPrice * od.outcomingsAmount - od.productPrice * od.outcomingsAmount * od.discount) desc")
+    List<PriceStatsDTO> getProductsTotalPrice();
+
 }

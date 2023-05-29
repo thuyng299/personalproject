@@ -18,4 +18,7 @@ public interface ProductAPI {
                                              @RequestBody ProductCreateDTO productCreateDTO);
     @DeleteMapping("/{productId}")
     ResponseEntity<Void> deleteProduct(@PathVariable("productId") Long productId);
+    @PutMapping("/{productId}")
+    ResponseEntity<ProductDTO> updateProduct(@PathVariable("productId") Long productId,
+                                             @RequestBody ProductCreateDTO productCreateDTO);
 }

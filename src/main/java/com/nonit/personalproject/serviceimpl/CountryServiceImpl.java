@@ -44,6 +44,9 @@ public class CountryServiceImpl implements CountryService {
         if(countryCreateDTO.getCountryName() == null || countryCreateDTO.getCountryName().trim().isBlank() || countryCreateDTO.getCountryName().isEmpty()){
             throw WarehouseException.badRequest("InvalidName", "Country name cannot be null!");
         }
+        if (countryRepository.existsByCountryName(countryCreateDTO.getCountryName())){
+            throw WarehouseException.badRequest("CountryNameExisted", "Country name is already taken!");
+        }
         Country country = Country.builder()
                 .countryName(countryCreateDTO.getCountryName())
                 .region(region)
@@ -71,7 +74,9 @@ public class CountryServiceImpl implements CountryService {
     public CountryDTO updateCountry(Long countryId, CountryCreateDTO countryCreateDTO) {
         log.info("update country by country id {}", countryId);
         Country country = countryRepository.findById(countryId).orElseThrow(WarehouseException::CountryNotFound);
-        country.setCountryName(countryCreateDTO.getCountryName());
+        if (countryRepository.existsByCountryName(countryCreateDTO.getCountryName())){
+            throw WarehouseException.badRequest("CountryNameExisted", "Country name already exists!");
+        }
         countryMapper.mapFromDto(countryCreateDTO, country);
         return countryMapper.toDto(countryRepository.save(country));
     }

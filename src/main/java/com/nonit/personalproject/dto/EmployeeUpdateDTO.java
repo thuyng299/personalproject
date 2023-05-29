@@ -1,6 +1,5 @@
 package com.nonit.personalproject.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nonit.personalproject.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,20 +10,15 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeeCreateDTO {
+public class EmployeeUpdateDTO {
     private String firstName;
     private String lastName;
     private String gender;
     private String address;
-    private String email;
     private String phone;
-    private LocalDate hireDate;
     private Double salary;
     private String employeePosition;
     private Boolean employeeStatus;
     private Long areaId;
-    private String username;
-    private String password;
-    private Role role;
-
+    private String role;
 }

@@ -17,6 +17,7 @@ public interface SupplierRepository extends JpaRepository<Supplier, Long> {
     Boolean existsBySupplierCode (String supplierCode);
     Boolean existsBySupplierName (String supplierName);
     Boolean existsBySupplierEmail (String supplierEmail);
+    Boolean existsBySupplierPhone (String supplierPhone);
     @Query("select new com.nonit.personalproject.dto.SupplierStatsDTO (s.supplierId, s.supplierName, p.productName, sum(id.incomingsAmount)) from Supplier s, GoodsReceivedNote grn, IncomingsDetail id, Product p where s.supplierId = grn.supplier.supplierId and grn.grnId = id.goodsReceivedNote.grnId and p.productId = id.product.productId and lower(s.supplierName) like lower(:inputName) group by s.supplierId, s.supplierName, p.productName")
     List<SupplierStatsDTO> getSupplierAndItsProduct(@Param("inputName") String inputName);
     @Query("select new com.nonit.personalproject.dto.SupplierStatsDTO (s.supplierId, s.supplierName, p.productName, sum(id.incomingsAmount)) from Supplier s, GoodsReceivedNote grn, IncomingsDetail id, Product p where s.supplierId = grn.supplier.supplierId and grn.grnId = id.goodsReceivedNote.grnId and p.productId = id.product.productId and lower(p.productName) like lower(:inputProductName) group by s.supplierId, s.supplierName, p.productName")

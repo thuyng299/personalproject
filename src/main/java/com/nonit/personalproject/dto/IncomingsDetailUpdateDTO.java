@@ -1,6 +1,5 @@
 package com.nonit.personalproject.dto;
 
-import com.nonit.personalproject.entity.Region;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CountryCreateDTO {
-    private String countryName;
+public class IncomingsDetailUpdateDTO {
+    private Double incomingsAmount;
+    private Double productCost;
 }

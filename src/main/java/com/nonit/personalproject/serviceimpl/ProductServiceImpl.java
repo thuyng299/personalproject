@@ -72,4 +72,18 @@ public class ProductServiceImpl implements ProductService {
         log.info("delete product by id {}", productId);
         productRepository.deleteById(productId);
     }
+
+    @Override
+    public ProductDTO updateProduct(Long productId, ProductCreateDTO productCreateDTO) {
+        log.info("update product by id {}", productId);
+        Product product = productRepository.findById(productId).orElseThrow(WarehouseException::ProductNotFound);
+        if (productRepository.existsByProductName(productCreateDTO.getProductName())){
+            throw WarehouseException.badRequest("ProductNameExisted", "Product name already exists!");
+        }
+        if (productRepository.existsByProductCode(productCreateDTO.getProductCode())){
+            throw WarehouseException.badRequest("ProductCodeExisted", "Product code already exists!");
+        }
+        productMapper.mapFromDto(productCreateDTO, product);
+        return productMapper.toDto(productRepository.save(product));
+    }
 }

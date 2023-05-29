@@ -23,4 +23,8 @@ public interface IncomingsDetailService {
     List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfFinishedGood();
     List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfRawMaterialBeforeDate(LocalDate inputDate);
     List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfFinishedGoodBeforeDate(LocalDate inputDate);
+    List<CostStatsDTO> getProductsTotalCost();
+    IncomingsDetailDTO updateIncomingsDetail (Long grnId, IncomingsDetailUpdateDTO incomingsDetailUpdateDTO);
+    List<IncomingsProductStatDTO> getIncomingsAmountOfProduct (Long inputProductId);
+    TotalStockOfProductStatDTO getTotalStockAmountOfProduct(Long inputProductId);
 }

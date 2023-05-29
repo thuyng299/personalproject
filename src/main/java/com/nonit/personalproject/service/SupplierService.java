@@ -1,9 +1,6 @@
 package com.nonit.personalproject.service;
 
-import com.nonit.personalproject.dto.SupplierAndProductStatsDTO;
-import com.nonit.personalproject.dto.SupplierCreateDTO;
-import com.nonit.personalproject.dto.SupplierDTO;
-import com.nonit.personalproject.dto.SupplierStatsDTO;
+import com.nonit.personalproject.dto.*;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
@@ -22,4 +19,5 @@ public interface SupplierService {
     SupplierAndProductStatsDTO getSupplierAndTotalAmountBetweenDates(Long supplierId, LocalDate fromDate, LocalDate toDate);
     SupplierAndProductStatsDTO getSupplierAndTotalAmountBeforeDate(Long supplierId, LocalDate beforeDate);
     List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTimeBeforeDate(LocalDate beforeDate);
+    SupplierDTO updateSupplier (Long supplierId, SupplierCreateDTO supplierCreateDTO);
 }

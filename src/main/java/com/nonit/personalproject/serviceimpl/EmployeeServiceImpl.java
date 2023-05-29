@@ -2,6 +2,7 @@ package com.nonit.personalproject.serviceimpl;
 
 import com.nonit.personalproject.dto.EmployeeCreateDTO;
 import com.nonit.personalproject.dto.EmployeeDTO;
+import com.nonit.personalproject.dto.EmployeeUpdateDTO;
 import com.nonit.personalproject.entity.Employee;
 import com.nonit.personalproject.entity.Role;
 import com.nonit.personalproject.entity.WarehouseArea;
@@ -58,7 +59,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .employeeStatus(Boolean.TRUE)
                 .username(employeeCreateDTO.getUsername())
                 .password(passwordEncoder.encode(employeeCreateDTO.getPassword()))
-                .role(Role.valueOf(employeeCreateDTO.getRole()))
+                .role(employeeCreateDTO.getRole())
                 .build();
 
         if(employeeCreateDTO.getAreaId() != null) {
@@ -99,13 +100,16 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (!BooleanChecking.isPhoneFormat(employeeCreateDTO.getPhone())){
             throw WarehouseException.badRequest("WrongFormatPhoneNumber", "Phone number must follow rules. For example: 123-4567-89");
         }
+        if (employeeRepository.existsByPhone(employeeCreateDTO.getPhone())){
+            throw WarehouseException.badRequest("PhoneExisted", "Phone is already taken!");
+        }
         if (employeeCreateDTO.getHireDate() == null){
             throw WarehouseException.badRequest("InvalidHireDate", "Hire date cannot be null!");
         }
         if (employeeCreateDTO.getSalary() < 0){
             throw WarehouseException.badRequest("InvalidSalary", "Salary cannot below 0!");
         }
-        if (employeeCreateDTO.getRole() == null || employeeCreateDTO.getRole().isBlank() || employeeCreateDTO.getRole().isEmpty()){
+        if (employeeCreateDTO.getRole() == null || String.valueOf(employeeCreateDTO.getRole()).isBlank()){
             throw WarehouseException.badRequest("InvalidRole", "Role cannot be null!");
         }
         if (!employeeCreateDTO.getRole().equals(Role.ROLE_WAREHOUSE_STAFF) && !employeeCreateDTO.getRole().equals(Role.ROLE_ADMIN) && !employeeCreateDTO.getRole().equals(Role.ROLE_USER)){
@@ -141,5 +145,60 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw WarehouseException.EmployeeNotFound();
         }
         return employeeMapper.toDtos(employee);
+    }
+
+    @Override
+    public EmployeeDTO updateEmployee(Long employeeId, EmployeeUpdateDTO employeeUpdateDTO) {
+        log.info("update employee by id {}", employeeId);
+
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow(WarehouseException::EmployeeNotFound);
+
+        if (employeeUpdateDTO.getFirstName() != null) {
+            if (!BooleanChecking.isAlpha(employeeUpdateDTO.getFirstName())) {
+                throw WarehouseException.badRequest("WrongFormatFirstName", "First name must contains only alphabetical characters.");
+            }
+        }
+        if(employeeUpdateDTO.getLastName() != null) {
+            if (!BooleanChecking.isAlpha(employeeUpdateDTO.getLastName())) {
+                throw WarehouseException.badRequest("WrongFormatLastName", "Last name must contains only alphabetical characters.");
+            }
+        }
+        if(employeeUpdateDTO.getPhone() != null) {
+            if (!BooleanChecking.isPhoneFormat(employeeUpdateDTO.getPhone())) {
+                throw WarehouseException.badRequest("WrongFormatPhoneNumber", "Phone number must follow rules. For example: 123-4567-89");
+            }
+        }
+
+        if (employeeRepository.existsByPhone(employeeUpdateDTO.getPhone())){
+            throw WarehouseException.badRequest("PhoneExisted", "Phone already exists!");
+        }
+
+        if(employeeUpdateDTO.getSalary() != null) {
+            if (employeeUpdateDTO.getSalary() < 0) {
+                throw WarehouseException.badRequest("InvalidSalary", "Salary cannot below 0!");
+            }
+        }
+
+        if(employeeUpdateDTO.getEmployeePosition() != null) {
+            if (!employeeUpdateDTO.getRole().equals(Role.ROLE_WAREHOUSE_STAFF) && !employeeUpdateDTO.getRole().equals(Role.ROLE_ADMIN) && !employeeUpdateDTO.getRole().equals(Role.ROLE_USER)) {
+                throw WarehouseException.badRequest("InvalidRole", "Role must be ROLE_WAREHOUSE_STAFF or ROLE_ADMIN or ROLE_USER");
+            }
+        }
+
+        employee.setFirstName(employeeUpdateDTO.getFirstName() == null ? employee.getFirstName() : employeeUpdateDTO.getFirstName());
+        employee.setLastName(employeeUpdateDTO.getLastName() == null ? employee.getLastName() : employeeUpdateDTO.getLastName());
+        employee.setGender(employeeUpdateDTO.getGender() == null ? employee.getGender() : employeeUpdateDTO.getGender());
+        employee.setPhone(employeeUpdateDTO.getPhone() == null ? employee.getPhone() : employeeUpdateDTO.getPhone());
+        employee.setAddress(employeeUpdateDTO.getAddress() == null ? employee.getAddress() : employeeUpdateDTO.getAddress());
+        employee.setSalary(employeeUpdateDTO.getSalary() == null ? employee.getSalary() : employeeUpdateDTO.getSalary());
+        employee.setEmployeePosition(employeeUpdateDTO.getEmployeePosition() == null ? employee.getEmployeePosition() : employeeUpdateDTO.getEmployeePosition());
+        employee.setEmployeeStatus(employeeUpdateDTO.getEmployeeStatus() == null ? employee.getEmployeeStatus() : employeeUpdateDTO.getEmployeeStatus());
+        employee.setRole(employeeUpdateDTO.getRole()==null ? employee.getRole() : Role.valueOf(employeeUpdateDTO.getRole()));
+        employee.setWarehouseArea(employeeUpdateDTO.getAreaId() == null ? employee.getWarehouseArea() : warehouseAreaRepository.findById(employeeUpdateDTO.getAreaId())
+                .orElseThrow(WarehouseException::WarehouseAreaNotFound));
+
+        employeeMapper.mapFromDto(employeeUpdateDTO, employee);
+        return employeeMapper.toDto(employeeRepository.save(employee));
+
     }
 }

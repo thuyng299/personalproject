@@ -16,10 +16,9 @@ import java.util.List;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
     Boolean existsByCustomerCode(String customerCode);
-
     Boolean existsByCustomerName(String customerName);
-
     Boolean existsByCustomerEmail(String customerEmail);
+    Boolean existsByCustomerPhone (String customerPhone);
     @Query("select new com.nonit.personalproject.dto.CustomerStatsDTO (c.customerId, c.customerName, p.productName, sum(od.outcomingsAmount)) from Customer c, GoodsDeliveryNote gdn, OutcomingsDetail od, Product p where c.customerId = gdn.customer.customerId and gdn.gdnId = od.goodsDeliveryNote.gdnId and p.productId = od.product.productId and lower(c.customerName) like lower(:inputName) group by c.customerId, c.customerName, p.productName")
     List<CustomerStatsDTO> getCustomerAndItsProduct(@Param("inputName") String inputName);
     @Query("select new com.nonit.personalproject.dto.CustomerStatsDTO (c.customerId, c.customerName, p.productName, sum(od.outcomingsAmount)) from Customer c, GoodsDeliveryNote gdn, OutcomingsDetail od, Product p where c.customerId = gdn.customer.customerId and gdn.gdnId = od.goodsDeliveryNote.gdnId and p.productId = od.product.productId and lower(p.productName) like lower(:inputProductName) group by c.customerId, c.customerName, p.productName")

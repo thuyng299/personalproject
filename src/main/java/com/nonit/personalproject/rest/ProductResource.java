@@ -36,4 +36,9 @@ public class ProductResource implements ProductAPI{
         productServiceImpl.deleteProduct(productId);
         return ResponseEntity.noContent().build();
     }
+
+    @Override
+    public ResponseEntity<ProductDTO> updateProduct(Long productId, ProductCreateDTO productCreateDTO) {
+        return ResponseEntity.ok().body(productServiceImpl.updateProduct(productId, productCreateDTO));
+    }
 }

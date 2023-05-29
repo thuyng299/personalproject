@@ -21,4 +21,5 @@ public interface CustomerService {
     CustomerAndProductStatsDTO getCustomerAndTotalAmountBetweenDates (Long customerId, LocalDate fromDate, LocalDate toDate);
     CustomerAndProductStatsDTO getCustomerAndTotalAmountBeforeDate (Long customerId, LocalDate beforeDate);
     List<CustomerAndProductStatsDTO> getCustomersAndTotalSalesTimeBeforeDate (LocalDate beforeDate);
+    CustomerDTO updateCustomer (Long customerId, CustomerCreateDTO customerCreateDTO);
 }

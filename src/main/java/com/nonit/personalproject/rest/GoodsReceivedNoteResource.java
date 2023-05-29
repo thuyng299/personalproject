@@ -2,6 +2,7 @@ package com.nonit.personalproject.rest;
 
 import com.nonit.personalproject.dto.GoodsReceivedNoteCreateDTO;
 import com.nonit.personalproject.dto.GoodsReceivedNoteDTO;
+import com.nonit.personalproject.dto.GoodsReceivedNoteUpdateDTO;
 import com.nonit.personalproject.serviceimpl.GoodsReceivedNoteServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,5 +36,10 @@ public class GoodsReceivedNoteResource implements GoodsReceivedNoteAPI {
     public ResponseEntity<Void> deleteGoodsReceivedNote(Long grnId) {
         goodsReceivedNoteServiceImpl.deleteGoodsReceivedNote(grnId);
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<GoodsReceivedNoteDTO> updateGoodsReceivedNote(Long grnId, GoodsReceivedNoteUpdateDTO goodsReceivedNoteUpdateDTO) {
+        return ResponseEntity.ok().body(goodsReceivedNoteServiceImpl.updateGoodsReceivedNote(grnId, goodsReceivedNoteUpdateDTO));
     }
 }

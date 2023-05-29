@@ -79,4 +79,9 @@ public class SupplierResource implements SupplierAPI{
     public ResponseEntity<List<SupplierAndProductStatsDTO>> getSuppliersAndTotalPurchaseTimeBeforeDate(LocalDate beforeDate) {
         return ResponseEntity.ok(supplierServiceImpl.getSuppliersAndTotalPurchaseTimeBeforeDate(beforeDate));
     }
+
+    @Override
+    public ResponseEntity<SupplierDTO> updateSupplier(Long supplierId, SupplierCreateDTO supplierCreateDTO) {
+        return ResponseEntity.ok().body(supplierServiceImpl.updateSupplier(supplierId,supplierCreateDTO));
+    }
 }

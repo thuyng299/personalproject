@@ -18,4 +18,5 @@ public interface OutcomingsDetailService {
     SalesTimeStatDTO getNumberOfSalesTimeAndAmountOfSpecificProductAndDate (Long inputId, LocalDate inputDate);
     List<SalesTimeStatDTO> getNumberOfSalesTimeAndAmountBetweenDates (LocalDate fromDate, LocalDate toDate);
     List<Object[]> getTop5Customers(String inputYear);
+    List<PriceStatsDTO> getProductsTotalPrice();
 }

@@ -54,4 +54,15 @@ public class WarehouseAreaServiceImpl implements WarehouseAreaService {
         log.info("delete warehouse area by id {}", areaId);
         warehouseAreaRepository.deleteById(areaId);
     }
+
+    @Override
+    public WarehouseAreaDTO updateWarehouseArea(Long areaId, WarehouseAreaCreateDTO warehouseAreaCreateDTO) {
+        log.info("update warehouse area name {}", areaId);
+        WarehouseArea warehouseArea = warehouseAreaRepository.findById(areaId).orElseThrow(WarehouseException::WarehouseAreaNotFound);
+        if (warehouseAreaRepository.existsByAreaName(warehouseAreaCreateDTO.getAreaName())){
+            throw WarehouseException.badRequest("AreaNameExisted", "Area name already exists!");
+        }
+        warehouseAreaMapper.mapFromDto(warehouseAreaCreateDTO, warehouseArea);
+        return warehouseAreaMapper.toDto(warehouseAreaRepository.save(warehouseArea));
+    }
 }

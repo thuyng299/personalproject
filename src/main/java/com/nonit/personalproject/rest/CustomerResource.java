@@ -72,5 +72,8 @@ public class CustomerResource implements CustomerAPI{
         return ResponseEntity.ok(customerServiceImpl.getCustomersAndTotalSalesTimeBeforeDate(beforeDate));
     }
 
-
+    @Override
+    public ResponseEntity<CustomerDTO> updateCustomer(Long customerId, CustomerCreateDTO customerCreateDTO) {
+        return ResponseEntity.ok().body(customerServiceImpl.updateCustomer(customerId, customerCreateDTO));
+    }
 }

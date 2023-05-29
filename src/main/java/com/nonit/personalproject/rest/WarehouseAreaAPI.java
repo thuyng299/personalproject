@@ -17,4 +17,7 @@ public interface WarehouseAreaAPI {
     ResponseEntity<WarehouseAreaDTO> createWarehouseArea(@RequestBody WarehouseAreaCreateDTO warehouseAreaCreateDTO);
     @DeleteMapping("/{areaId}")
     ResponseEntity<Void> deleteWarehouseArea(@PathVariable("areaId") Long areaId);
+    @PutMapping("/{areaId}")
+    ResponseEntity<WarehouseAreaDTO> updateWarehouseArea(@PathVariable("areaId")Long areaId,
+                                                         @RequestBody WarehouseAreaCreateDTO warehouseAreaCreateDTO);
 }

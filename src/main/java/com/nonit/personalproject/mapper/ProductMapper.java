@@ -1,10 +1,11 @@
 package com.nonit.personalproject.mapper;
 
+import com.nonit.personalproject.dto.ProductCreateDTO;
 import com.nonit.personalproject.dto.ProductDTO;
+import com.nonit.personalproject.dto.SupplierCreateDTO;
 import com.nonit.personalproject.entity.Product;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
+import com.nonit.personalproject.entity.Supplier;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface ProductMapper {
     @Mapping(source = "productCategory", target = "productCategory")
     ProductDTO toDto (Product product);
     List<ProductDTO> toDtos (List<Product> products);
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void mapFromDto (ProductCreateDTO productCreateDTO, @MappingTarget Product product);
 }

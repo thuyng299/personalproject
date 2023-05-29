@@ -10,4 +10,5 @@ public interface ProductService {
     ProductDTO findProductById (Long productId);
     ProductDTO createProduct (Long areaId, ProductCreateDTO productCreateDTO);
     void deleteProduct (Long productId);
+    ProductDTO updateProduct (Long productId, ProductCreateDTO productCreateDTO);
 }

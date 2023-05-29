@@ -2,6 +2,7 @@ package com.nonit.personalproject.rest;
 
 import com.nonit.personalproject.dto.EmployeeCreateDTO;
 import com.nonit.personalproject.dto.EmployeeDTO;
+import com.nonit.personalproject.dto.EmployeeUpdateDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,4 +22,7 @@ public interface EmployeeAPI {
     ResponseEntity<Void> deleteEmployee(@PathVariable("employeeId") Long employeeId);
     @GetMapping("/firstname")
     ResponseEntity<List<EmployeeDTO>> findByFirstName(@RequestParam("firstName") String firstName);
+    @PutMapping("/{employeeId}")
+    ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable("employeeId") Long employeeId,
+                                               @RequestBody EmployeeUpdateDTO employeeUpdateDTO);
 }

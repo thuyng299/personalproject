@@ -61,6 +61,9 @@ public class CustomerServiceImpl implements CustomerService {
         if (customerRepository.existsByCustomerCode(customerCreateDTO.getCustomerCode())){
             throw WarehouseException.badRequest("CustomerCodeExisted", "Customer code is already taken!");
         }
+        if (customerRepository.existsByCustomerPhone(customerCreateDTO.getCustomerPhone())){
+            throw WarehouseException.badRequest("CustomerPhoneExisted", "Customer phone is already taken!");
+        }
         Customer customer = Customer.builder()
                 .customerName(customerCreateDTO.getCustomerName())
                 .customerCode(customerCreateDTO.getCustomerCode())
@@ -134,5 +137,25 @@ public class CustomerServiceImpl implements CustomerService {
             throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
         }
         return customerRepository.getCustomersAndTotalSalesTimeBeforeDate(beforeDate);
+    }
+
+    @Override
+    public CustomerDTO updateCustomer(Long customerId, CustomerCreateDTO customerCreateDTO) {
+        log.info("update customer by id {}", customerId);
+        Customer customer = customerRepository.findById(customerId).orElseThrow(WarehouseException::CustomerNotFound);
+        if (customerRepository.existsByCustomerName(customerCreateDTO.getCustomerName())){
+            throw WarehouseException.badRequest("CustomerNameExisted", "Customer name already exists!");
+        }
+        if (customerRepository.existsByCustomerEmail(customerCreateDTO.getCustomerEmail())){
+            throw WarehouseException.badRequest("CustomerEmailExisted", "Customer email already exists!");
+        }
+        if (customerRepository.existsByCustomerCode(customerCreateDTO.getCustomerCode())){
+            throw WarehouseException.badRequest("CustomerCodeExisted", "Customer code already exists!!");
+        }
+        if (customerRepository.existsByCustomerPhone(customerCreateDTO.getCustomerPhone())){
+            throw WarehouseException.badRequest("CustomerPhoneExisted", "Customer phone already exists!");
+        }
+        customerMapper.mapFromDto(customerCreateDTO, customer);
+        return customerMapper.toDto(customerRepository.save(customer));
     }
 }

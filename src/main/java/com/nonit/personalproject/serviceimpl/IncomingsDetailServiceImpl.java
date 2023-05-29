@@ -52,7 +52,9 @@ public class IncomingsDetailServiceImpl implements IncomingsDetailService {
         if (incomingsDetailCreateDTO.getIncomingsAmount() <= 0){
             throw WarehouseException.badRequest("InvalidIncomingsAmount", "Amount cannot be 0 or below 0!");
         }
-
+        if (incomingsDetailCreateDTO.getProductCost() < 0){
+            throw WarehouseException.badRequest("InvalidProductCost", "Product cost cannot below 0!");
+        }
         IncomingsDetail incomingsDetail = IncomingsDetail.builder()
                 .incomingsAmount(incomingsDetailCreateDTO.getIncomingsAmount())
                 .productCost(incomingsDetailCreateDTO.getProductCost())
@@ -185,5 +187,34 @@ public class IncomingsDetailServiceImpl implements IncomingsDetailService {
             throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDate.now());
         }
         return incomingsDetailRepository.getTotalStockAmountOfFinishedGoodBeforeDate(inputDate);
+    }
+
+    @Override
+    public List<CostStatsDTO> getProductsTotalCost() {
+        return incomingsDetailRepository.getProductsTotalCost();
+    }
+
+    @Override
+    public IncomingsDetailDTO updateIncomingsDetail(Long incomingsId, IncomingsDetailUpdateDTO incomingsDetailUpdateDTO) {
+        log.info("update incomings detail {}", incomingsId);
+        IncomingsDetail incomingsDetail = incomingsDetailRepository.findById(incomingsId).orElseThrow(WarehouseException::IncomingsDetailNotFound);
+        if (incomingsDetailUpdateDTO.getIncomingsAmount() <= 0){
+            throw WarehouseException.badRequest("InvalidIncomingsAmount", "Amount cannot be 0 or below 0!");
+        }
+        if (incomingsDetailUpdateDTO.getProductCost() < 0){
+            throw WarehouseException.badRequest("InvalidProductCost", "Product cost cannot below 0!");
+        }
+        incomingsDetailMapper.mapFromDto(incomingsDetailUpdateDTO, incomingsDetail);
+        return incomingsDetailMapper.toDto(incomingsDetailRepository.save(incomingsDetail));
+    }
+
+    @Override
+    public List<IncomingsProductStatDTO> getIncomingsAmountOfProduct(Long inputProductId) {
+        return incomingsDetailRepository.getIncomingsAmountOfProduct(inputProductId);
+    }
+
+    @Override
+    public TotalStockOfProductStatDTO getTotalStockAmountOfProduct(Long inputProductId) {
+        return incomingsDetailRepository.getTotalStockAmountOfProduct(inputProductId);
     }
 }

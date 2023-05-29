@@ -36,4 +36,9 @@ public class WarehouseAreaResource implements WarehouseAreaAPI{
         warehouseAreaServiceImpl.deleteWarehouseArea(areaId);
         return ResponseEntity.noContent().build();
     }
+
+    @Override
+    public ResponseEntity<WarehouseAreaDTO> updateWarehouseArea(Long areaId, WarehouseAreaCreateDTO warehouseAreaCreateDTO) {
+        return ResponseEntity.ok().body(warehouseAreaServiceImpl.updateWarehouseArea(areaId, warehouseAreaCreateDTO));
+    }
 }

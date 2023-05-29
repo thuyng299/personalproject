@@ -45,4 +45,13 @@ public interface IncomingsDetailAPI {
     ResponseEntity<List<StockAmountOfCategoryStatDTO>> getTotalStockAmountOfRawMaterialBeforeDate(@RequestParam("inputDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inputDate);
     @GetMapping("/totalstockoffinishedgoodbeforedate") // localhost:8080/incomingsdetails/totalstockoffinishedgoodbeforedate?inputDate=2022-07-21
     ResponseEntity<List<StockAmountOfCategoryStatDTO>> getTotalStockAmountOfFinishedGoodBeforeDate(@RequestParam("inputDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inputDate);
+    @GetMapping("/totalproductcost") // localhost:8080/incomingsdetails/totalproductcost
+    ResponseEntity<List<CostStatsDTO>> getProductsTotalCost();
+    @PutMapping("/{incomingsId}")
+    ResponseEntity<IncomingsDetailDTO> updateIncomingsDetail(@PathVariable("incomingsId") Long incomingsId,
+                                                             @RequestBody IncomingsDetailUpdateDTO incomingsDetailUpdateDTO);
+    @GetMapping("/incomings-product")
+    ResponseEntity<List<IncomingsProductStatDTO>> getIncomingsAmountOfProduct (@RequestParam("inputProductId") Long inputProductId);
+    @GetMapping("/product-stock")
+    ResponseEntity<TotalStockOfProductStatDTO> getTotalStockAmountOfProduct(@RequestParam("inputProductId") Long inputProductId);
 }
