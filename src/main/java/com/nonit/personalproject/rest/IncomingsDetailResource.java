@@ -31,17 +31,6 @@ public class IncomingsDetailResource implements IncomingsDetailAPI{
     }
 
     @Override
-    public ResponseEntity<IncomingsDetailDTO> createIncomingsDetail(Long grnId, IncomingsDetailCreateDTO incomingsDetailCreateDTO, Optional<Long>productId) {
-        IncomingsDetailDTO createdIncomingsDetailDTO;
-        if(productId.isPresent()) {
-            createdIncomingsDetailDTO = incomingsDetailServiceImpl.createIncomingsDetail(grnId, incomingsDetailCreateDTO, productId.get());
-        } else {
-            createdIncomingsDetailDTO = incomingsDetailServiceImpl.createIncomingsDetail(grnId, incomingsDetailCreateDTO);
-        }
-        return ResponseEntity.created(URI.create("/incomingsdetails" + createdIncomingsDetailDTO.getIncomingsId())).body(createdIncomingsDetailDTO);
-    }
-
-    @Override
     public ResponseEntity<Void> deleteIncomingsDetail(Long incomingsId) {
         incomingsDetailServiceImpl.deleteIncomingsDetail(incomingsId);
         return ResponseEntity.noContent().build();

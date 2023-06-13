@@ -21,12 +21,6 @@ public interface IncomingsDetailAPI {
     ResponseEntity<IncomingsDetailDTO> findIncomingsDetailById(@PathVariable("incomingsId") Long incomingsId);
 
     @PreAuthorize("hasRole('WAREHOUSE_STAFF')")
-    @PostMapping("/{grnId}")
-    ResponseEntity<IncomingsDetailDTO> createIncomingsDetail(@PathVariable("grnId") Long grnId,
-                                                             @RequestBody IncomingsDetailCreateDTO incomingsDetailCreateDTO,
-                                                             @RequestParam("productId") Optional<Long> productId);
-
-    @PreAuthorize("hasRole('WAREHOUSE_STAFF')")
     @DeleteMapping("/{incomingsId}")
     ResponseEntity<Void> deleteIncomingsDetail(@PathVariable("incomingsId") Long incomingsId);
 

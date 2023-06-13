@@ -43,69 +43,6 @@ public class IncomingsDetailServiceImpl implements IncomingsDetailService {
     }
 
     @Override
-    public IncomingsDetailDTO createIncomingsDetail(Long grnId, IncomingsDetailCreateDTO incomingsDetailCreateDTO) {
-        GoodsReceivedNote goodsReceivedNote = goodsReceivedNoteRepository.findById(grnId).orElseThrow(WarehouseException::GRNNotFound);
-        WarehouseArea area = warehouseAreaRepository.findById(goodsReceivedNote.getWarehouseArea().getAreaId()).orElseThrow(WarehouseException::WarehouseAreaNotFound);
-        // Auto set product id based on GRN's area id (since 1 area is for only 1 product id)
-        Product product = productRepository.findByWarehouseAreaAreaId(area.getAreaId());
-
-        if (incomingsDetailCreateDTO.getIncomingsAmount() <= 0){
-            throw WarehouseException.badRequest("InvalidIncomingsAmount", "Amount cannot be 0 or below 0!");
-        }
-        if (incomingsDetailCreateDTO.getProductCost() < 0){
-            throw WarehouseException.badRequest("InvalidProductCost", "Product cost cannot below 0!");
-        }
-        IncomingsDetail incomingsDetail = IncomingsDetail.builder()
-                .incomingsAmount(incomingsDetailCreateDTO.getIncomingsAmount())
-                .productCost(incomingsDetailCreateDTO.getProductCost())
-                .remainingAmount(incomingsDetailCreateDTO.getIncomingsAmount())
-                .goodsReceivedNote(goodsReceivedNote)
-                .product(product)
-                .build();
-        // Auto set expiration date based on GRN date
-        if (product.getProductCategory().equals(ProductCategory.RAW_MATERIALS)) {
-            incomingsDetail.setExpirationDate(goodsReceivedNote.getIncomingsDate().plusYears(2L));
-        } else if (product.getProductCategory().equals(ProductCategory.FINISHED_GOODS)) {
-            incomingsDetail.setExpirationDate(goodsReceivedNote.getIncomingsDate().plusMonths(6L));
-        }
-
-        incomingsDetail = incomingsDetailRepository.save(incomingsDetail);
-        return incomingsDetailMapper.toDto(incomingsDetail);
-    }
-
-    @Override
-    public IncomingsDetailDTO createIncomingsDetail(Long grnId, IncomingsDetailCreateDTO incomingsDetailCreateDTO, Long productId) {
-        GoodsReceivedNote goodsReceivedNote = goodsReceivedNoteRepository.findById(grnId).orElseThrow(WarehouseException::GRNNotFound);
-        Product product = productRepository.findById(productId).orElseThrow(WarehouseException::ProductNotFound);
-
-        IncomingsDetail incomingsDetail = IncomingsDetail.builder()
-                .incomingsAmount(incomingsDetailCreateDTO.getIncomingsAmount())
-                .productCost(incomingsDetailCreateDTO.getProductCost())
-                .goodsReceivedNote(goodsReceivedNote)
-                .build();
-        // Warehouse staff can input product id by themselves but if it's wrong, the system will force to be right by searching id on product table
-        if (goodsReceivedNote.getWarehouseArea().getAreaId().equals(product.getWarehouseArea().getAreaId())) {
-            incomingsDetail.setProduct(product);
-            if (product.getProductCategory().equals(ProductCategory.RAW_MATERIALS)) {
-                incomingsDetail.setExpirationDate(goodsReceivedNote.getIncomingsDate().plusYears(2L));
-            } else if (product.getProductCategory().equals(ProductCategory.FINISHED_GOODS)) {
-                incomingsDetail.setExpirationDate(goodsReceivedNote.getIncomingsDate().plusMonths(6L));
-            }
-        } else {
-            WarehouseArea area = warehouseAreaRepository.findById(goodsReceivedNote.getWarehouseArea().getAreaId()).orElseThrow(WarehouseException::ProductNotFound);
-            product = productRepository.findByWarehouseAreaAreaId(area.getAreaId());
-            incomingsDetail.setProduct(product);
-            if (product.getProductCategory().equals(ProductCategory.RAW_MATERIALS)) {
-                incomingsDetail.setExpirationDate(goodsReceivedNote.getIncomingsDate().plusYears(2L));
-            } else if (product.getProductCategory().equals(ProductCategory.FINISHED_GOODS)) {
-                incomingsDetail.setExpirationDate(goodsReceivedNote.getIncomingsDate().plusMonths(6L));
-            }
-        }
-        incomingsDetail = incomingsDetailRepository.save(incomingsDetail);
-        return incomingsDetailMapper.toDto(incomingsDetail);
-    }
-
-    @Override
     public void deleteIncomingsDetail(Long incomingsId) {
         log.info("delete incomings detail by id {}", incomingsId);
         incomingsDetailRepository.deleteById(incomingsId);

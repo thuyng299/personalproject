@@ -1,5 +1,6 @@
 package com.nonit.personalproject.rest;
 
+import com.nonit.personalproject.dto.GRNCreateWithDetailsDTO;
 import com.nonit.personalproject.dto.GoodsReceivedNoteCreateDTO;
 import com.nonit.personalproject.dto.GoodsReceivedNoteDTO;
 import com.nonit.personalproject.dto.GoodsReceivedNoteUpdateDTO;
@@ -27,8 +28,8 @@ public class GoodsReceivedNoteResource implements GoodsReceivedNoteAPI {
     }
 
     @Override
-    public ResponseEntity<GoodsReceivedNoteDTO> createGoodsReceivedNote(Long supplierId, GoodsReceivedNoteCreateDTO goodsReceivedNoteCreateDTO) {
-        GoodsReceivedNoteDTO createdGoodsReceivedNoteDTO = goodsReceivedNoteServiceImpl.createGoodsReceivedNote(supplierId, goodsReceivedNoteCreateDTO);
+    public ResponseEntity<GRNCreateWithDetailsDTO> createGoodsReceivedNote(GRNCreateWithDetailsDTO grnCreateWithDetailsDTO) {
+        GRNCreateWithDetailsDTO createdGoodsReceivedNoteDTO = goodsReceivedNoteServiceImpl.createGoodsReceivedNote(grnCreateWithDetailsDTO);
         return ResponseEntity.created(URI.create("/goodsreceivednotes" + createdGoodsReceivedNoteDTO.getGrnId())).body(createdGoodsReceivedNoteDTO);
     }
 

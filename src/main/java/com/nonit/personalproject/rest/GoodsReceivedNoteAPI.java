@@ -1,5 +1,6 @@
 package com.nonit.personalproject.rest;
 
+import com.nonit.personalproject.dto.GRNCreateWithDetailsDTO;
 import com.nonit.personalproject.dto.GoodsReceivedNoteCreateDTO;
 import com.nonit.personalproject.dto.GoodsReceivedNoteDTO;
 import com.nonit.personalproject.dto.GoodsReceivedNoteUpdateDTO;
@@ -20,9 +21,8 @@ public interface GoodsReceivedNoteAPI {
     ResponseEntity<GoodsReceivedNoteDTO> findGoodsReceivedNoteById(@PathVariable("grnId") Long grnId);
 
     @PreAuthorize("hasRole('WAREHOUSE_STAFF')")
-    @PostMapping("/{supplierId}")
-    ResponseEntity<GoodsReceivedNoteDTO> createGoodsReceivedNote(@PathVariable("supplierId") Long supplierId,
-                                                                 @RequestBody GoodsReceivedNoteCreateDTO goodsReceivedNoteCreateDTO);
+    @PostMapping
+    ResponseEntity<GRNCreateWithDetailsDTO> createGoodsReceivedNote(@RequestBody GRNCreateWithDetailsDTO grnCreateWithDetailsDTO);
 
     @PreAuthorize("hasRole('WAREHOUSE_STAFF')")
     @DeleteMapping("/{grnId}")

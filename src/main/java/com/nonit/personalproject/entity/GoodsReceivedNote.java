@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Data
@@ -31,4 +33,7 @@ public class GoodsReceivedNote {
     @ManyToOne
     @JoinColumn(name = "supplierId", nullable = false)
     private Supplier supplier;
+
+    @OneToOne(mappedBy = "goodsReceivedNote", cascade = CascadeType.PERSIST)
+    private IncomingsDetail incomingsDetail;
 }
