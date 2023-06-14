@@ -9,11 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomerDTO {
-    private Long customerId;
-    private String customerName;
-    private String customerCode;
-    private String customerEmail;
-    private String customerPhone;
-    private String customerAddress;
+    private Long id;
+    private String name;
+    private String code;
+    private String email;
+    private String phone;
+    private String address;
+    private Boolean status;
     private Country country;
 }

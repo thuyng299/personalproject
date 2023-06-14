@@ -15,7 +15,8 @@ import javax.persistence.*;
 public class WarehouseArea {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long areaId;
+    @Column(name = "area_id")
+    private Long id;
     @Column(name = "area_name", unique = true, nullable = false)
-    private String areaName;
+    private String name;
 }

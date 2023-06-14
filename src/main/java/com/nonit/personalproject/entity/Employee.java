@@ -20,11 +20,13 @@ import java.time.LocalDateTime;
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long employeeId;
+    @Column(name = "employee_id")
+    private Long id;
     @Column(name = "first_name", nullable = false)
     private String firstName;
     @Column(name = "last_name", nullable = false)
     private String lastName;
+    @Column(name = "gender", nullable = false)
     private String gender;
     @Column(name = "email", nullable = false)
     private String email;
@@ -32,12 +34,14 @@ public class Employee {
     private String phone;
     @Column(name = "hire_date", nullable = false)
     private LocalDate hireDate;
+    @Column(name = "employee_address", nullable = false)
     private String address;
     @Column(name = "salary", nullable = false)
     private Double salary;
     @Column(name = "employee_position", nullable = false)
-    private String employeePosition;
-    private Boolean employeeStatus;
+    private String position;
+    @Column(name = "employee_status", nullable = false)
+    private Boolean status;
     @Column(unique = true, nullable = false)
     private String username;
     @JsonIgnore
@@ -53,6 +57,6 @@ public class Employee {
     @Column(name = "modified_date")
     private LocalDateTime updatedDate;
     @ManyToOne
-    @JoinColumn(name = "areaId")
+    @JoinColumn(name = "area_id")
     private WarehouseArea warehouseArea;
 }

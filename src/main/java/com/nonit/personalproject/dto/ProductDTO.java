@@ -12,10 +12,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDTO {
-    private Long productId;
-    private String productName;
-    private String productCode;
-    private String productDescription;
+    private Long id;
+    private String name;
+    private String code;
+    private String description;
     private String productCategory;
     private WarehouseArea warehouseArea;
 }

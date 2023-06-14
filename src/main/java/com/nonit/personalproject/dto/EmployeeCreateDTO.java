@@ -20,8 +20,8 @@ public class EmployeeCreateDTO {
     private String phone;
     private LocalDate hireDate;
     private Double salary;
-    private String employeePosition;
-    private Boolean employeeStatus;
+    private String position;
+    private Boolean status;
     private Long areaId;
     private String username;
     private String password;

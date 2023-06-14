@@ -16,17 +16,18 @@ import java.time.LocalDate;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
+    @Column(name = "product_id")
+    private Long id;
     @Column(name = "product_name",unique = true, nullable = false)
-    private String productName;
+    private String name;
     @Column(name = "product_code", unique = true, nullable = false)
-    private String productCode;
+    private String code;
     @Column(name = "product_description", length = 1000)
-    private String productDescription;
+    private String description;
     @Enumerated(EnumType.STRING)
     private ProductCategory productCategory;
 
     @ManyToOne
-    @JoinColumn(name = "areaId", nullable = false)
+    @JoinColumn(name = "area_id", nullable = false)
     private WarehouseArea warehouseArea;
 }

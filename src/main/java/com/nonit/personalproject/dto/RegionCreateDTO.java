@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegionCreateDTO {
-    private String regionName;
+    private String name;
 }

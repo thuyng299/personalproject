@@ -15,10 +15,11 @@ import javax.persistence.*;
 public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long countryId;
+    @Column(name = "country_id")
+    private Long id;
     @Column(name = "country_name",unique = true, nullable = false)
-    private String countryName;
+    private String name;
     @ManyToOne
-    @JoinColumn(name = "regionId", nullable = false)
+    @JoinColumn(name = "region_id", nullable = false)
     private Region region;
 }

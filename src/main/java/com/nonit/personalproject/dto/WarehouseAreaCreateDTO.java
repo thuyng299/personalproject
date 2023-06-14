@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WarehouseAreaCreateDTO {
-    private String areaName;
+    private String name;
 }

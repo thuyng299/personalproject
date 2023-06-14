@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployeeDTO {
-    private Long employeeId;
+    private Long id;
     private String firstName;
     private String lastName;
     private String gender;
@@ -21,8 +21,8 @@ public class EmployeeDTO {
     private String phone;
     private LocalDate hireDate;
     private Double salary;
-    private String employeePosition;
-    private Boolean employeeStatus;
+    private String position;
+    private Boolean status;
     private String role;
     private WarehouseArea warehouseArea;
 }

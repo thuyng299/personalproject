@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CountryCreateDTO {
-    private String countryName;
+    private String name;
 }

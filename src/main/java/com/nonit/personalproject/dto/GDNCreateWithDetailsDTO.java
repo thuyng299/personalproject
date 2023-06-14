@@ -9,9 +9,9 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GoodsReceivedNoteCreateDTO {
-    private LocalDate incomingsDate;
-//    private Long employeeId;
-    private Long areaId;
-//    private Long supplierId;
+public class GDNCreateWithDetailsDTO {
+    private Long gdnId;
+    private LocalDate outcomingsDate;
+    private Double totalAmount;
+    private Long employeeId;
 }

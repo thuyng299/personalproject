@@ -17,8 +17,8 @@ public class EmployeeUpdateDTO {
     private String address;
     private String phone;
     private Double salary;
-    private String employeePosition;
-    private Boolean employeeStatus;
+    private String position;
+    private Boolean status;
     private Long areaId;
     private String role;
 }

@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -18,22 +17,22 @@ import java.util.List;
 public class GoodsReceivedNote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long grnId;
-    @Column(name = "incomings_date", nullable = false)
-    private LocalDate incomingsDate;
-
+    @Column(name = "grn_id")
+    private Long id;
+    @Column(name = "grn_code", unique = true, nullable = false)
+    private String code;
+    @Column(name = "incoming_date", nullable = false)
+    private LocalDateTime incomingDate;
+    @Column(name = "grn_record", length = 500)
+    private String record;
     @ManyToOne
-    @JoinColumn(name = "staffId", nullable = false)
+    @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
     @ManyToOne
-    @JoinColumn(name = "areaId", nullable = false)
-    private WarehouseArea warehouseArea;
-
-    @ManyToOne
-    @JoinColumn(name = "supplierId", nullable = false)
+    @JoinColumn(name = "supplier_id", nullable = false)
     private Supplier supplier;
 
     @OneToOne(mappedBy = "goodsReceivedNote", cascade = CascadeType.PERSIST)
-    private IncomingsDetail incomingsDetail;
+    private IncomingDetail incomingDetail;
 }

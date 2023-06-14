@@ -13,23 +13,26 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class IncomingsDetail {
+public class IncomingDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long incomingsId;
-    @Column(name = "incomings_amount", nullable = false)
-    private Double incomingsAmount;
+    @Column(name = "incoming_id")
+    private Long id;
+    @Column(name = "incoming_amount", nullable = false)
+    private Double amount;
     @Column(name = "product_cost", nullable = false)
-    private Double productCost;
+    private Double cost;
     @Column(name = "remaining_amount")
     private Double remainingAmount;
     @Column(name = "expiration_date", nullable = false)
     private LocalDate expirationDate;
     @ManyToOne
-    @JoinColumn(name = "productId", nullable = false)
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
-
     @ManyToOne
-    @JoinColumn(name = "grnId", nullable = false)
+    @JoinColumn(name = "area_id", nullable = false)
+    private WarehouseArea warehouseArea;
+    @ManyToOne
+    @JoinColumn(name = "grn_id", nullable = false)
     private GoodsReceivedNote goodsReceivedNote;
 }

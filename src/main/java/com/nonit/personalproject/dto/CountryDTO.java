@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CountryDTO {
-    private Long countryId;
-    private String countryName;
+    private Long id;
+    private String name;
     private Region region;
 }

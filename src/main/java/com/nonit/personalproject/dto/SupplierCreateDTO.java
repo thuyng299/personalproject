@@ -8,9 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SupplierCreateDTO {
-    private String supplierName;
-    private String supplierCode;
-    private String supplierEmail;
-    private String supplierPhone;
-    private String supplierAddress;
+    private String name;
+    private String code;
+    private String email;
+    private String phone;
+    private String address;
+    private Boolean status;
 }

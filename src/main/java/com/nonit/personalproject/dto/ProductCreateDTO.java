@@ -13,8 +13,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductCreateDTO {
-    private String productName;
-    private String productCode;
-    private String productDescription;
+    private String name;
+    private String code;
+    private String description;
     private ProductCategory productCategory;
 }

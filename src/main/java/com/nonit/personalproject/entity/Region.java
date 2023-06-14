@@ -15,9 +15,10 @@ import javax.persistence.*;
 public class Region {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long regionId;
+    @Column(name = "region_id")
+    private Long id;
     @Column(name = "region_name", unique = true, nullable = false)
-    private String regionName;
+    private String name;
 
 
 }

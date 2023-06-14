@@ -1,12 +1,11 @@
 package com.nonit.personalproject.service;
 
 import com.nonit.personalproject.dto.*;
-import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public interface IncomingsDetailService {
+public interface IncomingDetailService {
     List<IncomingsDetailDTO> getAllIncomingsDetail();
     IncomingsDetailDTO findIncomingsDetailById (Long incomingsId);
     void deleteIncomingsDetail (Long incomingsId);

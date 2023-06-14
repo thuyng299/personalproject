@@ -9,11 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SupplierDTO {
-    private Long supplierId;
-    private String supplierName;
-    private String supplierCode;
-    private String supplierEmail;
-    private String supplierPhone;
-    private String supplierAddress;
+    private Long id;
+    private String name;
+    private String code;
+    private String email;
+    private String phone;
+    private String address;
+    private Boolean status;
     private Country country;
+
 }

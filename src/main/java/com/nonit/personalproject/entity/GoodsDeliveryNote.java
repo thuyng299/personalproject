@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -16,19 +17,21 @@ import java.time.LocalDate;
 public class GoodsDeliveryNote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long gdnId;
-    @Column(name = "outcomings_date", nullable = false)
-    private LocalDate outcomingsDate;
-
+    @Column(name = "gdn_id")
+    private Long id;
+    @Column(name = "gdn_code", unique = true, nullable = false)
+    private String code;
+    @Column(name = "outgoing_date", nullable = false)
+    private LocalDateTime outgoingDate;
+    @Column(name = "total_amount", nullable = false)
+    private Double totalAmount;
+    @Column(name = "gdn_record", length = 500)
+    private String record;
     @ManyToOne
-    @JoinColumn(name = "staffId", nullable = false)
+    @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
     @ManyToOne
-    @JoinColumn(name = "areaId", nullable = false)
-    private WarehouseArea warehouseArea;
-
-    @ManyToOne
-    @JoinColumn(name = "customerId", nullable = false)
+    @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 }

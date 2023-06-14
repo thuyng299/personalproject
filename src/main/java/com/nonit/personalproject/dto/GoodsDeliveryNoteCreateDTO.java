@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GoodsDeliveryNoteCreateDTO {
-    private LocalDate outcomingsDate;
+    private LocalDate outgoingDate;
 //    private Long employeeId;
     private Long areaId;
 //    private Long customerId;

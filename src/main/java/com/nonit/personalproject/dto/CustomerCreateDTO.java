@@ -10,9 +10,10 @@ import javax.persistence.Column;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomerCreateDTO {
-    private String customerName;
-    private String customerCode;
-    private String customerEmail;
-    private String customerPhone;
-    private String customerAddress;
+    private String name;
+    private String code;
+    private String email;
+    private String phone;
+    private String address;
+    private Boolean status;
 }

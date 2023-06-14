@@ -12,25 +12,26 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OutcomingsDetail {
+public class OutgoingDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long outcomingsId;
-    @Column(name = "outcomings_amount", nullable = false)
-    private Double outcomingsAmount;
+    @Column(name = "outgoing_id")
+    private Long id;
+    @Column(name = "outgoing_amount", nullable = false)
+    private Double amount;
     @Column(name = "product_price", nullable = false)
-    private Double productPrice;
+    private Double price;
     private Double discount;
 
     @ManyToOne
-    @JoinColumn(name = "productId", nullable = false)
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "gdnId", nullable = false)
+    @JoinColumn(name = "gdn_id", nullable = false)
     private GoodsDeliveryNote goodsDeliveryNote;
 
     @ManyToOne
-    @JoinColumn(name = "incomingsId", nullable = false)
-    private IncomingsDetail incomingsDetail;
+    @JoinColumn(name = "incoming_Id", nullable = false)
+    private IncomingDetail incomingDetail;
 }
