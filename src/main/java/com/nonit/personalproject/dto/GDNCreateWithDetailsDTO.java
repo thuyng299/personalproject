@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class GDNCreateWithDetailsDTO {
     private Long gdnId;
+    private String code;
     private LocalDate outcomingsDate;
     private Double totalAmount;
     private Long employeeId;

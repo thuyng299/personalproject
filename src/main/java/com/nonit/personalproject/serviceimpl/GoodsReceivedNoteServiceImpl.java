@@ -3,10 +3,12 @@ package com.nonit.personalproject.serviceimpl;
 import com.nonit.personalproject.dto.GRNCreateWithDetailDTO;
 import com.nonit.personalproject.dto.GoodsReceivedNoteDTO;
 import com.nonit.personalproject.dto.GoodsReceivedNoteUpdateDTO;
+import com.nonit.personalproject.dto.IncomingDetailsCreateDto;
 import com.nonit.personalproject.entity.*;
 import com.nonit.personalproject.exception.WarehouseException;
 import com.nonit.personalproject.mapper.CustomGRNCreateMapper;
 import com.nonit.personalproject.mapper.GoodsReceivedNoteMapper;
+import com.nonit.personalproject.mapper.IncomingDetailMapper;
 import com.nonit.personalproject.repository.*;
 import com.nonit.personalproject.service.GoodsReceivedNoteService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,6 +35,7 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
     private final IncomingsDetailRepository incomingsDetailRepository;
     private final ProductRepository productRepository;
     private final GoodsReceivedNoteMapper goodsReceivedNoteMapper = GoodsReceivedNoteMapper.INSTANCE;
+    private final IncomingDetailMapper incomingDetailMapper = IncomingDetailMapper.INSTANCE;
 
     @Override
     public List<GoodsReceivedNoteDTO> getAllGoodsReceivedNote() {
@@ -55,48 +60,58 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
         Supplier supplier = supplierRepository.findById(grnCreateWithDetailDTO.getSupplierId()).orElseThrow(WarehouseException::SupplierNotFound);
         Employee employee = employeeRepository.findByUsername(getCurrentUsername()).get();
 
-        if (grnCreateWithDetailDTO.getIncomingsDate().isAfter(LocalDate.now())){
-            throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDate.now());
-        }
-
         // Create GRN
         GoodsReceivedNote goodsReceivedNote = GoodsReceivedNote.builder()
-//                .incomingDate(grnCreateWithDetailDTO.getIncomingsDate())
+                .incomingDate(LocalDateTime.now())
+                .code(grnCreateWithDetailDTO.getCode())
+                .record(grnCreateWithDetailDTO.getRecord())
                 .supplier(supplier)
                 .employee(employee)
                 .build();
 
+        // Create detail
+        List<IncomingDetail> incomingDetails = new ArrayList<>();
+
+        for (IncomingDetailsCreateDto ins: grnCreateWithDetailDTO.getIncomingDetailsCreateDtoList()){
+            if (ins.getAmount() <= 0){
+                throw WarehouseException.badRequest("InvalidIncomingsAmount", "Amount cannot be 0 or below 0!");
+            }
+            if (ins.getCost() < 0) {
+                throw WarehouseException.badRequest("InvalidProductCost", "Product cost cannot below 0!");
+            }
+            Product product = productRepository.findById(ins.getProductId()).orElseThrow(WarehouseException::ProductNotFound);
+            WarehouseArea warehouseArea = warehouseAreaRepository.findById(ins.getAreaId()).orElseThrow(WarehouseException::WarehouseAreaNotFound);
+
+            IncomingDetail incomingDetail = new IncomingDetail();
+            incomingDetail.setGoodsReceivedNote(goodsReceivedNote);
+            incomingDetail.setAmount(ins.getAmount());
+            incomingDetail.setRemainingAmount(ins.getAmount());
+            incomingDetail.setCost(ins.getCost());
+            incomingDetail.setProduct(product);
+            incomingDetail.setWarehouseArea(warehouseArea);
+
+            // Set expiration date based on date of GRN
+            if (product.getProductCategory().equals(ProductCategory.RAW_MATERIALS)) {
+                incomingDetail.setExpirationDate(goodsReceivedNote.getIncomingDate().plusYears(2L));
+            } else if (product.getProductCategory().equals(ProductCategory.FINISHED_GOODS)) {
+                incomingDetail.setExpirationDate(goodsReceivedNote.getIncomingDate().plusMonths(6L));
+            }
+
+            incomingDetails.add(incomingDetail);
+
+        }
+        goodsReceivedNote.setIncomingDetail(incomingDetails);
         goodsReceivedNote = goodsReceivedNoteRepository.save(goodsReceivedNote);
 
-        if (grnCreateWithDetailDTO.getIncomingsAmount() <= 0){
-            throw WarehouseException.badRequest("InvalidIncomingsAmount", "Amount cannot be 0 or below 0!");
+        GRNCreateWithDetailDTO returnGRNCreateWithDetailDTO = CustomGRNCreateMapper.INSTANCE.toDto(goodsReceivedNote);
+        List<IncomingDetailsCreateDto> incomingDetailsCreateDtoList = new ArrayList<>();
+        for(IncomingDetail ins : goodsReceivedNote.getIncomingDetail()){
+            IncomingDetailsCreateDto incomingDetailsCreateDto = incomingDetailMapper.toReturnDto(ins);
+            incomingDetailsCreateDtoList.add(incomingDetailsCreateDto);
         }
-        if (grnCreateWithDetailDTO.getProductCost() < 0){
-            throw WarehouseException.badRequest("InvalidProductCost", "Product cost cannot below 0!");
-        }
-        // Create detail
+        returnGRNCreateWithDetailDTO.setIncomingDetailsCreateDtoList(incomingDetailsCreateDtoList);
 
-        WarehouseArea warehouseArea = warehouseAreaRepository.findById(grnCreateWithDetailDTO.getAreaId()).orElseThrow(WarehouseException::WarehouseAreaNotFound);
-
-        IncomingDetail incomingDetail = new IncomingDetail();
-            incomingDetail.setGoodsReceivedNote(goodsReceivedNote);
-//            incomingDetail.setIncomingsAmount(grnCreateWithDetailDTO.getIncomingsAmount());
-//            incomingDetail.setRemainingAmount(grnCreateWithDetailDTO.getIncomingsAmount());
-//            incomingDetail.setProductCost(grnCreateWithDetailDTO.getProductCost());
-
-            // Set expiration date by conditions and product id auto-generate from area id
-//            Product product = productRepository.findByWarehouseAreaAreaId(.getAreaId());
-//            incomingsDetail.setProduct(product);
-//
-//            if (product.getProductCategory().equals(ProductCategory.RAW_MATERIALS)) {
-//                incomingsDetail.setExpirationDate(goodsReceivedNote.getIncomingsDate().plusYears(2L));
-//            } else if (product.getProductCategory().equals(ProductCategory.FINISHED_GOODS)) {
-//                incomingsDetail.setExpirationDate(goodsReceivedNote.getIncomingsDate().plusMonths(6L));
-//            }
-//        incomingDetail = incomingsDetailRepository.save(incomingDetail);
-        goodsReceivedNote.setIncomingDetail(incomingDetail);
-
-        return CustomGRNCreateMapper.INSTANCE.toDto(goodsReceivedNote, incomingDetail);
+        return returnGRNCreateWithDetailDTO;
     }
 
     @Override

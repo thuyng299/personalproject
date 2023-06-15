@@ -1,13 +1,14 @@
 package com.nonit.personalproject.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -22,6 +23,7 @@ public class GoodsReceivedNote {
     @Column(name = "grn_code", unique = true, nullable = false)
     private String code;
     @Column(name = "incoming_date", nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime incomingDate;
     @Column(name = "grn_record", length = 500)
     private String record;
@@ -33,6 +35,6 @@ public class GoodsReceivedNote {
     @JoinColumn(name = "supplier_id", nullable = false)
     private Supplier supplier;
 
-    @OneToOne(mappedBy = "goodsReceivedNote", cascade = CascadeType.PERSIST)
-    private IncomingDetail incomingDetail;
+    @OneToMany(mappedBy = "goodsReceivedNote", cascade = CascadeType.PERSIST)
+    private List<IncomingDetail> incomingDetail;
 }
