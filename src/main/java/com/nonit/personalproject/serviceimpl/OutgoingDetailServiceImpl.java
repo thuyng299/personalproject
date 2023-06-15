@@ -1,125 +1,119 @@
-//package com.nonit.personalproject.serviceimpl;
-//
-//import com.nonit.personalproject.dto.*;
-//import com.nonit.personalproject.entity.GoodsDeliveryNote;
-//import com.nonit.personalproject.entity.OutgoingDetail;
-//import com.nonit.personalproject.entity.Product;
-//import com.nonit.personalproject.entity.WarehouseArea;
-//import com.nonit.personalproject.exception.ResponseException;
-//import com.nonit.personalproject.exception.WarehouseException;
-//import com.nonit.personalproject.mapper.OutgoingDetailMapper;
-//import com.nonit.personalproject.repository.*;
-//import com.nonit.personalproject.service.OutgoingDetailService;
-//import lombok.RequiredArgsConstructor;
-//import lombok.extern.slf4j.Slf4j;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.stereotype.Service;
-//
-//import java.time.LocalDate;
-//import java.util.List;
-//
-//@Service
-//@RequiredArgsConstructor
-//@Slf4j
-//public class OutgoingDetailServiceImpl implements OutgoingDetailService {
-//    private final OutcomingsDetailRepository outcomingsDetailRepository;
-//    private final ProductRepository productRepository;
-//    private final GoodsDeliveryNoteRepository goodsDeliveryNoteRepository;
-//    private final IncomingsDetailRepository incomingsDetailRepository;
-//    private final WarehouseAreaRepository warehouseAreaRepository;
-//    private final OutgoingDetailMapper outgoingDetailMapper = OutgoingDetailMapper.INSTANCE;
-//
+package com.nonit.personalproject.serviceimpl;
+
+import com.nonit.personalproject.dto.*;
+import com.nonit.personalproject.entity.OutgoingDetail;
+import com.nonit.personalproject.exception.WarehouseException;
+import com.nonit.personalproject.mapper.OutgoingDetailMapper;
+import com.nonit.personalproject.repository.*;
+import com.nonit.personalproject.service.OutgoingDetailService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class OutgoingDetailServiceImpl implements OutgoingDetailService {
+    private final OutgoingDetailRepository outgoingDetailRepository;
+    private final ProductRepository productRepository;
+    private final GoodsDeliveryNoteRepository goodsDeliveryNoteRepository;
+    private final IncomingsDetailRepository incomingsDetailRepository;
+    private final WarehouseAreaRepository warehouseAreaRepository;
+    private final OutgoingDetailMapper outgoingDetailMapper = OutgoingDetailMapper.INSTANCE;
+
+    @Override
+    public List<OutgoingDetailDTO> getAllOutgoingDetail() {
+        List<OutgoingDetail> outgoingDetails = outgoingDetailRepository.findAll();
+        if (outgoingDetails.isEmpty()){
+            throw WarehouseException.OutcomingsDetailNotFound();
+        }
+        return outgoingDetailMapper.toDtos(outgoingDetails);
+    }
+
+    @Override
+    public OutgoingDetailDTO findOutgoingDetailById(Long outgoingId) {
+        OutgoingDetail outgoingDetail = outgoingDetailRepository.findById(outgoingId).orElseThrow(WarehouseException::OutcomingsDetailNotFound);
+        return outgoingDetailMapper.toDto(outgoingDetail);
+    }
+
 //    @Override
-//    public List<OutgoingDetailDTO> getAllOutcomingsDetail() {
-//        List<OutgoingDetail> outgoingDetails = outcomingsDetailRepository.findAll();
-//        if (outgoingDetails.isEmpty()){
-//            throw WarehouseException.OutcomingsDetailNotFound();
-//        }
-//        return outgoingDetailMapper.toDtos(outgoingDetails);
-//    }
-//
-//    @Override
-//    public OutgoingDetailDTO findOutcomingsDetailById(Long outcomingsId) {
-//        OutgoingDetail outgoingDetail = outcomingsDetailRepository.findById(outcomingsId).orElseThrow(WarehouseException::OutcomingsDetailNotFound);
-//        return outgoingDetailMapper.toDto(outgoingDetail);
-//    }
-//
-////    @Override
-////    public OutgoingDetailDTO createOutcomingsDetail(Long gdnId, OutgoingDetailCreateDTO outgoingDetailCreateDTO) {
-////        GoodsDeliveryNote goodsDeliveryNote = goodsDeliveryNoteRepository.findById(gdnId).orElseThrow(WarehouseException::GDNNotFound);
-////        WarehouseArea area = warehouseAreaRepository.findById(goodsDeliveryNote.getWarehouseArea().getAreaId()).orElseThrow(WarehouseException::WarehouseAreaNotFound);
-////        Product product = productRepository.findByWarehouseAreaAreaId(area.getAreaId());
-////        OutgoingDetail outgoingDetail = OutgoingDetail.builder()
-//////                .outcomingsAmount(outcomingsDetailCreateDTO.getOutcomingsAmount())
-////                .productPrice(outgoingDetailCreateDTO.getProductPrice())
-////                .discount(outgoingDetailCreateDTO.getDiscount())
-////                .goodsDeliveryNote(goodsDeliveryNote)
-////                .product(product)
-////                .build();
-//        // get GDN where product id equals to outcomings detail's product id
-////        List<IncomingsProductStatDTO> incomingsProductStatDTOList = incomingsDetailRepository.getIncomingsAmountOfProduct(product.getProductId()); // product outcomings detail
-////        Double totalRemainingAmount = incomingsProductStatDTOList.stream()
-////                .mapToDouble(IncomingsProductStatDTO::getRemainingAmount)
-////                .sum();
-////        if (outcomingsDetailCreateDTO.getOutcomingsAmount() > totalRemainingAmount){  // product outcomings detail
-////            throw WarehouseException.badRequest("InvalidStock", "Remaining stock amount");
-////        }else {
-////            for (int i = 0; i < incomingsProductStatDTOList.size(); i++) {
-////                if (outcomingsDetailCreateDTO.getOutcomingsAmount() < incomingsProductStatDTOList.get(i).getRemainingAmount()) {
-////                    OutcomingsDetail outcomingsDetail = OutcomingsDetail.builder()
-////                            .outcomingsAmount(outcomingsDetailCreateDTO.getOutcomingsAmount())
-////                            .productPrice(outcomingsDetailCreateDTO.getProductPrice())
-////                            .discount(outcomingsDetailCreateDTO.getDiscount())
-////                            .goodsDeliveryNote(goodsDeliveryNote)
-////                            .product(product)
-////                            .build();
-////                    incomingsProductStatDTOList.get(i).setRemainingAmount(incomingsProductStatDTOList.get(i).getRemainingAmount() - outcomingsDetailCreateDTO.getOutcomingsAmount());
-////                    outcomingsDetailRepository.save(outcomingsDetail);
-////                } else if (outcomingsDetailCreateDTO.getOutcomingsAmount() > incomingsProductStatDTOList.get(i).getRemainingAmount()) {
-////                    OutcomingsDetail outcomingsDetail = OutcomingsDetail.builder()
-////                            .outcomingsAmount(incomingsProductStatDTOList.get(i).getRemainingAmount())
-////                            .productPrice(outcomingsDetailCreateDTO.getProductPrice())
-////                            .discount(outcomingsDetailCreateDTO.getDiscount())
-////                            .goodsDeliveryNote(goodsDeliveryNote)
-////                            .product(product)
-////                            .build();
-////                    outcomingsDetailRepository.save(outcomingsDetail);
-////                }
-////            }
-////        }
-////        outgoingDetail = outcomingsDetailRepository.save(outgoingDetail);
-////        return outgoingDetailMapper.toDto(outgoingDetail);
-////    }
-//
-//    @Override
-//    public OutgoingDetailDTO createOutcomingsDetail(Long gdnId, OutgoingDetailCreateDTO outgoingDetailCreateDTO, Long productId) {
-////        GoodsDeliveryNote goodsDeliveryNote = goodsDeliveryNoteRepository.findById(gdnId).orElseThrow(WarehouseException::GDNNotFound);
-////        Product product = productRepository.findById(productId).orElseThrow(WarehouseException::ProductNotFound);
-////
+//    public OutgoingDetailDTO createOutcomingsDetail(Long gdnId, OutgoingDetailCreateDTO outgoingDetailCreateDTO) {
+//        GoodsDeliveryNote goodsDeliveryNote = goodsDeliveryNoteRepository.findById(gdnId).orElseThrow(WarehouseException::GDNNotFound);
+//        WarehouseArea area = warehouseAreaRepository.findById(goodsDeliveryNote.getWarehouseArea().getAreaId()).orElseThrow(WarehouseException::WarehouseAreaNotFound);
+//        Product product = productRepository.findByWarehouseAreaAreaId(area.getAreaId());
 //        OutgoingDetail outgoingDetail = OutgoingDetail.builder()
-////                .outcomingsAmount(outgoingDetailCreateDTO.getOutcomingsAmount())
-////                .productPrice(outgoingDetailCreateDTO.getProductPrice())
+////                .outcomingsAmount(outcomingsDetailCreateDTO.getOutcomingsAmount())
+//                .productPrice(outgoingDetailCreateDTO.getProductPrice())
 //                .discount(outgoingDetailCreateDTO.getDiscount())
-////                .goodsDeliveryNote(goodsDeliveryNote)
+//                .goodsDeliveryNote(goodsDeliveryNote)
+//                .product(product)
 //                .build();
-////
-////        if (goodsDeliveryNote.getWarehouseArea().getAreaId().equals(product.getWarehouseArea().getAreaId())){
-////            outgoingDetail.setProduct(product);
-////        }else {
-////            WarehouseArea area = warehouseAreaRepository.findById(goodsDeliveryNote.getWarehouseArea().getAreaId()).orElseThrow(WarehouseException::WarehouseAreaNotFound);
-////            product = productRepository.findByWarehouseAreaAreaId(area.getAreaId());
-////            outgoingDetail.setProduct(product);
-////        }
+        // get GDN where product id equals to outcomings detail's product id
+//        List<IncomingsProductStatDTO> incomingsProductStatDTOList = incomingsDetailRepository.getIncomingsAmountOfProduct(product.getProductId()); // product outcomings detail
+//        Double totalRemainingAmount = incomingsProductStatDTOList.stream()
+//                .mapToDouble(IncomingsProductStatDTO::getRemainingAmount)
+//                .sum();
+//        if (outcomingsDetailCreateDTO.getOutcomingsAmount() > totalRemainingAmount){  // product outcomings detail
+//            throw WarehouseException.badRequest("InvalidStock", "Remaining stock amount");
+//        }else {
+//            for (int i = 0; i < incomingsProductStatDTOList.size(); i++) {
+//                if (outcomingsDetailCreateDTO.getOutcomingsAmount() < incomingsProductStatDTOList.get(i).getRemainingAmount()) {
+//                    OutcomingsDetail outcomingsDetail = OutcomingsDetail.builder()
+//                            .outcomingsAmount(outcomingsDetailCreateDTO.getOutcomingsAmount())
+//                            .productPrice(outcomingsDetailCreateDTO.getProductPrice())
+//                            .discount(outcomingsDetailCreateDTO.getDiscount())
+//                            .goodsDeliveryNote(goodsDeliveryNote)
+//                            .product(product)
+//                            .build();
+//                    incomingsProductStatDTOList.get(i).setRemainingAmount(incomingsProductStatDTOList.get(i).getRemainingAmount() - outcomingsDetailCreateDTO.getOutcomingsAmount());
+//                    outcomingsDetailRepository.save(outcomingsDetail);
+//                } else if (outcomingsDetailCreateDTO.getOutcomingsAmount() > incomingsProductStatDTOList.get(i).getRemainingAmount()) {
+//                    OutcomingsDetail outcomingsDetail = OutcomingsDetail.builder()
+//                            .outcomingsAmount(incomingsProductStatDTOList.get(i).getRemainingAmount())
+//                            .productPrice(outcomingsDetailCreateDTO.getProductPrice())
+//                            .discount(outcomingsDetailCreateDTO.getDiscount())
+//                            .goodsDeliveryNote(goodsDeliveryNote)
+//                            .product(product)
+//                            .build();
+//                    outcomingsDetailRepository.save(outcomingsDetail);
+//                }
+//            }
+//        }
 //        outgoingDetail = outcomingsDetailRepository.save(outgoingDetail);
 //        return outgoingDetailMapper.toDto(outgoingDetail);
 //    }
+
+    @Override
+    public OutgoingDetailDTO createOutcomingsDetail(Long gdnId, OutgoingDetailCreateDTO outgoingDetailCreateDTO, Long productId) {
+//        GoodsDeliveryNote goodsDeliveryNote = goodsDeliveryNoteRepository.findById(gdnId).orElseThrow(WarehouseException::GDNNotFound);
+//        Product product = productRepository.findById(productId).orElseThrow(WarehouseException::ProductNotFound);
 //
-//    @Override
-//    public void deleteIncomingsDetail(Long outcomingsId) {
-//        log.info("delete outcomings detail by id {}", outcomingsId);
-//        outcomingsDetailRepository.deleteById(outcomingsId);
-//    }
+        OutgoingDetail outgoingDetail = OutgoingDetail.builder()
+//                .outcomingsAmount(outgoingDetailCreateDTO.getOutcomingsAmount())
+//                .productPrice(outgoingDetailCreateDTO.getProductPrice())
+                .discount(outgoingDetailCreateDTO.getDiscount())
+//                .goodsDeliveryNote(goodsDeliveryNote)
+                .build();
 //
+//        if (goodsDeliveryNote.getWarehouseArea().getAreaId().equals(product.getWarehouseArea().getAreaId())){
+//            outgoingDetail.setProduct(product);
+//        }else {
+//            WarehouseArea area = warehouseAreaRepository.findById(goodsDeliveryNote.getWarehouseArea().getAreaId()).orElseThrow(WarehouseException::WarehouseAreaNotFound);
+//            product = productRepository.findByWarehouseAreaAreaId(area.getAreaId());
+//            outgoingDetail.setProduct(product);
+//        }
+        outgoingDetail = outgoingDetailRepository.save(outgoingDetail);
+        return outgoingDetailMapper.toDto(outgoingDetail);
+    }
+
+    @Override
+    public void deleteOutgoingDetail(Long outgoingId) {
+        log.info("delete outcomings detail by id {}", outgoingId);
+        outgoingDetailRepository.deleteById(outgoingId);
+    }
+
 //    @Override
 //    public List<OutgoingAmountStatsDTO> getNumberOfProductOutgoings(LocalDate date) {
 //        if (date.isAfter(LocalDate.now())){
@@ -165,4 +159,4 @@
 //    public List<PriceStatsDTO> getProductsTotalPrice() {
 //        return outcomingsDetailRepository.getProductsTotalPrice();
 //    }
-//}
+}

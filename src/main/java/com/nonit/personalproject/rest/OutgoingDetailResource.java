@@ -1,32 +1,30 @@
-//package com.nonit.personalproject.rest;
-//
-//import com.nonit.personalproject.dto.*;
-//import com.nonit.personalproject.serviceimpl.OutgoingDetailServiceImpl;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.RestController;
-//
-//import java.net.URI;
-//import java.time.LocalDate;
-//import java.util.List;
-//import java.util.Optional;
-//
-//@RestController
-//@RequiredArgsConstructor
-//public class OutcomingsDetailResource implements OutcomingsDetailAPI{
-//    private final OutgoingDetailServiceImpl outcomingsDetailServiceImpl;
-//
-//    @Override
-//    public ResponseEntity<OutgoingDetailDTO> createOutcomingsDetail(Long gdnId, OutgoingDetailCreateDTO outgoingDetailCreateDTO, Optional<Long> productId) {
-//        OutgoingDetailDTO createdoutcomingsDetailDTO;
-////        if (productId.isPresent()){
-//            createdoutcomingsDetailDTO = outcomingsDetailServiceImpl.createOutcomingsDetail(gdnId, outgoingDetailCreateDTO, productId.get());
-////        }else {
-////            createdoutcomingsDetailDTO = outcomingsDetailServiceImpl.createOutcomingsDetail(gdnId, outgoingDetailCreateDTO);
-////        }
-//        return ResponseEntity.created(URI.create("/outcomingsdetails" + createdoutcomingsDetailDTO.getOutcomingsId())).body(createdoutcomingsDetailDTO);
-//    }
-//
+package com.nonit.personalproject.rest;
+
+import com.nonit.personalproject.dto.*;
+import com.nonit.personalproject.serviceimpl.OutgoingDetailServiceImpl;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.net.URI;
+import java.util.Optional;
+
+@RestController
+@RequiredArgsConstructor
+public class OutgoingDetailResource implements OutgoingDetailAPI {
+    private final OutgoingDetailServiceImpl outgoingDetailServiceImpl;
+
+    @Override
+    public ResponseEntity<OutgoingDetailDTO> createOutcomingsDetail(Long gdnId, OutgoingDetailCreateDTO outgoingDetailCreateDTO, Optional<Long> productId) {
+        OutgoingDetailDTO createdoutcomingsDetailDTO;
+//        if (productId.isPresent()){
+            createdoutcomingsDetailDTO = outgoingDetailServiceImpl.createOutcomingsDetail(gdnId, outgoingDetailCreateDTO, productId.get());
+//        }else {
+//            createdoutcomingsDetailDTO = outcomingsDetailServiceImpl.createOutcomingsDetail(gdnId, outgoingDetailCreateDTO);
+//        }
+        return ResponseEntity.created(URI.create("/outcomingsdetails" + createdoutcomingsDetailDTO.getId())).body(createdoutcomingsDetailDTO);
+    }
+
 //    @Override
 //    public ResponseEntity<List<OutgoingAmountStatsDTO>> getNumberOfProductOutgoings(LocalDate date) {
 //        return ResponseEntity.ok(outcomingsDetailServiceImpl.getNumberOfProductOutgoings(date));
@@ -61,4 +59,4 @@
 //    public ResponseEntity<List<PriceStatsDTO>> getProductsTotalPrice() {
 //        return ResponseEntity.ok(outcomingsDetailServiceImpl.getProductsTotalPrice());
 //    }
-//}
+}

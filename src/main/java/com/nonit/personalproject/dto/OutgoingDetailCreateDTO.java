@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OutgoingDetailCreateDTO {
-    private Double outcomingsAmount;
-    private Double productPrice;
+    private Double amount;
+    private Double price;
     private Double discount;
 //    private Long productId;
 //    private Long incomingsId;

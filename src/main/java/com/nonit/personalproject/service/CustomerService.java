@@ -14,12 +14,12 @@ public interface CustomerService {
     CustomerDTO findCustomerById (Long customerId);
     CustomerDTO createCustomer (Long countryId, CustomerCreateDTO customerCreateDTO);
     void deleteCustomer (Long customerId);
-    List<CustomerStatsDTO> getCustomerAndItsProduct(String inputName);
-    List<CustomerStatsDTO> getProductAndItsCustomers (String inputProductName);
-    List<CustomerAndProductStatsDTO> getCustomersAndTotalSalesTime();
-    List<CustomerAndProductStatsDTO> getCustomersAndTotalSalesTimeBetweenDates (LocalDate fromDate, LocalDate toDate);
-    CustomerAndProductStatsDTO getCustomerAndTotalAmountBetweenDates (Long customerId, LocalDate fromDate, LocalDate toDate);
-    CustomerAndProductStatsDTO getCustomerAndTotalAmountBeforeDate (Long customerId, LocalDate beforeDate);
-    List<CustomerAndProductStatsDTO> getCustomersAndTotalSalesTimeBeforeDate (LocalDate beforeDate);
+//    List<CustomerStatsDTO> getCustomerAndItsProduct(String inputName);
+//    List<CustomerStatsDTO> getProductAndItsCustomers (String inputProductName);
+//    List<CustomerAndProductStatsDTO> getCustomersAndTotalSalesTime();
+//    List<CustomerAndProductStatsDTO> getCustomersAndTotalSalesTimeBetweenDates (LocalDate fromDate, LocalDate toDate);
+//    CustomerAndProductStatsDTO getCustomerAndTotalAmountBetweenDates (Long customerId, LocalDate fromDate, LocalDate toDate);
+//    CustomerAndProductStatsDTO getCustomerAndTotalAmountBeforeDate (Long customerId, LocalDate beforeDate);
+//    List<CustomerAndProductStatsDTO> getCustomersAndTotalSalesTimeBeforeDate (LocalDate beforeDate);
     CustomerDTO updateCustomer (Long customerId, CustomerCreateDTO customerCreateDTO);
 }

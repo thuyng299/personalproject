@@ -14,8 +14,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class GoodsDeliveryNoteDTO {
     private Long id;
-    private LocalDate outcomingsDate;
+    private String code;
+    private LocalDate outgoingDate;
+    private Double totalAmount;
+    private String record;
     private Long employeeId;
-    private Long areaId;
     private Long customerId;
 }

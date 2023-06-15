@@ -1,42 +1,42 @@
-//package com.nonit.personalproject.rest;
-//
-//import com.nonit.personalproject.dto.*;
-//import com.nonit.personalproject.serviceimpl.CustomerServiceImpl;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.RestController;
-//
-//import java.net.URI;
-//import java.time.LocalDate;
-//import java.util.List;
-//
-//@RestController
-//@RequiredArgsConstructor
-//public class CustomerResource implements CustomerAPI{
-//    private final CustomerServiceImpl customerServiceImpl;
-//
-//    @Override
-//    public ResponseEntity<List<CustomerDTO>> getAllCustomer() {
-//        return ResponseEntity.ok(customerServiceImpl.getAllCustomer());
-//    }
-//
-//    @Override
-//    public ResponseEntity<CustomerDTO> findCustomerById(Long customerId) {
-//        return ResponseEntity.ok(customerServiceImpl.findCustomerById(customerId));
-//    }
-//
-//    @Override
-//    public ResponseEntity<CustomerDTO> createCustomer(Long countryId, CustomerCreateDTO customerCreateDTO) {
-//         CustomerDTO createdcustomerDTO = customerServiceImpl.createCustomer(countryId, customerCreateDTO);
-//         return ResponseEntity.created(URI.create("/customers" + createdcustomerDTO.getId())).body(createdcustomerDTO);
-//    }
-//
-//    @Override
-//    public ResponseEntity<Void> deleteCustomer(Long customerId) {
-//        customerServiceImpl.deleteCustomer(customerId);
-//        return ResponseEntity.noContent().build();
-//    }
-//
+package com.nonit.personalproject.rest;
+
+import com.nonit.personalproject.dto.*;
+import com.nonit.personalproject.serviceimpl.CustomerServiceImpl;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.net.URI;
+import java.time.LocalDate;
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+public class CustomerResource implements CustomerAPI{
+    private final CustomerServiceImpl customerServiceImpl;
+
+    @Override
+    public ResponseEntity<List<CustomerDTO>> getAllCustomer() {
+        return ResponseEntity.ok(customerServiceImpl.getAllCustomer());
+    }
+
+    @Override
+    public ResponseEntity<CustomerDTO> findCustomerById(Long customerId) {
+        return ResponseEntity.ok(customerServiceImpl.findCustomerById(customerId));
+    }
+
+    @Override
+    public ResponseEntity<CustomerDTO> createCustomer(Long countryId, CustomerCreateDTO customerCreateDTO) {
+         CustomerDTO createdcustomerDTO = customerServiceImpl.createCustomer(countryId, customerCreateDTO);
+         return ResponseEntity.created(URI.create("/customers" + createdcustomerDTO.getId())).body(createdcustomerDTO);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteCustomer(Long customerId) {
+        customerServiceImpl.deleteCustomer(customerId);
+        return ResponseEntity.noContent().build();
+    }
+
 //    @Override
 //    public ResponseEntity<List<CustomerStatsDTO>> getCustomerAndItsProduct(String inputName) {
 //        return ResponseEntity.ok(customerServiceImpl.getCustomerAndItsProduct(inputName));
@@ -71,9 +71,9 @@
 //    public ResponseEntity<List<CustomerAndProductStatsDTO>> getCustomersAndTotalSalesTimeBeforeDate(LocalDate beforeDate) {
 //        return ResponseEntity.ok(customerServiceImpl.getCustomersAndTotalSalesTimeBeforeDate(beforeDate));
 //    }
-//
-//    @Override
-//    public ResponseEntity<CustomerDTO> updateCustomer(Long customerId, CustomerCreateDTO customerCreateDTO) {
-//        return ResponseEntity.ok().body(customerServiceImpl.updateCustomer(customerId, customerCreateDTO));
-//    }
-//}
+
+    @Override
+    public ResponseEntity<CustomerDTO> updateCustomer(Long customerId, CustomerCreateDTO customerCreateDTO) {
+        return ResponseEntity.ok().body(customerServiceImpl.updateCustomer(customerId, customerCreateDTO));
+    }
+}

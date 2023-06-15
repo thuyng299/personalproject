@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OutgoingDetailDTO {
-    private Long outcomingsId;
-    private Double outcomingsAmount;
-    private Double productPrice;
+    private Long id;
+    private Double amount;
+    private Double price;
     private Double discount;
     private Long productId;
     private Long gdnId;
-    private Long incomingsId;
+    private Long incomingId;
 }

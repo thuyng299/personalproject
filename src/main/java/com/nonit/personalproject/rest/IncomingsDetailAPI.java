@@ -1,29 +1,29 @@
-//package com.nonit.personalproject.rest;
-//
-//import com.nonit.personalproject.dto.*;
-//import org.springframework.format.annotation.DateTimeFormat;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.time.LocalDate;
-//import java.util.List;
-//import java.util.Optional;
-//
-//@RequestMapping(value = "/incomingsdetails")
-//public interface IncomingsDetailAPI {
-//    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
-//    @GetMapping
-//    ResponseEntity<List<IncomingsDetailDTO>> getAllIncomingsDetail();
-//
-//    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
-//    @GetMapping("/{incomingsId}")
-//    ResponseEntity<IncomingsDetailDTO> findIncomingsDetailById(@PathVariable("incomingsId") Long incomingsId);
-//
-//    @PreAuthorize("hasRole('WAREHOUSE_STAFF')")
-//    @DeleteMapping("/{incomingsId}")
-//    ResponseEntity<Void> deleteIncomingsDetail(@PathVariable("incomingsId") Long incomingsId);
-//
+package com.nonit.personalproject.rest;
+
+import com.nonit.personalproject.dto.*;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+@RequestMapping(value = "/incomingsdetails")
+public interface IncomingsDetailAPI {
+    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
+    @GetMapping
+    ResponseEntity<List<IncomingsDetailDTO>> getAllIncomingsDetail();
+
+    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
+    @GetMapping("/{incomingsId}")
+    ResponseEntity<IncomingsDetailDTO> findIncomingsDetailById(@PathVariable("incomingsId") Long incomingsId);
+
+    @PreAuthorize("hasRole('WAREHOUSE_STAFF')")
+    @DeleteMapping("/{incomingsId}")
+    ResponseEntity<Void> deleteIncomingsDetail(@PathVariable("incomingsId") Long incomingsId);
+
 //    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
 //    @GetMapping("/product-incoming") // localhost:8080/incomingsdetails/product-incoming?date=2024-02-27
 //    ResponseEntity<List<IncomingsAmountStatsDTO>> getNumberOfProductIncomings(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
@@ -73,12 +73,12 @@
 //    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
 //    @GetMapping("/totalproductcost") // localhost:8080/incomingsdetails/totalproductcost
 //    ResponseEntity<List<CostStatsDTO>> getProductsTotalCost();
-//
-//    @PreAuthorize("hasRole('WAREHOUSE_STAFF')")
-//    @PutMapping("/{incomingsId}")
-//    ResponseEntity<IncomingsDetailDTO> updateIncomingsDetail(@PathVariable("incomingsId") Long incomingsId,
-//                                                             @RequestBody IncomingsDetailUpdateDTO incomingsDetailUpdateDTO);
-//
+
+    @PreAuthorize("hasRole('WAREHOUSE_STAFF')")
+    @PutMapping("/{incomingsId}")
+    ResponseEntity<IncomingsDetailDTO> updateIncomingsDetail(@PathVariable("incomingsId") Long incomingsId,
+                                                             @RequestBody IncomingsDetailUpdateDTO incomingsDetailUpdateDTO);
+
 //    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
 //    @GetMapping("/incomings-product")
 //    ResponseEntity<List<IncomingsProductStatDTO>> getIncomingsAmountOfProduct (@RequestParam("inputProductId") Long inputProductId);
@@ -86,4 +86,4 @@
 //    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
 //    @GetMapping("/product-stock") // localhost:8080/incomingsdetails/product-stock?inputProductId=13
 //    ResponseEntity<TotalStockOfProductStatDTO> getTotalStockAmountOfProduct(@RequestParam("inputProductId") Long inputProductId);
-//}
+}

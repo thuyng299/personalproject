@@ -11,13 +11,13 @@ public interface SupplierService {
     SupplierDTO findSupplierById (Long supplierId);
     SupplierDTO createSupplier (Long countryId, SupplierCreateDTO supplierCreateDTO);
     void deleteSupplier (Long supplierId);
-    SupplierDTO findBySupplierName (String supplierName);
-    List<SupplierStatsDTO> getSupplierAndItsProduct(String inputName);
-    List<SupplierStatsDTO> getProductAndItsSuppliers (String inputProductName);
-    List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTime ();
-    List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTimeBetweenDates( LocalDate fromDate, LocalDate toDate);
-    SupplierAndProductStatsDTO getSupplierAndTotalAmountBetweenDates(Long supplierId, LocalDate fromDate, LocalDate toDate);
-    SupplierAndProductStatsDTO getSupplierAndTotalAmountBeforeDate(Long supplierId, LocalDate beforeDate);
-    List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTimeBeforeDate(LocalDate beforeDate);
+    SupplierDTO findByName (String supplierName);
+//    List<SupplierStatsDTO> getSupplierAndItsProduct(String inputName);
+//    List<SupplierStatsDTO> getProductAndItsSuppliers (String inputProductName);
+//    List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTime ();
+//    List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTimeBetweenDates( LocalDate fromDate, LocalDate toDate);
+//    SupplierAndProductStatsDTO getSupplierAndTotalAmountBetweenDates(Long supplierId, LocalDate fromDate, LocalDate toDate);
+//    SupplierAndProductStatsDTO getSupplierAndTotalAmountBeforeDate(Long supplierId, LocalDate beforeDate);
+//    List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTimeBeforeDate(LocalDate beforeDate);
     SupplierDTO updateSupplier (Long supplierId, SupplierCreateDTO supplierCreateDTO);
 }

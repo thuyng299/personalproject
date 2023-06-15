@@ -1,23 +1,20 @@
-//package com.nonit.personalproject.rest;
-//
-//import com.nonit.personalproject.dto.*;
-//import org.springframework.format.annotation.DateTimeFormat;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.time.LocalDate;
-//import java.util.List;
-//import java.util.Optional;
-//
-//@RequestMapping(value = "/outcomingsdetails")
-//public interface OutcomingsDetailAPI {
-//    @PreAuthorize("hasRole('WAREHOUSE_STAFF')")
-//    @PostMapping("/{gdnId}")
-//    ResponseEntity<OutgoingDetailDTO> createOutcomingsDetail(@PathVariable("gdnId") Long gdnId,
-//                                                             @RequestBody OutgoingDetailCreateDTO outgoingDetailCreateDTO,
-//                                                             @RequestParam("productId") Optional<Long> productId);
-//
+package com.nonit.personalproject.rest;
+
+import com.nonit.personalproject.dto.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
+
+@RequestMapping(value = "/outcomingsdetails")
+public interface OutgoingDetailAPI {
+    @PreAuthorize("hasRole('WAREHOUSE_STAFF')")
+    @PostMapping("/{gdnId}")
+    ResponseEntity<OutgoingDetailDTO> createOutcomingsDetail(@PathVariable("gdnId") Long gdnId,
+                                                             @RequestBody OutgoingDetailCreateDTO outgoingDetailCreateDTO,
+                                                             @RequestParam("productId") Optional<Long> productId);
+
 //    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
 //    @GetMapping("/product-outgoing") // localhost:8080/outcomingsdetails/product-outgoing?date=2023-01-21
 //    ResponseEntity<List<OutgoingAmountStatsDTO>> getNumberOfProductOutgoings(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
@@ -47,4 +44,4 @@
 //    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
 //    @GetMapping("/totalproductprice") // localhost:8080/outcomingsdetails/totalproductprice
 //    ResponseEntity<List<PriceStatsDTO>> getProductsTotalPrice();
-//}
+}

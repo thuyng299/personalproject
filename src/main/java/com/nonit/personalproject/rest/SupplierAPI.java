@@ -1,36 +1,36 @@
-//package com.nonit.personalproject.rest;
-//
-//import com.nonit.personalproject.dto.SupplierAndProductStatsDTO;
-//import com.nonit.personalproject.dto.SupplierCreateDTO;
-//import com.nonit.personalproject.dto.SupplierDTO;
-//import com.nonit.personalproject.dto.SupplierStatsDTO;
-//import org.springframework.format.annotation.DateTimeFormat;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.time.LocalDate;
-//import java.util.List;
-//
-//@RequestMapping(value = "/suppliers")
-//@PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
-//public interface SupplierAPI {
-//    @GetMapping
-//    ResponseEntity<List<SupplierDTO>> getAllSupplier();
-//
-//    @GetMapping("/{supplierId}")
-//    ResponseEntity<SupplierDTO> findSupplierById(@PathVariable("supplierId") Long supplierId);
-//
-//    @PostMapping("/{countryId}")
-//    ResponseEntity<SupplierDTO> createSupplier(@PathVariable("countryId") Long countryId,
-//                                               @RequestBody SupplierCreateDTO supplierCreateDTO);
-//
-//    @DeleteMapping("/{supplierId}")
-//    ResponseEntity<Void> deleteSupplier(@PathVariable("supplierId") Long supplierId);
-//
-//    @GetMapping("/name")
-//    ResponseEntity<SupplierDTO> findBySupplierName(@RequestParam("supplierName") String supplierName);
-//
+package com.nonit.personalproject.rest;
+
+import com.nonit.personalproject.dto.SupplierAndProductStatsDTO;
+import com.nonit.personalproject.dto.SupplierCreateDTO;
+import com.nonit.personalproject.dto.SupplierDTO;
+import com.nonit.personalproject.dto.SupplierStatsDTO;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@RequestMapping(value = "/suppliers")
+@PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
+public interface SupplierAPI {
+    @GetMapping
+    ResponseEntity<List<SupplierDTO>> getAllSupplier();
+
+    @GetMapping("/{supplierId}")
+    ResponseEntity<SupplierDTO> findSupplierById(@PathVariable("supplierId") Long supplierId);
+
+    @PostMapping("/{countryId}")
+    ResponseEntity<SupplierDTO> createSupplier(@PathVariable("countryId") Long countryId,
+                                               @RequestBody SupplierCreateDTO supplierCreateDTO);
+
+    @DeleteMapping("/{supplierId}")
+    ResponseEntity<Void> deleteSupplier(@PathVariable("supplierId") Long supplierId);
+
+    @GetMapping("/name")
+    ResponseEntity<SupplierDTO> findByName(@RequestParam("supplierName") String supplierName);
+
 //    @GetMapping("/supplier-products") // localhost:8080/suppliers/supplier-products?inputName=solagri
 //    ResponseEntity<List<SupplierStatsDTO>> getSupplierAndItsProduct(@RequestParam("inputName") String inputName);
 //
@@ -55,8 +55,8 @@
 //
 //    @GetMapping("/suppliers-beforedate") // localhost:8080/suppliers/suppliers-beforedate?beforeDate=2022-02-21
 //    ResponseEntity<List<SupplierAndProductStatsDTO>> getSuppliersAndTotalPurchaseTimeBeforeDate(@RequestParam("beforeDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate beforeDate);
-//
-//    @PutMapping("/{supplierId}")
-//    ResponseEntity<SupplierDTO> updateSupplier (@PathVariable("supplierId") Long supplierId,
-//                                                @RequestBody SupplierCreateDTO supplierCreateDTO);
-//}
+
+    @PutMapping("/{supplierId}")
+    ResponseEntity<SupplierDTO> updateSupplier (@PathVariable("supplierId") Long supplierId,
+                                                @RequestBody SupplierCreateDTO supplierCreateDTO);
+}

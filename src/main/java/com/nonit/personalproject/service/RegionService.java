@@ -10,8 +10,8 @@ public interface RegionService {
     RegionDTO findRegionById(Long regionId);
     RegionDTO createRegion(RegionCreateDTO regionCreateDTO);
     void deleteRegion(Long regionId);
-    RegionDTO findByRegionName(String regionName);
-    List<RegionDTO> findByRegionIdOrRegionName(Long regionId, String regionName);
+    RegionDTO findByName(String regionName);
+    List<RegionDTO> findByIdOrName(Long regionId, String regionName);
     RegionDTO updateRegion (Long regionId, RegionCreateDTO regionCreateDTO);
 
 }

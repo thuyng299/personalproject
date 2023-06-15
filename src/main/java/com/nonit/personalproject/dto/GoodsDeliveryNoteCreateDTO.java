@@ -16,5 +16,6 @@ public class GoodsDeliveryNoteCreateDTO {
     private LocalDate outgoingDate;
 //    private Long employeeId;
     private Long areaId;
+
 //    private Long customerId;
 }
