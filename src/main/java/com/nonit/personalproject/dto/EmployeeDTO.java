@@ -24,5 +24,6 @@ public class EmployeeDTO {
     private String position;
     private Boolean status;
     private String role;
-    private WarehouseArea warehouseArea;
+    private Long areaId;
+    private String areaName;
 }

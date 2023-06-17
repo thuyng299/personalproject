@@ -1,5 +1,6 @@
 package com.nonit.personalproject.rest;
 
+import com.nonit.personalproject.dto.GDNCreateWithDetailsDTO;
 import com.nonit.personalproject.dto.GoodsDeliveryNoteCreateDTO;
 import com.nonit.personalproject.dto.GoodsDeliveryNoteDTO;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,7 @@ public interface GoodsDeliveryNoteAPI {
 
     @PreAuthorize("hasRole('WAREHOUSE_STAFF')")
     @PostMapping("/{customerId}")
-    ResponseEntity<GoodsDeliveryNoteDTO> createGoodsDeliveryNote(@PathVariable("customerId") Long customerId,
-                                                                 @RequestBody GoodsDeliveryNoteCreateDTO goodsDeliveryNoteCreateDTO);
+    ResponseEntity<GoodsDeliveryNoteDTO> createGoodsDeliveryNote(@RequestBody GDNCreateWithDetailsDTO gdnCreateWithDetailsDTO);
 
     @PreAuthorize("hasRole('WAREHOUSE_STAFF')")
     @DeleteMapping("/{gdnId}")

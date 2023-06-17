@@ -1,5 +1,6 @@
 package com.nonit.personalproject.rest;
 
+import com.nonit.personalproject.dto.GDNCreateWithDetailsDTO;
 import com.nonit.personalproject.dto.GoodsDeliveryNoteCreateDTO;
 import com.nonit.personalproject.dto.GoodsDeliveryNoteDTO;
 import com.nonit.personalproject.serviceimpl.GoodsDeliveryNoteServiceImpl;
@@ -26,8 +27,8 @@ public class GoodsDeliveryNoteResource implements GoodsDeliveryNoteAPI {
     }
 
     @Override
-    public ResponseEntity<GoodsDeliveryNoteDTO> createGoodsDeliveryNote(Long customerId, GoodsDeliveryNoteCreateDTO goodsDeliveryNoteCreateDTO) {
-        GoodsDeliveryNoteDTO createdgoodsDeliveryNoteDTO = goodsDeliveryNoteServiceImpl.createGoodsDeliveryNote(customerId, goodsDeliveryNoteCreateDTO);
+    public ResponseEntity<GoodsDeliveryNoteDTO> createGoodsDeliveryNote(GDNCreateWithDetailsDTO gdnCreateWithDetailsDTO) {
+        GoodsDeliveryNoteDTO createdgoodsDeliveryNoteDTO = goodsDeliveryNoteServiceImpl.createGoodsDeliveryNote(gdnCreateWithDetailsDTO);
         return ResponseEntity.created(URI.create("/goodsdeliverynotes" + createdgoodsDeliveryNoteDTO.getId())).body(createdgoodsDeliveryNoteDTO);
     }
 

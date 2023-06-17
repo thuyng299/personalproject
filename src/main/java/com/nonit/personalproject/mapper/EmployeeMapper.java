@@ -14,6 +14,8 @@ import java.util.List;
 public interface EmployeeMapper {
     EmployeeMapper INSTANCE = Mappers.getMapper(EmployeeMapper.class);
     @Mapping(source = "role", target = "role")
+    @Mapping(source = "warehouseArea.id", target = "areaId")
+    @Mapping(source = "warehouseArea.name", target = "areaName")
     EmployeeDTO toDto (Employee employee);
     List<EmployeeDTO> toDtos (List<Employee> employees);
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

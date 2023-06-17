@@ -41,21 +41,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDTO createProduct(Long areaId, ProductCreateDTO productCreateDTO) {
         WarehouseArea warehouseArea = warehouseAreaRepository.findById(areaId).orElseThrow(WarehouseException::WarehouseAreaNotFound);
-        if (productCreateDTO.getName() == null || productCreateDTO.getName().isEmpty() || productCreateDTO.getName().isBlank()){
-            throw WarehouseException.badRequest("InvalidProductName", "Product name cannot be null!");
-        }
-        if (productRepository.existsByName(productCreateDTO.getName())){
-            throw WarehouseException.badRequest("ProductNameExisted", "Product name already exists!");
-        }
-        if (productCreateDTO.getCode() == null || productCreateDTO.getCode().isBlank() || productCreateDTO.getCode().isEmpty()){
-            throw WarehouseException.badRequest("InvalidProductCode", "Product code cannot be null!");
-        }
-        if (productRepository.existsByCode(productCreateDTO.getCode())){
-            throw WarehouseException.badRequest("ProductCodeExisted", "Product code is already taken!");
-        }
-        if (!productCreateDTO.getProductCategory().equals(ProductCategory.RAW_MATERIALS) && !productCreateDTO.getProductCategory().equals(ProductCategory.FINISHED_GOODS)){
-            throw WarehouseException.badRequest("InvalidCategory", "Category must be RAW_MATERIALS or FINISHED_GOODS");
-        }
+        productException(productCreateDTO);
         Product product = Product.builder()
                 .name(productCreateDTO.getName())
                 .code(productCreateDTO.getCode())
@@ -85,5 +71,22 @@ public class ProductServiceImpl implements ProductService {
         }
         productMapper.mapFromDto(productCreateDTO, product);
         return productMapper.toDto(productRepository.save(product));
+    }
+    private void productException(ProductCreateDTO productCreateDTO) {
+        if (productCreateDTO.getName() == null || productCreateDTO.getName().isEmpty() || productCreateDTO.getName().isBlank()){
+            throw WarehouseException.badRequest("InvalidProductName", "Product name cannot be null!");
+        }
+        if (productRepository.existsByName(productCreateDTO.getName())){
+            throw WarehouseException.badRequest("ProductNameExisted", "Product name already exists!");
+        }
+        if (productCreateDTO.getCode() == null || productCreateDTO.getCode().isBlank() || productCreateDTO.getCode().isEmpty()){
+            throw WarehouseException.badRequest("InvalidProductCode", "Product code cannot be null!");
+        }
+        if (productRepository.existsByCode(productCreateDTO.getCode())){
+            throw WarehouseException.badRequest("ProductCodeExisted", "Product code is already taken!");
+        }
+        if (!productCreateDTO.getProductCategory().equals(ProductCategory.RAW_MATERIALS) && !productCreateDTO.getProductCategory().equals(ProductCategory.FINISHED_GOODS)){
+            throw WarehouseException.badRequest("InvalidCategory", "Category must be RAW_MATERIALS or FINISHED_GOODS");
+        }
     }
 }
