@@ -1,6 +1,7 @@
 package com.nonit.personalproject.service;
 
 import com.nonit.personalproject.dto.*;
+import com.nonit.personalproject.entity.IncomingDetail;
 
 import java.time.LocalDate;
 import java.util.List;

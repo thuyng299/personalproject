@@ -1,5 +1,6 @@
 package com.nonit.personalproject.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,9 +23,8 @@ public class GoodsDeliveryNote {
     @Column(name = "gdn_code", unique = true, nullable = false)
     private String code;
     @Column(name = "outgoing_date", nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime outgoingDate;
-    @Column(name = "total_amount", nullable = false)
-    private Double totalAmount;
     @Column(name = "gdn_record", length = 500)
     private String record;
     @ManyToOne

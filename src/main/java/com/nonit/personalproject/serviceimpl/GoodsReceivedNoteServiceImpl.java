@@ -3,7 +3,7 @@ package com.nonit.personalproject.serviceimpl;
 import com.nonit.personalproject.dto.GRNCreateWithDetailDTO;
 import com.nonit.personalproject.dto.GoodsReceivedNoteDTO;
 import com.nonit.personalproject.dto.GoodsReceivedNoteUpdateDTO;
-import com.nonit.personalproject.dto.IncomingDetailsCreateDto;
+import com.nonit.personalproject.dto.IncomingDetailsCreateDTO;
 import com.nonit.personalproject.entity.*;
 import com.nonit.personalproject.exception.WarehouseException;
 import com.nonit.personalproject.mapper.CustomGRNCreateMapper;
@@ -32,7 +32,7 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
     private final EmployeeRepository employeeRepository;
     private final WarehouseAreaRepository warehouseAreaRepository;
     private final SupplierRepository supplierRepository;
-    private final IncomingsDetailRepository incomingsDetailRepository;
+    private final IncomingDetailRepository incomingDetailRepository;
     private final ProductRepository productRepository;
     private final GoodsReceivedNoteMapper goodsReceivedNoteMapper = GoodsReceivedNoteMapper.INSTANCE;
     private final IncomingDetailMapper incomingDetailMapper = IncomingDetailMapper.INSTANCE;
@@ -72,7 +72,7 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
         // Create detail
         List<IncomingDetail> incomingDetails = new ArrayList<>();
 
-        for (IncomingDetailsCreateDto ins: grnCreateWithDetailDTO.getIncomingDetailsCreateDtoList()){
+        for (IncomingDetailsCreateDTO ins: grnCreateWithDetailDTO.getIncomingDetailsCreateDTOList()){
             if (ins.getAmount() <= 0){
                 throw WarehouseException.badRequest("InvalidIncomingsAmount", "Amount cannot be 0 or below 0!");
             }
@@ -104,12 +104,12 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
         goodsReceivedNote = goodsReceivedNoteRepository.save(goodsReceivedNote);
 
         GRNCreateWithDetailDTO returnGRNCreateWithDetailDTO = CustomGRNCreateMapper.INSTANCE.toDto(goodsReceivedNote);
-        List<IncomingDetailsCreateDto> incomingDetailsCreateDtoList = new ArrayList<>();
+        List<IncomingDetailsCreateDTO> incomingDetailsCreateDTOList = new ArrayList<>();
         for(IncomingDetail ins : goodsReceivedNote.getIncomingDetail()){
-            IncomingDetailsCreateDto incomingDetailsCreateDto = incomingDetailMapper.toReturnDto(ins);
-            incomingDetailsCreateDtoList.add(incomingDetailsCreateDto);
+            IncomingDetailsCreateDTO incomingDetailsCreateDto = incomingDetailMapper.toReturnDto(ins);
+            incomingDetailsCreateDTOList.add(incomingDetailsCreateDto);
         }
-        returnGRNCreateWithDetailDTO.setIncomingDetailsCreateDtoList(incomingDetailsCreateDtoList);
+        returnGRNCreateWithDetailDTO.setIncomingDetailsCreateDTOList(incomingDetailsCreateDTOList);
 
         return returnGRNCreateWithDetailDTO;
     }

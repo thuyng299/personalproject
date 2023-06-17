@@ -1,12 +1,12 @@
 package com.nonit.personalproject.rest;
 
 import com.nonit.personalproject.dto.*;
+import com.nonit.personalproject.entity.IncomingDetail;
 import com.nonit.personalproject.serviceimpl.IncomingDetailServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -94,7 +94,6 @@ public class IncomingsDetailResource implements IncomingsDetailAPI{
     public ResponseEntity<IncomingsDetailDTO> updateIncomingsDetail(Long incomingsId, IncomingsDetailUpdateDTO incomingsDetailUpdateDTO) {
         return ResponseEntity.ok().body(incomingsDetailServiceImpl.updateIncomingsDetail(incomingsId, incomingsDetailUpdateDTO));
     }
-
 //    @Override
 //    public ResponseEntity<List<IncomingsProductStatDTO>> getIncomingsAmountOfProduct(Long inputProductId) {
 //        return ResponseEntity.ok(incomingsDetailServiceImpl.getIncomingsAmountOfProduct(inputProductId));

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class IncomingDetailsCreateDto {
+public class IncomingDetailsCreateDTO {
     private Double amount;
     private Double cost;
     private Double remainingAmount;

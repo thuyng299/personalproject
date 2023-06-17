@@ -2,34 +2,31 @@ package com.nonit.personalproject.serviceimpl;
 
 import com.nonit.personalproject.dto.*;
 import com.nonit.personalproject.entity.*;
-import com.nonit.personalproject.exception.ResponseException;
 import com.nonit.personalproject.exception.WarehouseException;
 import com.nonit.personalproject.mapper.IncomingDetailMapper;
 import com.nonit.personalproject.repository.GoodsReceivedNoteRepository;
-import com.nonit.personalproject.repository.IncomingsDetailRepository;
+import com.nonit.personalproject.repository.IncomingDetailRepository;
 import com.nonit.personalproject.repository.ProductRepository;
 import com.nonit.personalproject.repository.WarehouseAreaRepository;
 import com.nonit.personalproject.service.IncomingDetailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class IncomingDetailServiceImpl implements IncomingDetailService {
-    private final IncomingsDetailRepository incomingsDetailRepository;
+    private final IncomingDetailRepository incomingDetailRepository;
     private final ProductRepository productRepository;
     private final WarehouseAreaRepository warehouseAreaRepository;
     private final GoodsReceivedNoteRepository goodsReceivedNoteRepository;
     private final IncomingDetailMapper incomingDetailMapper = IncomingDetailMapper.INSTANCE;
     @Override
     public List<IncomingsDetailDTO> getAllIncomingsDetail() {
-        List<IncomingDetail> incomingDetails = incomingsDetailRepository.findAll();
+        List<IncomingDetail> incomingDetails = incomingDetailRepository.findAll();
         if (incomingDetails.isEmpty()){
             throw WarehouseException.IncomingsDetailNotFound();
         }
@@ -38,15 +35,17 @@ public class IncomingDetailServiceImpl implements IncomingDetailService {
 
     @Override
     public IncomingsDetailDTO findIncomingsDetailById(Long incomingsId) {
-        IncomingDetail incomingDetail = incomingsDetailRepository.findById(incomingsId).orElseThrow(WarehouseException::IncomingsDetailNotFound);
+        IncomingDetail incomingDetail = incomingDetailRepository.findById(incomingsId).orElseThrow(WarehouseException::IncomingsDetailNotFound);
         return incomingDetailMapper.toDto(incomingDetail);
     }
 
     @Override
     public void deleteIncomingsDetail(Long incomingsId) {
         log.info("delete incomings detail by id {}", incomingsId);
-        incomingsDetailRepository.deleteById(incomingsId);
+        incomingDetailRepository.deleteById(incomingsId);
     }
+
+
     // Incomings amount for each product before input date
 //    @Override
 //    public List<IncomingsAmountStatsDTO> getNumberOfProductIncomings(LocalDate date) {
@@ -134,7 +133,7 @@ public class IncomingDetailServiceImpl implements IncomingDetailService {
     @Override
     public IncomingsDetailDTO updateIncomingsDetail(Long incomingsId, IncomingsDetailUpdateDTO incomingsDetailUpdateDTO) {
         log.info("update incomings detail {}", incomingsId);
-        IncomingDetail incomingDetail = incomingsDetailRepository.findById(incomingsId).orElseThrow(WarehouseException::IncomingsDetailNotFound);
+        IncomingDetail incomingDetail = incomingDetailRepository.findById(incomingsId).orElseThrow(WarehouseException::IncomingsDetailNotFound);
         if (incomingsDetailUpdateDTO.getIncomingsAmount() <= 0){
             throw WarehouseException.badRequest("InvalidIncomingsAmount", "Amount cannot be 0 or below 0!");
         }
@@ -142,7 +141,7 @@ public class IncomingDetailServiceImpl implements IncomingDetailService {
             throw WarehouseException.badRequest("InvalidProductCost", "Product cost cannot below 0!");
         }
         incomingDetailMapper.mapFromDto(incomingsDetailUpdateDTO, incomingDetail);
-        return incomingDetailMapper.toDto(incomingsDetailRepository.save(incomingDetail));
+        return incomingDetailMapper.toDto(incomingDetailRepository.save(incomingDetail));
     }
 
 //    @Override

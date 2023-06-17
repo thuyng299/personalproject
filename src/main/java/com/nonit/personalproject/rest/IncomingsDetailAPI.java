@@ -1,14 +1,12 @@
 package com.nonit.personalproject.rest;
 
 import com.nonit.personalproject.dto.*;
-import org.springframework.format.annotation.DateTimeFormat;
+import com.nonit.personalproject.entity.IncomingDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @RequestMapping(value = "/incomingsdetails")
 public interface IncomingsDetailAPI {
@@ -78,6 +76,7 @@ public interface IncomingsDetailAPI {
     @PutMapping("/{incomingsId}")
     ResponseEntity<IncomingsDetailDTO> updateIncomingsDetail(@PathVariable("incomingsId") Long incomingsId,
                                                              @RequestBody IncomingsDetailUpdateDTO incomingsDetailUpdateDTO);
+
 
 //    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
 //    @GetMapping("/incomings-product")

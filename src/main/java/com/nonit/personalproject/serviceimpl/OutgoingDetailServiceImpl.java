@@ -19,7 +19,7 @@ public class OutgoingDetailServiceImpl implements OutgoingDetailService {
     private final OutgoingDetailRepository outgoingDetailRepository;
     private final ProductRepository productRepository;
     private final GoodsDeliveryNoteRepository goodsDeliveryNoteRepository;
-    private final IncomingsDetailRepository incomingsDetailRepository;
+    private final IncomingDetailRepository incomingDetailRepository;
     private final WarehouseAreaRepository warehouseAreaRepository;
     private final OutgoingDetailMapper outgoingDetailMapper = OutgoingDetailMapper.INSTANCE;
 

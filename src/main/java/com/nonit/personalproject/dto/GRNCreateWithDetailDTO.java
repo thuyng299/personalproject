@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -21,5 +20,5 @@ public class GRNCreateWithDetailDTO {
     private Long employeeId;
     private String record;
     // Incoming details
-    private List<IncomingDetailsCreateDto> incomingDetailsCreateDtoList;
+    private List<IncomingDetailsCreateDTO> incomingDetailsCreateDTOList;
 }
