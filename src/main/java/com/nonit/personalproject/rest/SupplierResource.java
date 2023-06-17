@@ -41,8 +41,8 @@ public class SupplierResource implements SupplierAPI{
     }
 
     @Override
-    public ResponseEntity<SupplierDTO> findByName(String supplierName) {
-        return ResponseEntity.ok(supplierServiceImpl.findByName(supplierName));
+    public ResponseEntity<List<SupplierDTO>> findByNameIgnoreCaseContaining(String supplierName) {
+        return ResponseEntity.ok(supplierServiceImpl.findByNameIgnoreCaseContaining(supplierName));
     }
 
 //    @Override

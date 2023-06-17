@@ -6,6 +6,7 @@ import com.nonit.personalproject.dto.CustomerDTO;
 import com.nonit.personalproject.dto.CustomerStatsDTO;
 import com.nonit.personalproject.entity.Country;
 import com.nonit.personalproject.entity.Customer;
+import com.nonit.personalproject.entity.Supplier;
 import com.nonit.personalproject.exception.WarehouseException;
 import com.nonit.personalproject.mapper.CustomerMapper;
 import com.nonit.personalproject.repository.CountryRepository;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -76,70 +78,6 @@ public class CustomerServiceImpl implements CustomerService {
         customer = customerRepository.save(customer);
         return customerMapper.toDto(customer);
     }
-
-    @Override
-    public void deleteCustomer(Long customerId) {
-        log.info("delete customer by id {}", customerId);
-        customerRepository.deleteById(customerId);
-    }
-
-//    @Override
-//    public List<CustomerStatsDTO> getCustomerAndItsProduct(String inputName) {
-//        if (inputName == null || inputName.isBlank()){
-//            throw WarehouseException.badRequest("InvalidName", "Customer name must not be null!");
-//        }
-//        inputName = "%" + inputName + "%";
-//        return customerRepository.getCustomerAndItsProduct(inputName);
-//    }
-//
-//    @Override
-//    public List<CustomerStatsDTO> getProductAndItsCustomers(String inputProductName) {
-//        if (inputProductName == null || inputProductName.isBlank()){
-//            throw WarehouseException.badRequest("InvalidName", "Product name must not be null!");
-//        }
-//        inputProductName = "%" + inputProductName + "%";
-//        return customerRepository.getProductAndItsCustomers(inputProductName);
-//    }
-//
-//    @Override
-//    public List<CustomerAndProductStatsDTO> getCustomersAndTotalSalesTime() {
-//        return customerRepository.getCustomersAndTotalSalesTime();
-//    }
-//
-//    @Override
-//    public List<CustomerAndProductStatsDTO> getCustomersAndTotalSalesTimeBetweenDates(LocalDate fromDate, LocalDate toDate) {
-//        if (fromDate.isAfter(LocalDate.now()) || toDate.isAfter(LocalDate.now())){
-//            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
-//        }
-//        return customerRepository.getCustomersAndTotalSalesTimeBetweenDates(fromDate, toDate);
-//    }
-//
-//    @Override
-//    public CustomerAndProductStatsDTO getCustomerAndTotalAmountBetweenDates(Long customerId, LocalDate fromDate, LocalDate toDate) {
-//        Customer customer = customerRepository.findById(customerId).orElseThrow(WarehouseException::CustomerNotFound);
-//        if (fromDate.isAfter(LocalDate.now()) || toDate.isAfter(LocalDate.now())){
-//            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
-//        }
-//        return customerRepository.getCustomerAndTotalAmountBetweenDates(customerId, fromDate, toDate);
-//    }
-//
-//    @Override
-//    public CustomerAndProductStatsDTO getCustomerAndTotalAmountBeforeDate(Long customerId, LocalDate beforeDate) {
-//        Customer customer = customerRepository.findById(customerId).orElseThrow(WarehouseException::CustomerNotFound);
-//        if (beforeDate.isAfter(LocalDate.now())){
-//            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
-//        }
-//        return customerRepository.getCustomerAndTotalAmountBeforeDate(customerId, beforeDate);
-//    }
-//
-//    @Override
-//    public List<CustomerAndProductStatsDTO> getCustomersAndTotalSalesTimeBeforeDate(LocalDate beforeDate) {
-//        if (beforeDate.isAfter(LocalDate.now())){
-//            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
-//        }
-//        return customerRepository.getCustomersAndTotalSalesTimeBeforeDate(beforeDate);
-//    }
-
     @Override
     public CustomerDTO updateCustomer(Long customerId, CustomerCreateDTO customerCreateDTO) {
         log.info("update customer by id {}", customerId);
@@ -159,4 +97,76 @@ public class CustomerServiceImpl implements CustomerService {
         customerMapper.mapFromDto(customerCreateDTO, customer);
         return customerMapper.toDto(customerRepository.save(customer));
     }
+    @Override
+    public void deleteCustomer(Long customerId) {
+        log.info("delete customer by id {}", customerId);
+        customerRepository.deleteById(customerId);
+    }
+
+    @Override
+    public List<CustomerDTO> findByNameContainingIgnoreCase(String customerName) {
+        List<Customer> customers = customerRepository.findByNameContainingIgnoreCase(customerName);
+        if (customerName == null || customerName.trim().isBlank() || customerName.isEmpty()){
+            throw WarehouseException.badRequest("InvalidName", "Supplier name cannot be null!");
+        }
+        return customerMapper.toDtos(customers);
+    }
+
+    @Override
+    public List<CustomerStatsDTO> getCustomerAndItsProduct(String inputName) {
+        if (inputName == null || inputName.isBlank()){
+            throw WarehouseException.badRequest("InvalidName", "Customer name must not be null!");
+        }
+        inputName = "%" + inputName + "%";
+        return customerRepository.getCustomerAndItsProduct(inputName);
+    }
+
+    @Override
+    public List<CustomerStatsDTO> getProductAndItsCustomers(String inputProductName) {
+        if (inputProductName == null || inputProductName.isBlank()){
+            throw WarehouseException.badRequest("InvalidName", "Product name must not be null!");
+        }
+        inputProductName = "%" + inputProductName + "%";
+        return customerRepository.getProductAndItsCustomers(inputProductName);
+    }
+
+    @Override
+    public List<CustomerAndProductStatsDTO> getCustomersAndTotalSalesTime() {
+        return customerRepository.getCustomersAndTotalSalesTime();
+    }
+
+    @Override
+    public List<CustomerAndProductStatsDTO> getCustomersAndTotalSalesTimeBetweenDates(LocalDateTime fromDate, LocalDateTime toDate) {
+        if (fromDate.isAfter(LocalDateTime.now()) || toDate.isAfter(LocalDateTime.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
+        }
+        return customerRepository.getCustomersAndTotalSalesTimeBetweenDates(fromDate, toDate);
+    }
+
+    @Override
+    public CustomerAndProductStatsDTO getCustomerAndTotalAmountBetweenDates(Long customerId, LocalDate fromDate, LocalDate toDate) {
+        Customer customer = customerRepository.findById(customerId).orElseThrow(WarehouseException::CustomerNotFound);
+        if (fromDate.isAfter(LocalDate.now()) || toDate.isAfter(LocalDate.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
+        }
+        return customerRepository.getCustomerAndTotalAmountBetweenDates(customerId, fromDate, toDate);
+    }
+
+    @Override
+    public CustomerAndProductStatsDTO getCustomerAndTotalAmountBeforeDate(Long customerId, LocalDate beforeDate) {
+        Customer customer = customerRepository.findById(customerId).orElseThrow(WarehouseException::CustomerNotFound);
+        if (beforeDate.isAfter(LocalDate.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
+        }
+        return customerRepository.getCustomerAndTotalAmountBeforeDate(customerId, beforeDate);
+    }
+
+    @Override
+    public List<CustomerAndProductStatsDTO> getCustomersAndTotalSalesTimeBeforeDate(LocalDate beforeDate) {
+        if (beforeDate.isAfter(LocalDate.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
+        }
+        return customerRepository.getCustomersAndTotalSalesTimeBeforeDate(beforeDate);
+    }
+
 }

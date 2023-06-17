@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface SupplierRepository extends JpaRepository<Supplier, Long> {
-    Supplier findByName (String supplierName);
+    List<Supplier> findByNameIgnoreCaseContaining (String supplierName);
     Boolean existsByCode (String supplierCode);
     Boolean existsByName (String supplierName);
     Boolean existsByEmail (String supplierEmail);

@@ -11,7 +11,7 @@ public interface SupplierService {
     SupplierDTO findSupplierById (Long supplierId);
     SupplierDTO createSupplier (Long countryId, SupplierCreateDTO supplierCreateDTO);
     void deleteSupplier (Long supplierId);
-    SupplierDTO findByName (String supplierName);
+    List<SupplierDTO> findByNameIgnoreCaseContaining (String supplierName);
 //    List<SupplierStatsDTO> getSupplierAndItsProduct(String inputName);
 //    List<SupplierStatsDTO> getProductAndItsSuppliers (String inputProductName);
 //    List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTime ();

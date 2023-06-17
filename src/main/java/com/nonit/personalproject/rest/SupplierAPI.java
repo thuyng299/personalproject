@@ -29,7 +29,7 @@ public interface SupplierAPI {
     ResponseEntity<Void> deleteSupplier(@PathVariable("supplierId") Long supplierId);
 
     @GetMapping("/name")
-    ResponseEntity<SupplierDTO> findByName(@RequestParam("supplierName") String supplierName);
+    ResponseEntity<List<SupplierDTO>> findByNameIgnoreCaseContaining(@RequestParam("supplierName") String supplierName);
 
 //    @GetMapping("/supplier-products") // localhost:8080/suppliers/supplier-products?inputName=solagri
 //    ResponseEntity<List<SupplierStatsDTO>> getSupplierAndItsProduct(@RequestParam("inputName") String inputName);

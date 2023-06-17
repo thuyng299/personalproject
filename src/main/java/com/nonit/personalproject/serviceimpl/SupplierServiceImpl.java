@@ -88,12 +88,12 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public SupplierDTO findByName(String supplierName) {
-        Supplier supplier = supplierRepository.findByName(supplierName);
+    public List<SupplierDTO> findByNameIgnoreCaseContaining(String supplierName) {
+        List<Supplier> supplier = supplierRepository.findByNameIgnoreCaseContaining(supplierName);
         if (supplierName == null || supplierName.trim().isBlank() || supplierName.isEmpty()){
             throw WarehouseException.badRequest("InvalidName", "Supplier name cannot be null!");
         }
-        return supplierMapper.toDto(supplier);
+        return supplierMapper.toDtos(supplier);
     }
 
 //    @Override
