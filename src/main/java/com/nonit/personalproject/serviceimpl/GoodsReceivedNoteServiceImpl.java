@@ -69,10 +69,10 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
                 .code(grnCreateWithDetailDTO.getSupplierCode() + LocalDateTime.now().getMonthValue() + LocalDateTime.now().getDayOfMonth())
                 .build();
 
+        // Append the count to the code
         long count = goodsReceivedNoteRepository.countByCode(goodsReceivedNote.getCode());
 
         if (count > 0) {
-            // Append the count to the code
             String newCode = goodsReceivedNote.getCode() + "-" + count;
             goodsReceivedNote.setCode(newCode);
         }
