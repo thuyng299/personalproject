@@ -4,20 +4,22 @@ import com.nonit.personalproject.dto.*;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface SupplierService {
     List<SupplierDTO> getAllSupplier();
     SupplierDTO findSupplierById (Long supplierId);
     SupplierDTO createSupplier (Long countryId, SupplierCreateDTO supplierCreateDTO);
+    SupplierDTO updateSupplier (Long supplierId, SupplierCreateDTO supplierCreateDTO);
     void deleteSupplier (Long supplierId);
     List<SupplierDTO> findByNameIgnoreCaseContaining (String supplierName);
-//    List<SupplierStatsDTO> getSupplierAndItsProduct(String inputName);
-//    List<SupplierStatsDTO> getProductAndItsSuppliers (String inputProductName);
-//    List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTime ();
-//    List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTimeBetweenDates( LocalDate fromDate, LocalDate toDate);
-//    SupplierAndProductStatsDTO getSupplierAndTotalAmountBetweenDates(Long supplierId, LocalDate fromDate, LocalDate toDate);
-//    SupplierAndProductStatsDTO getSupplierAndTotalAmountBeforeDate(Long supplierId, LocalDate beforeDate);
-//    List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTimeBeforeDate(LocalDate beforeDate);
-    SupplierDTO updateSupplier (Long supplierId, SupplierCreateDTO supplierCreateDTO);
+    List<SupplierStatsDTO> getSupplierAndItsProduct(String inputName);
+    List<SupplierStatsDTO> getProductAndItsSuppliers (String inputProductName);
+    List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTime ();
+    List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTimeBetweenDates(LocalDateTime fromDate, LocalDateTime toDate);
+    SupplierAndProductStatsDTO getSupplierAndTotalAmountBetweenDates(Long supplierId, LocalDateTime fromDate, LocalDateTime toDate);
+    SupplierAndProductStatsDTO getSupplierAndTotalAmountBeforeDate(Long supplierId, LocalDateTime beforeDate);
+    List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTimeBeforeDate(LocalDateTime beforeDate);
+
 }

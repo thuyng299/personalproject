@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -35,6 +37,11 @@ public class SupplierResource implements SupplierAPI{
     }
 
     @Override
+    public ResponseEntity<SupplierDTO> updateSupplier(Long supplierId, SupplierCreateDTO supplierCreateDTO) {
+        return ResponseEntity.ok().body(supplierServiceImpl.updateSupplier(supplierId,supplierCreateDTO));
+    }
+
+    @Override
     public ResponseEntity<Void> deleteSupplier(Long supplierId) {
         supplierServiceImpl.deleteSupplier(supplierId);
         return ResponseEntity.noContent().build();
@@ -45,43 +52,44 @@ public class SupplierResource implements SupplierAPI{
         return ResponseEntity.ok(supplierServiceImpl.findByNameIgnoreCaseContaining(supplierName));
     }
 
-//    @Override
-//    public ResponseEntity<List<SupplierStatsDTO>> getSupplierAndItsProduct(String inputName) {
-//        return ResponseEntity.ok(supplierServiceImpl.getSupplierAndItsProduct(inputName));
-//    }
-//
-//    @Override
-//    public ResponseEntity<List<SupplierStatsDTO>> getProductAndItsSuppliers(String inputProductName) {
-//        return ResponseEntity.ok(supplierServiceImpl.getProductAndItsSuppliers(inputProductName));
-//    }
-//
-//    @Override
-//    public ResponseEntity<List<SupplierAndProductStatsDTO>> getSuppliersAndTotalPurchaseTime() {
-//        return ResponseEntity.ok(supplierServiceImpl.getSuppliersAndTotalPurchaseTime());
-//    }
-//
-//    @Override
-//    public ResponseEntity<List<SupplierAndProductStatsDTO>> getSuppliersAndTotalPurchaseTimeBetweenDates(LocalDate fromDate, LocalDate toDate) {
-//        return ResponseEntity.ok(supplierServiceImpl.getSuppliersAndTotalPurchaseTimeBetweenDates(fromDate, toDate));
-//    }
-//
-//    @Override
-//    public ResponseEntity<SupplierAndProductStatsDTO> getSupplierAndTotalAmountBetweenDates(Long supplierId, LocalDate fromDate, LocalDate toDate) {
-//        return ResponseEntity.ok(supplierServiceImpl.getSupplierAndTotalAmountBetweenDates(supplierId, fromDate, toDate));
-//    }
-//
-//    @Override
-//    public ResponseEntity<SupplierAndProductStatsDTO> getSupplierAndTotalAmountBeforeDate(Long supplierId, LocalDate beforeDate) {
-//        return ResponseEntity.ok(supplierServiceImpl.getSupplierAndTotalAmountBeforeDate(supplierId, beforeDate));
-//    }
-//
-//    @Override
-//    public ResponseEntity<List<SupplierAndProductStatsDTO>> getSuppliersAndTotalPurchaseTimeBeforeDate(LocalDate beforeDate) {
-//        return ResponseEntity.ok(supplierServiceImpl.getSuppliersAndTotalPurchaseTimeBeforeDate(beforeDate));
-//    }
+    @Override
+    public ResponseEntity<List<SupplierStatsDTO>> getSupplierAndItsProduct(String inputName) {
+        return ResponseEntity.ok(supplierServiceImpl.getSupplierAndItsProduct(inputName));
+    }
 
     @Override
-    public ResponseEntity<SupplierDTO> updateSupplier(Long supplierId, SupplierCreateDTO supplierCreateDTO) {
-        return ResponseEntity.ok().body(supplierServiceImpl.updateSupplier(supplierId,supplierCreateDTO));
+    public ResponseEntity<List<SupplierStatsDTO>> getProductAndItsSuppliers(String inputProductName) {
+        return ResponseEntity.ok(supplierServiceImpl.getProductAndItsSuppliers(inputProductName));
+    }
+
+    @Override
+    public ResponseEntity<List<SupplierAndProductStatsDTO>> getSuppliersAndTotalPurchaseTime() {
+        return ResponseEntity.ok(supplierServiceImpl.getSuppliersAndTotalPurchaseTime());
+    }
+
+    @Override
+    public ResponseEntity<List<SupplierAndProductStatsDTO>> getSuppliersAndTotalPurchaseTimeBetweenDates(LocalDate fromDate, LocalDate toDate) {
+        LocalDateTime fromDateTime = LocalDateTime.of(fromDate, LocalTime.MIN);
+        LocalDateTime toDateTime = LocalDateTime.of(toDate, LocalTime.MAX);
+        return ResponseEntity.ok(supplierServiceImpl.getSuppliersAndTotalPurchaseTimeBetweenDates(fromDateTime, toDateTime));
+    }
+
+    @Override
+    public ResponseEntity<SupplierAndProductStatsDTO> getSupplierAndTotalAmountBetweenDates(Long supplierId, LocalDate fromDate, LocalDate toDate) {
+        LocalDateTime fromDateTime = LocalDateTime.of(fromDate, LocalTime.MIN);
+        LocalDateTime toDateTime = LocalDateTime.of(toDate, LocalTime.MAX);
+        return ResponseEntity.ok(supplierServiceImpl.getSupplierAndTotalAmountBetweenDates(supplierId, fromDateTime, toDateTime));
+    }
+
+    @Override
+    public ResponseEntity<SupplierAndProductStatsDTO> getSupplierAndTotalAmountBeforeDate(Long supplierId, LocalDate beforeDate) {
+        LocalDateTime beforeDateTime = LocalDateTime.of(beforeDate, LocalTime.MAX);
+        return ResponseEntity.ok(supplierServiceImpl.getSupplierAndTotalAmountBeforeDate(supplierId, beforeDateTime));
+    }
+
+    @Override
+    public ResponseEntity<List<SupplierAndProductStatsDTO>> getSuppliersAndTotalPurchaseTimeBeforeDate(LocalDate beforeDate) {
+        LocalDateTime beforeDateTime = LocalDateTime.of(beforeDate, LocalTime.MAX);
+        return ResponseEntity.ok(supplierServiceImpl.getSuppliersAndTotalPurchaseTimeBeforeDate(beforeDateTime));
     }
 }

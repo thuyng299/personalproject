@@ -7,6 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -15,48 +19,41 @@ public class OutgoingDetailResource implements OutgoingDetailAPI {
     private final OutgoingDetailServiceImpl outgoingDetailServiceImpl;
 
     @Override
-    public ResponseEntity<OutgoingDetailDTO> createOutcomingsDetail(Long gdnId, OutgoingDetailCreateDTO outgoingDetailCreateDTO, Optional<Long> productId) {
-        OutgoingDetailDTO createdoutcomingsDetailDTO;
-//        if (productId.isPresent()){
-            createdoutcomingsDetailDTO = outgoingDetailServiceImpl.createOutcomingsDetail(gdnId, outgoingDetailCreateDTO, productId.get());
-//        }else {
-//            createdoutcomingsDetailDTO = outcomingsDetailServiceImpl.createOutcomingsDetail(gdnId, outgoingDetailCreateDTO);
-//        }
-        return ResponseEntity.created(URI.create("/outcomingsdetails" + createdoutcomingsDetailDTO.getId())).body(createdoutcomingsDetailDTO);
+    public ResponseEntity<List<OutgoingAmountStatsDTO>> getNumberOfProductOutgoing(LocalDate date) {
+        LocalDateTime formattedDateTime = LocalDateTime.of(date, LocalTime.MAX);
+        return ResponseEntity.ok(outgoingDetailServiceImpl.getNumberOfProductOutgoing(formattedDateTime));
     }
 
-//    @Override
-//    public ResponseEntity<List<OutgoingAmountStatsDTO>> getNumberOfProductOutgoings(LocalDate date) {
-//        return ResponseEntity.ok(outcomingsDetailServiceImpl.getNumberOfProductOutgoings(date));
-//    }
-//
-//    @Override
-//    public ResponseEntity<List<SalesTimeStatDTO>> getNumberOfSalesTimeAndAmount() {
-//        return ResponseEntity.ok(outcomingsDetailServiceImpl.getNumberOfSalesTimeAndAmount());
-//    }
-//
-//    @Override
-//    public ResponseEntity<SalesTimeStatDTO> getNumberOfSalesTimeAndAmountOfSpecificProduct(Long inputId) {
-//        return ResponseEntity.ok(outcomingsDetailServiceImpl.getNumberOfSalesTimeAndAmountOfSpecificProduct(inputId));
-//    }
-//
-//    @Override
-//    public ResponseEntity<SalesTimeStatDTO> getNumberOfSalesTimeAndAmountOfSpecificProductAndDate(Long inputId, LocalDate inputDate) {
-//        return ResponseEntity.ok(outcomingsDetailServiceImpl.getNumberOfSalesTimeAndAmountOfSpecificProductAndDate(inputId, inputDate));
-//    }
-//
-//    @Override
-//    public ResponseEntity<List<SalesTimeStatDTO>> getNumberOfSalesTimeAndAmountBetweenDates(LocalDate fromDate, LocalDate toDate) {
-//        return ResponseEntity.ok(outcomingsDetailServiceImpl.getNumberOfSalesTimeAndAmountBetweenDates(fromDate, toDate));
-//    }
-//
-//    @Override
-//    public ResponseEntity<List<Object[]>> getTop5Customers(String inputYear) {
-//        return ResponseEntity.ok(outcomingsDetailServiceImpl.getTop5Customers(inputYear));
-//    }
-//
-//    @Override
-//    public ResponseEntity<List<PriceStatsDTO>> getProductsTotalPrice() {
-//        return ResponseEntity.ok(outcomingsDetailServiceImpl.getProductsTotalPrice());
-//    }
+    @Override
+    public ResponseEntity<List<SalesTimeStatDTO>> getNumberOfSalesTimeAndAmount() {
+        return ResponseEntity.ok(outgoingDetailServiceImpl.getNumberOfSalesTimeAndAmount());
+    }
+
+    @Override
+    public ResponseEntity<SalesTimeStatDTO> getNumberOfSalesTimeAndAmountOfSpecificProduct(Long inputId) {
+        return ResponseEntity.ok(outgoingDetailServiceImpl.getNumberOfSalesTimeAndAmountOfSpecificProduct(inputId));
+    }
+
+    @Override
+    public ResponseEntity<SalesTimeStatDTO> getNumberOfSalesTimeAndAmountOfSpecificProductAndDate(Long inputId, LocalDate inputDate) {
+        LocalDateTime formattedDateTime = LocalDateTime.of(inputDate, LocalTime.MAX);
+        return ResponseEntity.ok(outgoingDetailServiceImpl.getNumberOfSalesTimeAndAmountOfSpecificProductAndDate(inputId, formattedDateTime));
+    }
+
+    @Override
+    public ResponseEntity<List<SalesTimeStatDTO>> getNumberOfSalesTimeAndAmountBetweenDates(LocalDate fromDate, LocalDate toDate) {
+        LocalDateTime fromDateTime = LocalDateTime.of(fromDate, LocalTime.MIN);
+        LocalDateTime toDateTime = LocalDateTime.of(toDate, LocalTime.MAX);
+        return ResponseEntity.ok(outgoingDetailServiceImpl.getNumberOfSalesTimeAndAmountBetweenDates(fromDateTime, toDateTime));
+    }
+
+    @Override
+    public ResponseEntity<List<Object[]>> getTop5Customers(String inputYear) {
+        return ResponseEntity.ok(outgoingDetailServiceImpl.getTop5Customers(inputYear));
+    }
+
+    @Override
+    public ResponseEntity<List<PriceStatsDTO>> getProductsTotalPrice() {
+        return ResponseEntity.ok(outgoingDetailServiceImpl.getProductsTotalPrice());
+    }
 }

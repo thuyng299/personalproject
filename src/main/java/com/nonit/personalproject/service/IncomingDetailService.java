@@ -1,28 +1,45 @@
 package com.nonit.personalproject.service;
 
 import com.nonit.personalproject.dto.*;
-import com.nonit.personalproject.entity.IncomingDetail;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IncomingDetailService {
-    List<IncomingsDetailDTO> getAllIncomingsDetail();
-    IncomingsDetailDTO findIncomingsDetailById (Long incomingsId);
-    void deleteIncomingsDetail (Long incomingsId);
-//    List<IncomingsAmountStatsDTO> getNumberOfProductIncomings(LocalDate date);
-//    List<PurchaseTimeStatDTO> getNumberOfPurchaseTimeAndAmount();
-//    PurchaseTimeStatDTO getPurchaseTimeAndAmountOfSpecificProduct(Long inputId);
-//    PurchaseTimeStatDTO getPurchaseTimeAndAmountOfSpecificProductAndDate(Long inputId, LocalDate inputDate);
-//    List<PurchaseTimeStatDTO> getPurchaseTimeAndAmountBetweenDates(LocalDate fromDate, LocalDate toDate);
-//    List<Object[]> getCountDaysAndAmountBeforeExpire (Long inputCountDays);
-//    List<ProductNearlyOutOfStockStatDTO> getProductNearlyOutOfStock (Double inputAmount);
-//    List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfRawMaterial();
-//    List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfFinishedGood();
-//    List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfRawMaterialBeforeDate(LocalDate inputDate);
-//    List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfFinishedGoodBeforeDate(LocalDate inputDate);
-//    List<CostStatsDTO> getProductsTotalCost();
-    IncomingsDetailDTO updateIncomingsDetail (Long grnId, IncomingsDetailUpdateDTO incomingsDetailUpdateDTO);
-//    List<IncomingsProductStatDTO> getIncomingsAmountOfProduct (Long inputProductId);
-//    TotalStockOfProductStatDTO getTotalStockAmountOfProduct(Long inputProductId);
+    List<IncomingDetailDTO> getAllIncomingDetail();
+
+    IncomingDetailDTO findIncomingDetailById(Long incomingId);
+
+    void deleteIncomingDetail(Long incomingId);
+
+    IncomingDetailDTO updateIncomingDetail(Long grnId, IncomingDetailUpdateDTO incomingDetailUpdateDTO);
+
+    List<IncomingAmountStatsDTO> getNumberOfProductIncoming(LocalDateTime date);
+
+    List<PurchaseTimeStatDTO> getNumberOfPurchaseTimeAndAmount();
+
+    PurchaseTimeStatDTO getPurchaseTimeAndAmountOfSpecificProduct(Long inputId);
+
+    PurchaseTimeStatDTO getPurchaseTimeAndAmountOfSpecificProductAndDate(Long inputId, LocalDateTime inputDate);
+
+    List<PurchaseTimeStatDTO> getPurchaseTimeAndAmountBetweenDates(LocalDateTime fromDate, LocalDateTime toDate);
+
+    List<Object[]> getCountDaysAndAmountBeforeExpire(Long inputCountDays);
+
+    List<ProductNearlyOutOfStockStatDTO> getProductNearlyOutOfStock(Double inputAmount);
+
+    List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfRawMaterial();
+
+    List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfFinishedGood();
+
+    List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfRawMaterialBeforeDate(LocalDateTime inputDate);
+
+    List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfFinishedGoodBeforeDate(LocalDateTime inputDate);
+
+    List<CostStatsDTO> getProductsTotalCost();
+
+    List<IncomingProductStatDTO> getIncomingAmountOfProduct(Long inputProductId);
+
+    TotalStockOfProductStatDTO getTotalStockAmountOfProduct(Long inputProductId);
 }

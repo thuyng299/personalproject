@@ -47,14 +47,14 @@ public interface CustomerAPI {
 
     @GetMapping("/customer-totalamount-fromdate-todate") // localhost:8080/customers/customer-totalamount-fromdate-todate?customerId=19&fromDate=2023-02-02&toDate=2023-02-11
     ResponseEntity<CustomerAndProductStatsDTO> getCustomerAndTotalAmountBetweenDates(@RequestParam("customerId") Long customerId,
-                                                                                     @RequestParam("fromDate") @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss") LocalDateTime fromDate,
-                                                                                     @RequestParam("toDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDateTime toDate);
+                                                                                     @RequestParam("fromDate")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+                                                                                     @RequestParam("toDate")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate);
 
     @GetMapping("/customer-totalamount-beforedate/{customerId}") // localhost:8080/customers/customer-totalamount-beforedate/20?beforeDate=2023-02-19
     ResponseEntity<CustomerAndProductStatsDTO> getCustomerAndTotalAmountBeforeDate(@PathVariable("customerId")Long customerId,
-                                                                                   @RequestParam("beforeDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime beforeDate);
+                                                                                   @RequestParam("beforeDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate beforeDate);
 
     @GetMapping("/customers-beforedate") // localhost:8080/customers/customers-beforedate?beforeDate=2023-01-11
-    ResponseEntity<List<CustomerAndProductStatsDTO>> getCustomersAndTotalSalesTimeBeforeDate(@RequestParam("beforeDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime beforeDate);
+    ResponseEntity<List<CustomerAndProductStatsDTO>> getCustomersAndTotalSalesTimeBeforeDate(@RequestParam("beforeDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate beforeDate);
 
 }

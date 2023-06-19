@@ -2,6 +2,7 @@ package com.nonit.personalproject.serviceimpl;
 
 import com.nonit.personalproject.dto.*;
 import com.nonit.personalproject.entity.*;
+import com.nonit.personalproject.exception.ResponseException;
 import com.nonit.personalproject.exception.WarehouseException;
 import com.nonit.personalproject.mapper.IncomingDetailMapper;
 import com.nonit.personalproject.repository.GoodsReceivedNoteRepository;
@@ -11,8 +12,10 @@ import com.nonit.personalproject.repository.WarehouseAreaRepository;
 import com.nonit.personalproject.service.IncomingDetailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -25,132 +28,130 @@ public class IncomingDetailServiceImpl implements IncomingDetailService {
     private final GoodsReceivedNoteRepository goodsReceivedNoteRepository;
     private final IncomingDetailMapper incomingDetailMapper = IncomingDetailMapper.INSTANCE;
     @Override
-    public List<IncomingsDetailDTO> getAllIncomingsDetail() {
+    public List<IncomingDetailDTO> getAllIncomingDetail() {
         List<IncomingDetail> incomingDetails = incomingDetailRepository.findAll();
         if (incomingDetails.isEmpty()){
-            throw WarehouseException.IncomingsDetailNotFound();
+            throw WarehouseException.IncomingDetailNotFound();
         }
         return incomingDetailMapper.toDtos(incomingDetails);
     }
 
-    @Override
-    public IncomingsDetailDTO findIncomingsDetailById(Long incomingsId) {
-        IncomingDetail incomingDetail = incomingDetailRepository.findById(incomingsId).orElseThrow(WarehouseException::IncomingsDetailNotFound);
+    public IncomingDetailDTO findIncomingDetailById(Long incomingId) {
+        IncomingDetail incomingDetail = incomingDetailRepository.findById(incomingId).orElseThrow(WarehouseException::IncomingDetailNotFound);
         return incomingDetailMapper.toDto(incomingDetail);
     }
 
     @Override
-    public void deleteIncomingsDetail(Long incomingsId) {
-        log.info("delete incomings detail by id {}", incomingsId);
-        incomingDetailRepository.deleteById(incomingsId);
+    public void deleteIncomingDetail(Long incomingId) {
+        log.info("delete incoming detail by id {}", incomingId);
+        incomingDetailRepository.deleteById(incomingId);
     }
 
-
-    // Incomings amount for each product before input date
-//    @Override
-//    public List<IncomingsAmountStatsDTO> getNumberOfProductIncomings(LocalDate date) {
-//        if (date.isAfter(LocalDate.now())){
-//            throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDate.now());
-//        }
-//        return incomingsDetailRepository.getNumberOfProductIncomings(date);
-//    }
-//
-//    @Override
-//    public List<PurchaseTimeStatDTO> getNumberOfPurchaseTimeAndAmount() {
-//        return incomingsDetailRepository.getNumberOfPurchaseTimeAndAmount();
-//    }
-//
-//    @Override
-//    public PurchaseTimeStatDTO getPurchaseTimeAndAmountOfSpecificProduct(Long inputId) {
-//        Product product = productRepository.findById(inputId).orElseThrow(() -> new ResponseException("NotFoundProductId", "Product not found with ID " + inputId, HttpStatus.NOT_FOUND));
-//        return incomingsDetailRepository.getPurchaseTimeAndAmountOfSpecificProduct(inputId);
-//    }
-//
-//    @Override
-//    public PurchaseTimeStatDTO getPurchaseTimeAndAmountOfSpecificProductAndDate(Long inputId, LocalDate inputDate) {
-//        Product product = productRepository.findById(inputId).orElseThrow(() -> new ResponseException("NotFoundProductId", "Product not found with ID " + inputId, HttpStatus.NOT_FOUND));
-//        if (inputDate.isAfter(LocalDate.now())){
-//            throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDate.now());
-//        }
-//        return incomingsDetailRepository.getPurchaseTimeAndAmountOfSpecificProductAndDate(inputId, inputDate);
-//    }
-//
-//    @Override
-//    public List<PurchaseTimeStatDTO> getPurchaseTimeAndAmountBetweenDates(LocalDate fromDate, LocalDate toDate) {
-//        if (fromDate.isAfter(LocalDate.now()) || toDate.isAfter(LocalDate.now())){
-//            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
-//        }
-//        return incomingsDetailRepository.getPurchaseTimeAndAmountBetweenDates(fromDate, toDate);
-//    }
-//
-//    @Override
-//    public List<Object[]> getCountDaysAndAmountBeforeExpire(Long inputCountDays) {
-//        if (inputCountDays <= 0){
-//            throw WarehouseException.badRequest("InvalidCountDays", "Count days cannot be 0 or less than 0");
-//        }
-//        return incomingsDetailRepository.getCountDaysAndAmountBeforeExpire(inputCountDays);
-//    }
-//
-//    @Override
-//    public List<ProductNearlyOutOfStockStatDTO> getProductNearlyOutOfStock(Double inputAmount) {
-//        if (inputAmount < 500){
-//            throw WarehouseException.badRequest("InvalidAmount", "Warehouse stock amount of each product must be greater than 500 kgs");
-//        }
-//        return incomingsDetailRepository.getProductNearlyOutOfStock(inputAmount);
-//    }
-//
-//    @Override
-//    public List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfRawMaterial() {
-//        return incomingsDetailRepository.getTotalStockAmountOfRawMaterial();
-//    }
-//
-//    @Override
-//    public List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfFinishedGood() {
-//        return incomingsDetailRepository.getTotalStockAmountOfFinishedGood();
-//    }
-//
-//    @Override
-//    public List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfRawMaterialBeforeDate(LocalDate inputDate) {
-//        if (inputDate.isAfter(LocalDate.now())){
-//            throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDate.now());
-//        }
-//        return incomingsDetailRepository.getTotalStockAmountOfRawMaterialBeforeDate(inputDate);
-//    }
-//
-//    @Override
-//    public List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfFinishedGoodBeforeDate(LocalDate inputDate) {
-//        if (inputDate.isAfter(LocalDate.now())){
-//            throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDate.now());
-//        }
-//        return incomingsDetailRepository.getTotalStockAmountOfFinishedGoodBeforeDate(inputDate);
-//    }
-//
-//    @Override
-//    public List<CostStatsDTO> getProductsTotalCost() {
-//        return incomingsDetailRepository.getProductsTotalCost();
-//    }
-
     @Override
-    public IncomingsDetailDTO updateIncomingsDetail(Long incomingsId, IncomingsDetailUpdateDTO incomingsDetailUpdateDTO) {
-        log.info("update incomings detail {}", incomingsId);
-        IncomingDetail incomingDetail = incomingDetailRepository.findById(incomingsId).orElseThrow(WarehouseException::IncomingsDetailNotFound);
-        if (incomingsDetailUpdateDTO.getIncomingsAmount() <= 0){
-            throw WarehouseException.badRequest("InvalidIncomingsAmount", "Amount cannot be 0 or below 0!");
+    public IncomingDetailDTO updateIncomingDetail(Long incomingId, IncomingDetailUpdateDTO incomingDetailUpdateDTO) {
+        log.info("update incoming detail {}", incomingId);
+        IncomingDetail incomingDetail = incomingDetailRepository.findById(incomingId).orElseThrow(WarehouseException::IncomingDetailNotFound);
+        if (incomingDetailUpdateDTO.getAmount() <= 0){
+            throw WarehouseException.badRequest("InvalidAmount", "Amount cannot be 0 or below 0!");
         }
-        if (incomingsDetailUpdateDTO.getProductCost() < 0){
+        if (incomingDetailUpdateDTO.getCost() < 0){
             throw WarehouseException.badRequest("InvalidProductCost", "Product cost cannot below 0!");
         }
-        incomingDetailMapper.mapFromDto(incomingsDetailUpdateDTO, incomingDetail);
+        incomingDetailMapper.mapFromDto(incomingDetailUpdateDTO, incomingDetail);
         return incomingDetailMapper.toDto(incomingDetailRepository.save(incomingDetail));
     }
 
-//    @Override
-//    public List<IncomingsProductStatDTO> getIncomingsAmountOfProduct(Long inputProductId) {
-//        return incomingsDetailRepository.getIncomingsAmountOfProduct(inputProductId);
-//    }
-//
-//    @Override
-//    public TotalStockOfProductStatDTO getTotalStockAmountOfProduct(Long inputProductId) {
-//        return incomingsDetailRepository.getTotalStockAmountOfProduct(inputProductId);
-//    }
+//     Incomings amount for each product before input date
+    @Override
+    public List<IncomingAmountStatsDTO> getNumberOfProductIncoming(LocalDateTime date) {
+        if (date.isAfter(LocalDateTime.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDateTime.now());
+        }
+        return incomingDetailRepository.getNumberOfProductIncoming(date);
+    }
+
+    @Override
+    public List<PurchaseTimeStatDTO> getNumberOfPurchaseTimeAndAmount() {
+        return incomingDetailRepository.getNumberOfPurchaseTimeAndAmount();
+    }
+
+    @Override
+    public PurchaseTimeStatDTO getPurchaseTimeAndAmountOfSpecificProduct(Long inputId) {
+        Product product = productRepository.findById(inputId).orElseThrow(() -> new ResponseException("NotFoundProductId", "Product not found with ID " + inputId, HttpStatus.NOT_FOUND));
+        return incomingDetailRepository.getPurchaseTimeAndAmountOfSpecificProduct(inputId);
+    }
+
+    @Override
+    public PurchaseTimeStatDTO getPurchaseTimeAndAmountOfSpecificProductAndDate(Long inputId, LocalDateTime inputDate) {
+        Product product = productRepository.findById(inputId).orElseThrow(() -> new ResponseException("NotFoundProductId", "Product not found with ID " + inputId, HttpStatus.NOT_FOUND));
+        if (inputDate.isAfter(LocalDateTime.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDateTime.now());
+        }
+        return incomingDetailRepository.getPurchaseTimeAndAmountOfSpecificProductAndDate(inputId, inputDate);
+    }
+
+    @Override
+    public List<PurchaseTimeStatDTO> getPurchaseTimeAndAmountBetweenDates(LocalDateTime fromDate, LocalDateTime toDate) {
+        if (fromDate.isAfter(LocalDateTime.now()) || toDate.isAfter(LocalDateTime.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDateTime.now());
+        }
+        return incomingDetailRepository.getPurchaseTimeAndAmountBetweenDates(fromDate, toDate);
+    }
+
+    @Override
+    public List<Object[]> getCountDaysAndAmountBeforeExpire(Long inputCountDays) {
+        if (inputCountDays <= 0){
+            throw WarehouseException.badRequest("InvalidCountDays", "Count days cannot be 0 or less than 0");
+        }
+        return incomingDetailRepository.getCountDaysAndAmountBeforeExpire(inputCountDays);
+    }
+
+    @Override
+    public List<ProductNearlyOutOfStockStatDTO> getProductNearlyOutOfStock(Double inputAmount) {
+        if (inputAmount < 500){
+            throw WarehouseException.badRequest("InvalidAmount", "Warehouse stock amount of each product must be greater than 500 kgs");
+        }
+        return incomingDetailRepository.getProductNearlyOutOfStock(inputAmount);
+    }
+
+    @Override
+    public List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfRawMaterial() {
+        return incomingDetailRepository.getTotalStockAmountOfRawMaterial();
+    }
+
+    @Override
+    public List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfFinishedGood() {
+        return incomingDetailRepository.getTotalStockAmountOfFinishedGood();
+    }
+
+    @Override
+    public List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfRawMaterialBeforeDate(LocalDateTime inputDate) {
+        if (inputDate.isAfter(LocalDateTime.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDateTime.now());
+        }
+        return incomingDetailRepository.getTotalStockAmountOfRawMaterialBeforeDate(inputDate);
+    }
+
+    @Override
+    public List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfFinishedGoodBeforeDate(LocalDateTime inputDate) {
+        if (inputDate.isAfter(LocalDateTime.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDateTime.now());
+        }
+        return incomingDetailRepository.getTotalStockAmountOfFinishedGoodBeforeDate(inputDate);
+    }
+
+    @Override
+    public List<CostStatsDTO> getProductsTotalCost() {
+        return incomingDetailRepository.getProductsTotalCost();
+    }
+
+    @Override
+    public List<IncomingProductStatDTO> getIncomingAmountOfProduct(Long inputProductId) {
+        return incomingDetailRepository.getIncomingAmountOfProduct(inputProductId);
+    }
+
+    @Override
+    public TotalStockOfProductStatDTO getTotalStockAmountOfProduct(Long inputProductId) {
+        return incomingDetailRepository.getTotalStockAmountOfProduct(inputProductId);
+    }
 }

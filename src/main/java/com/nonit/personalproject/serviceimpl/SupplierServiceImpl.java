@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -82,78 +83,6 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public void deleteSupplier(Long supplierId) {
-        log.info("delete supplier by id {}", supplierId);
-        supplierRepository.deleteById(supplierId);
-    }
-
-    @Override
-    public List<SupplierDTO> findByNameIgnoreCaseContaining(String supplierName) {
-        List<Supplier> supplier = supplierRepository.findByNameIgnoreCaseContaining(supplierName);
-        if (supplierName == null || supplierName.trim().isBlank() || supplierName.isEmpty()){
-            throw WarehouseException.badRequest("InvalidName", "Supplier name cannot be null!");
-        }
-        return supplierMapper.toDtos(supplier);
-    }
-
-//    @Override
-//    public List<SupplierStatsDTO> getSupplierAndItsProduct(String inputName) {
-//        if (inputName == null || inputName.isBlank()){
-//            throw WarehouseException.badRequest("InvalidName", "Supplier name must not be null!");
-//        }
-//        inputName = "%" + inputName + "%";
-//        return supplierRepository.getSupplierAndItsProduct(inputName);
-//    }
-//
-//    @Override
-//    public List<SupplierStatsDTO> getProductAndItsSuppliers (String inputProductName) {
-//        if (inputProductName == null || inputProductName.isBlank()){
-//            throw WarehouseException.badRequest("InvalidName", "Product name must not be null!");
-//        }
-//        inputProductName = "%" + inputProductName + "%";
-//        return supplierRepository.getProductAndItsSuppliers(inputProductName);
-//    }
-//
-//    @Override
-//    public List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTime() {
-//        return supplierRepository.getSuppliersAndTotalPurchaseTime();
-//    }
-//
-//    @Override
-//    public List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTimeBetweenDates(LocalDate fromDate, LocalDate toDate) {
-//        if (fromDate.isAfter(LocalDate.now()) || toDate.isAfter(LocalDate.now())){
-//            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
-//        }
-//        return supplierRepository.getSuppliersAndTotalPurchaseTimeBetweenDates(fromDate, toDate);
-//    }
-//
-//    @Override
-//    public SupplierAndProductStatsDTO getSupplierAndTotalAmountBetweenDates(Long supplierId, LocalDate fromDate, LocalDate toDate) {
-//        Supplier supplier = supplierRepository.findById(supplierId).orElseThrow(WarehouseException::SupplierNotFound);
-//        if (fromDate.isAfter(LocalDate.now()) || toDate.isAfter(LocalDate.now())){
-//            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
-//        }
-//        return supplierRepository.getSupplierAndTotalAmountBetweenDates(supplierId, fromDate, toDate);
-//    }
-//
-//    @Override
-//    public SupplierAndProductStatsDTO getSupplierAndTotalAmountBeforeDate(Long supplierId, LocalDate beforeDate) {
-//        Supplier supplier = supplierRepository.findById(supplierId).orElseThrow(WarehouseException::SupplierNotFound);
-//        if (beforeDate.isAfter(LocalDate.now())){
-//            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
-//        }
-//        return supplierRepository.getSupplierAndTotalAmountBeforeDate(supplierId, beforeDate);
-//    }
-//
-//    @Override
-//    public List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTimeBeforeDate(LocalDate beforeDate) {
-//        if (beforeDate.isAfter(LocalDate.now())){
-//            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDate.now());
-//        }
-//        return supplierRepository.getSuppliersAndTotalPurchaseTimeBeforeDate(beforeDate);
-//    }
-
-    @Override
     public SupplierDTO updateSupplier(Long supplierId, SupplierCreateDTO supplierCreateDTO) {
         log.info("update supplier by id {}", supplierId);
         Supplier supplier = supplierRepository.findById(supplierId).orElseThrow(WarehouseException::SupplierNotFound);
@@ -171,5 +100,77 @@ public class SupplierServiceImpl implements SupplierService {
         }
         supplierMapper.mapFromDto(supplierCreateDTO,supplier);
         return supplierMapper.toDto(supplierRepository.save(supplier));
+    }
+
+    @Override
+    public void deleteSupplier(Long supplierId) {
+        log.info("delete supplier by id {}", supplierId);
+        supplierRepository.deleteById(supplierId);
+    }
+
+    @Override
+    public List<SupplierDTO> findByNameIgnoreCaseContaining(String supplierName) {
+        List<Supplier> supplier = supplierRepository.findByNameIgnoreCaseContaining(supplierName);
+        if (supplierName == null || supplierName.trim().isBlank() || supplierName.isEmpty()){
+            throw WarehouseException.badRequest("InvalidName", "Supplier name cannot be null!");
+        }
+        return supplierMapper.toDtos(supplier);
+    }
+
+    @Override
+    public List<SupplierStatsDTO> getSupplierAndItsProduct(String inputName) {
+        if (inputName == null || inputName.isBlank()){
+            throw WarehouseException.badRequest("InvalidName", "Supplier name must not be null!");
+        }
+        inputName = "%" + inputName + "%";
+        return supplierRepository.getSupplierAndItsProduct(inputName);
+    }
+
+    @Override
+    public List<SupplierStatsDTO> getProductAndItsSuppliers (String inputProductName) {
+        if (inputProductName == null || inputProductName.isBlank()){
+            throw WarehouseException.badRequest("InvalidName", "Product name must not be null!");
+        }
+        inputProductName = "%" + inputProductName + "%";
+        return supplierRepository.getProductAndItsSuppliers(inputProductName);
+    }
+
+    @Override
+    public List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTime() {
+        return supplierRepository.getSuppliersAndTotalPurchaseTime();
+    }
+
+    @Override
+    public List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTimeBetweenDates(LocalDateTime fromDate, LocalDateTime toDate) {
+        if (fromDate.isAfter(LocalDateTime.now()) || toDate.isAfter(LocalDateTime.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDateTime.now());
+        }
+        return supplierRepository.getSuppliersAndTotalPurchaseTimeBetweenDates(fromDate, toDate);
+    }
+
+    @Override
+    public SupplierAndProductStatsDTO getSupplierAndTotalAmountBetweenDates(Long supplierId, LocalDateTime fromDate, LocalDateTime toDate) {
+        Supplier supplier = supplierRepository.findById(supplierId).orElseThrow(WarehouseException::SupplierNotFound);
+        if (fromDate.isAfter(LocalDateTime.now()) || toDate.isAfter(LocalDateTime.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDateTime.now());
+        }
+        return supplierRepository.getSupplierAndTotalAmountBetweenDates(supplierId, fromDate, toDate);
+    }
+
+    @Override
+    public SupplierAndProductStatsDTO getSupplierAndTotalAmountBeforeDate(Long supplierId, LocalDateTime beforeDate) {
+        Supplier supplier = supplierRepository.findById(supplierId).orElseThrow(WarehouseException::SupplierNotFound);
+        if (beforeDate.isAfter(LocalDateTime.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDateTime.now());
+        }
+        return supplierRepository.getSupplierAndTotalAmountBeforeDate(supplierId, beforeDate);
+    }
+
+    @Override
+    public List<SupplierAndProductStatsDTO> getSuppliersAndTotalPurchaseTimeBeforeDate(LocalDateTime beforeDate) {
+        if (beforeDate.isAfter(LocalDateTime.now())){
+            throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDateTime.now());
+        }
+        return supplierRepository.getSuppliersAndTotalPurchaseTimeBeforeDate(beforeDate);
     }
 }

@@ -65,26 +65,29 @@ public class CustomerResource implements CustomerAPI{
     }
 
     @Override
-    public ResponseEntity<List<CustomerAndProductStatsDTO>> getCustomersAndTotalSalesTimeBetweenDates(LocalDateTime fromDate, LocalDateTime toDate) {
-//        LocalDateTime fromDateTime = LocalDateTime.of(fromDate, LocalTime.MIN);
-//        LocalDateTime toDateTime = LocalDateTime.of(toDate, LocalTime.MAX);
-
-        return ResponseEntity.ok(customerServiceImpl.getCustomersAndTotalSalesTimeBetweenDates(fromDate, toDate));
+    public ResponseEntity<List<CustomerAndProductStatsDTO>> getCustomersAndTotalSalesTimeBetweenDates(LocalDate fromDate, LocalDate toDate) {
+        LocalDateTime fromDateTime = LocalDateTime.of(fromDate, LocalTime.MIN);
+        LocalDateTime toDateTime = LocalDateTime.of(toDate, LocalTime.MAX);
+        return ResponseEntity.ok(customerServiceImpl.getCustomersAndTotalSalesTimeBetweenDates(fromDateTime, toDateTime));
     }
 
     @Override
-    public ResponseEntity<CustomerAndProductStatsDTO> getCustomerAndTotalAmountBetweenDates(Long customerId, LocalDateTime fromDate, LocalDateTime toDate) {
-        return ResponseEntity.ok(customerServiceImpl.getCustomerAndTotalAmountBetweenDates(customerId, fromDate, toDate));
+    public ResponseEntity<CustomerAndProductStatsDTO> getCustomerAndTotalAmountBetweenDates(Long customerId, LocalDate fromDate, LocalDate toDate) {
+        LocalDateTime fromDateTime = LocalDateTime.of(fromDate, LocalTime.MIN);
+        LocalDateTime toDateTime = LocalDateTime.of(toDate, LocalTime.MAX);
+        return ResponseEntity.ok(customerServiceImpl.getCustomerAndTotalAmountBetweenDates(customerId, fromDateTime, toDateTime));
     }
 
     @Override
-    public ResponseEntity<CustomerAndProductStatsDTO> getCustomerAndTotalAmountBeforeDate(Long customerId, LocalDateTime beforeDate) {
-        return ResponseEntity.ok(customerServiceImpl.getCustomerAndTotalAmountBeforeDate(customerId, beforeDate));
+    public ResponseEntity<CustomerAndProductStatsDTO> getCustomerAndTotalAmountBeforeDate(Long customerId, LocalDate beforeDate) {
+        LocalDateTime beforeDateTime = LocalDateTime.of(beforeDate, LocalTime.MAX);
+        return ResponseEntity.ok(customerServiceImpl.getCustomerAndTotalAmountBeforeDate(customerId, beforeDateTime));
     }
 
     @Override
-    public ResponseEntity<List<CustomerAndProductStatsDTO>> getCustomersAndTotalSalesTimeBeforeDate(LocalDateTime beforeDate) {
-        return ResponseEntity.ok(customerServiceImpl.getCustomersAndTotalSalesTimeBeforeDate(beforeDate));
+    public ResponseEntity<List<CustomerAndProductStatsDTO>> getCustomersAndTotalSalesTimeBeforeDate(LocalDate beforeDate) {
+        LocalDateTime beforeDateTime = LocalDateTime.of(beforeDate, LocalTime.MAX);
+        return ResponseEntity.ok(customerServiceImpl.getCustomersAndTotalSalesTimeBeforeDate(beforeDateTime));
     }
 
 }

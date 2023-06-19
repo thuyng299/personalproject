@@ -59,13 +59,13 @@ public class WarehouseException {
     public static ResponseException GRNNotFound(){
         return notFound(GRN_NOT_FOUND_MSG_KEY, GRN_NOT_FOUND_MSG);
     }
-    public static ResponseException IncomingsDetailNotFound(){
+    public static ResponseException IncomingDetailNotFound(){
         return notFound(INCOMINGSDETAIL_NOT_FOUND_MSG_KEY, INCOMINGSDETAIL_NOT_FOUND_MSG);
     }
     public static ResponseException GDNNotFound(){
         return notFound(GDN_NOT_FOUND_MSG_KEY, GDN_NOT_FOUND_MSG);
     }
-    public static ResponseException OutcomingsDetailNotFound(){
+    public static ResponseException OutgoingDetailNotFound(){
         return notFound(OUTCOMINGSDETAIL_NOT_FOUND_MSG_KEY, OUTCOMINGSDETAIL_NOT_FOUND_MSG);
     }
 
