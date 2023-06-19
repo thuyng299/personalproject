@@ -28,6 +28,7 @@ public class GoodsReceivedNoteResource implements GoodsReceivedNoteAPI {
 
     @Override
     public ResponseEntity<GRNCreateWithDetailDTO> createGoodsReceivedNote(GRNCreateWithDetailDTO grnCreateWithDetailDTO) {
+
         GRNCreateWithDetailDTO createdGoodsReceivedNoteDTO = goodsReceivedNoteServiceImpl.createGoodsReceivedNote(grnCreateWithDetailDTO);
         return ResponseEntity.created(URI.create("/goodsreceivednotes" + createdGoodsReceivedNoteDTO.getGrnId())).body(createdGoodsReceivedNoteDTO);
     }

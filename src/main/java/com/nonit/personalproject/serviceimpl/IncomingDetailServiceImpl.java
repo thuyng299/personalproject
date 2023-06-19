@@ -27,10 +27,11 @@ public class IncomingDetailServiceImpl implements IncomingDetailService {
     private final WarehouseAreaRepository warehouseAreaRepository;
     private final GoodsReceivedNoteRepository goodsReceivedNoteRepository;
     private final IncomingDetailMapper incomingDetailMapper = IncomingDetailMapper.INSTANCE;
+
     @Override
     public List<IncomingDetailDTO> getAllIncomingDetail() {
         List<IncomingDetail> incomingDetails = incomingDetailRepository.findAll();
-        if (incomingDetails.isEmpty()){
+        if (incomingDetails.isEmpty()) {
             throw WarehouseException.IncomingDetailNotFound();
         }
         return incomingDetailMapper.toDtos(incomingDetails);
@@ -51,20 +52,20 @@ public class IncomingDetailServiceImpl implements IncomingDetailService {
     public IncomingDetailDTO updateIncomingDetail(Long incomingId, IncomingDetailUpdateDTO incomingDetailUpdateDTO) {
         log.info("update incoming detail {}", incomingId);
         IncomingDetail incomingDetail = incomingDetailRepository.findById(incomingId).orElseThrow(WarehouseException::IncomingDetailNotFound);
-        if (incomingDetailUpdateDTO.getAmount() <= 0){
+        if (incomingDetailUpdateDTO.getAmount() <= 0) {
             throw WarehouseException.badRequest("InvalidAmount", "Amount cannot be 0 or below 0!");
         }
-        if (incomingDetailUpdateDTO.getCost() < 0){
+        if (incomingDetailUpdateDTO.getCost() < 0) {
             throw WarehouseException.badRequest("InvalidProductCost", "Product cost cannot below 0!");
         }
         incomingDetailMapper.mapFromDto(incomingDetailUpdateDTO, incomingDetail);
         return incomingDetailMapper.toDto(incomingDetailRepository.save(incomingDetail));
     }
 
-//     Incomings amount for each product before input date
+    //     Incomings amount for each product before input date
     @Override
     public List<IncomingAmountStatsDTO> getNumberOfProductIncoming(LocalDateTime date) {
-        if (date.isAfter(LocalDateTime.now())){
+        if (date.isAfter(LocalDateTime.now())) {
             throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDateTime.now());
         }
         return incomingDetailRepository.getNumberOfProductIncoming(date);
@@ -84,7 +85,7 @@ public class IncomingDetailServiceImpl implements IncomingDetailService {
     @Override
     public PurchaseTimeStatDTO getPurchaseTimeAndAmountOfSpecificProductAndDate(Long inputId, LocalDateTime inputDate) {
         Product product = productRepository.findById(inputId).orElseThrow(() -> new ResponseException("NotFoundProductId", "Product not found with ID " + inputId, HttpStatus.NOT_FOUND));
-        if (inputDate.isAfter(LocalDateTime.now())){
+        if (inputDate.isAfter(LocalDateTime.now())) {
             throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDateTime.now());
         }
         return incomingDetailRepository.getPurchaseTimeAndAmountOfSpecificProductAndDate(inputId, inputDate);
@@ -92,7 +93,7 @@ public class IncomingDetailServiceImpl implements IncomingDetailService {
 
     @Override
     public List<PurchaseTimeStatDTO> getPurchaseTimeAndAmountBetweenDates(LocalDateTime fromDate, LocalDateTime toDate) {
-        if (fromDate.isAfter(LocalDateTime.now()) || toDate.isAfter(LocalDateTime.now())){
+        if (fromDate.isAfter(LocalDateTime.now()) || toDate.isAfter(LocalDateTime.now())) {
             throw WarehouseException.badRequest("InvalidDate", "Date must not be after " + LocalDateTime.now());
         }
         return incomingDetailRepository.getPurchaseTimeAndAmountBetweenDates(fromDate, toDate);
@@ -100,7 +101,7 @@ public class IncomingDetailServiceImpl implements IncomingDetailService {
 
     @Override
     public List<Object[]> getCountDaysAndAmountBeforeExpire(Long inputCountDays) {
-        if (inputCountDays <= 0){
+        if (inputCountDays <= 0) {
             throw WarehouseException.badRequest("InvalidCountDays", "Count days cannot be 0 or less than 0");
         }
         return incomingDetailRepository.getCountDaysAndAmountBeforeExpire(inputCountDays);
@@ -108,7 +109,7 @@ public class IncomingDetailServiceImpl implements IncomingDetailService {
 
     @Override
     public List<ProductNearlyOutOfStockStatDTO> getProductNearlyOutOfStock(Double inputAmount) {
-        if (inputAmount < 500){
+        if (inputAmount < 500) {
             throw WarehouseException.badRequest("InvalidAmount", "Warehouse stock amount of each product must be greater than 500 kgs");
         }
         return incomingDetailRepository.getProductNearlyOutOfStock(inputAmount);
@@ -126,7 +127,7 @@ public class IncomingDetailServiceImpl implements IncomingDetailService {
 
     @Override
     public List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfRawMaterialBeforeDate(LocalDateTime inputDate) {
-        if (inputDate.isAfter(LocalDateTime.now())){
+        if (inputDate.isAfter(LocalDateTime.now())) {
             throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDateTime.now());
         }
         return incomingDetailRepository.getTotalStockAmountOfRawMaterialBeforeDate(inputDate);
@@ -134,7 +135,7 @@ public class IncomingDetailServiceImpl implements IncomingDetailService {
 
     @Override
     public List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfFinishedGoodBeforeDate(LocalDateTime inputDate) {
-        if (inputDate.isAfter(LocalDateTime.now())){
+        if (inputDate.isAfter(LocalDateTime.now())) {
             throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDateTime.now());
         }
         return incomingDetailRepository.getTotalStockAmountOfFinishedGoodBeforeDate(inputDate);
@@ -154,4 +155,9 @@ public class IncomingDetailServiceImpl implements IncomingDetailService {
     public TotalStockOfProductStatDTO getTotalStockAmountOfProduct(Long inputProductId) {
         return incomingDetailRepository.getTotalStockAmountOfProduct(inputProductId);
     }
+
+
+
+
 }
+

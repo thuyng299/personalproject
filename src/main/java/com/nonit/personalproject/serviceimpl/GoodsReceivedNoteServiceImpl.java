@@ -57,29 +57,37 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
     }
     @Override
     public GRNCreateWithDetailDTO createGoodsReceivedNote(GRNCreateWithDetailDTO grnCreateWithDetailDTO) {
-        Supplier supplier = supplierRepository.findById(grnCreateWithDetailDTO.getSupplierId()).orElseThrow(WarehouseException::SupplierNotFound);
+        Supplier supplier = supplierRepository.findByCode(grnCreateWithDetailDTO.getSupplierCode()).orElseThrow(WarehouseException::SupplierNotFound);
         Employee employee = employeeRepository.findByUsername(getCurrentUsername()).get();
 
         // Create GRN
         GoodsReceivedNote goodsReceivedNote = GoodsReceivedNote.builder()
                 .incomingDate(LocalDateTime.now())
-                .code(grnCreateWithDetailDTO.getCode())
                 .record(grnCreateWithDetailDTO.getRecord())
                 .supplier(supplier)
                 .employee(employee)
+                .code(grnCreateWithDetailDTO.getSupplierCode() + grnCreateWithDetailDTO.getIncomingDate().getMonthValue() + grnCreateWithDetailDTO.getIncomingDate().getDayOfMonth())
                 .build();
+
+        long count = goodsReceivedNoteRepository.countByCode(grnCreateWithDetailDTO.getCode());
+
+        if (count > 0) {
+            // Append the count to the code
+            String newCode = grnCreateWithDetailDTO.getCode() + "-" + count;
+            goodsReceivedNote.setCode(newCode);
+        }
 
         // Create detail
         List<IncomingDetail> incomingDetails = new ArrayList<>();
 
         for (IncomingDetailsCreateDTO ins: grnCreateWithDetailDTO.getIncomingDetailsCreateDTOList()){
             if (ins.getAmount() <= 0){
-                throw WarehouseException.badRequest("InvalidIncomingsAmount", "Amount cannot be 0 or below 0!");
+                throw WarehouseException.badRequest("InvalidAmount", "Amount cannot be 0 or below 0!");
             }
             if (ins.getCost() < 0) {
                 throw WarehouseException.badRequest("InvalidProductCost", "Product cost cannot below 0!");
             }
-            Product product = productRepository.findById(ins.getProductId()).orElseThrow(WarehouseException::ProductNotFound);
+            Product product = productRepository.findByCode(ins.getProductCode()).orElseThrow(WarehouseException::ProductNotFound);
             WarehouseArea warehouseArea = warehouseAreaRepository.findById(ins.getAreaId()).orElseThrow(WarehouseException::WarehouseAreaNotFound);
 
             IncomingDetail incomingDetail = new IncomingDetail();
@@ -126,7 +134,7 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
         GoodsReceivedNote goodsReceivedNote = goodsReceivedNoteRepository.findById(grnId).orElseThrow(WarehouseException::GRNNotFound);
         WarehouseArea warehouseArea = warehouseAreaRepository.findById(goodsReceivedNoteUpdateDTO.getAreaId()).orElseThrow(WarehouseException::WarehouseAreaNotFound);
         Supplier supplier = supplierRepository.findById(goodsReceivedNoteUpdateDTO.getSupplierId()).orElseThrow(WarehouseException::SupplierNotFound);
-        if (goodsReceivedNoteUpdateDTO.getIncomingsDate().isAfter(LocalDate.now())){
+        if (goodsReceivedNoteUpdateDTO.getIncomingDate().isAfter(LocalDate.now())){
             throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDate.now());
         }
         goodsReceivedNote.setSupplier(supplier);

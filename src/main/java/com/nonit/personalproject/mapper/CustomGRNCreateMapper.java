@@ -15,7 +15,7 @@ public interface CustomGRNCreateMapper {
     CustomGRNCreateMapper INSTANCE = Mappers.getMapper(CustomGRNCreateMapper.class);
 
     @Mapping(source = "employee.id", target = "employeeId")
-    @Mapping(source = "supplier.id", target = "supplierId")
+    @Mapping(source = "supplier.code", target = "supplierCode")
     @Mapping(source = "id", target = "grnId")
     GRNCreateWithDetailDTO toDto(GoodsReceivedNote goodsReceivedNote);
 

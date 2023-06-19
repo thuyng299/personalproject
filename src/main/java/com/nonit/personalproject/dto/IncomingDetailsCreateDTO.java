@@ -15,6 +15,6 @@ public class IncomingDetailsCreateDTO {
     private Double remainingAmount;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime expirationDate;
-    private Long productId;
+    private String productCode;
     private Long areaId;
 }

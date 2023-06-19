@@ -42,4 +42,5 @@ public interface IncomingDetailService {
     List<IncomingProductStatDTO> getIncomingAmountOfProduct(Long inputProductId);
 
     TotalStockOfProductStatDTO getTotalStockAmountOfProduct(Long inputProductId);
+
 }

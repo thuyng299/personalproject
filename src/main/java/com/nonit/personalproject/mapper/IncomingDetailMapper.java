@@ -16,7 +16,7 @@ public interface IncomingDetailMapper {
     @Mapping(source = "incomingDetail.goodsReceivedNote.id", target = "grnId")
     IncomingDetailDTO toDto (IncomingDetail incomingDetail);
 
-    @Mapping(source = "product.id", target = "productId")
+    @Mapping(source = "product.code", target = "productCode")
     @Mapping(source = "warehouseArea.id", target = "areaId")
     IncomingDetailsCreateDTO toReturnDto (IncomingDetail incomingDetail);
     List<IncomingDetailDTO> toDtos (List<IncomingDetail> incomingDetails);

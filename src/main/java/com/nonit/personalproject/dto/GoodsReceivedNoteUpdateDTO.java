@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GoodsReceivedNoteUpdateDTO {
-    private LocalDate incomingsDate;
+    private LocalDate incomingDate;
     private Long areaId;
     private Long supplierId;
 }
