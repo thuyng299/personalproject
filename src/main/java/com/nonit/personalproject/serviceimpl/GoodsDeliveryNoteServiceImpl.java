@@ -52,6 +52,7 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
 
     @Override
     public GoodsDeliveryNoteDTO createGoodsDeliveryNote(GDNCreateWithDetailsDTO gdnCreateWithDetailsDTO) {
+        log.info("1");
         Customer customer = customerRepository.findById(gdnCreateWithDetailsDTO.getCustomerId()).orElseThrow(WarehouseException::CustomerNotFound);
         Employee employee = employeeRepository.findByUsername(getCurrentUsername()).get();
 
@@ -63,15 +64,15 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
                 .customer(customer)
                 .employee(employee)
                 .build();
-
+        log.info("2");
 //        goodsDeliveryNote = goodsDeliveryNoteRepository.save(goodsDeliveryNote);
 
         // Create Outgoing detail
         List<OutgoingDetail> outgoingDetails = new ArrayList<>();
 
         for (OutgoingDetailsCreateDTO outs : gdnCreateWithDetailsDTO.getOutgoingDetailsCreateDTOList()) {
-
-            Double totalAmount = outs.getTotalAmount();
+//TÂN: Vì total Amount là null nên thế là Amount
+            Double totalAmount = outs.getAmount();
 
             Product product = productRepository.findById(outs.getProductId()).orElseThrow(WarehouseException::ProductNotFound);
 
@@ -80,12 +81,28 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
             Double sumRemainingAmount = incomingDetails.stream()
                     .mapToDouble(IncomingDetail::getRemainingAmount)
                     .sum();
+            log.warn("sumRemainingAmount "+sumRemainingAmount);
+            log.warn("totalAmount "+totalAmount);
+
+            log.info("3");
+            log.warn("Here ");
+
             if (totalAmount > sumRemainingAmount) {
+                log.info("Here 1 ");
+
                 throw WarehouseException.badRequest("InvalidAmount", "FODs");
             } else {
-                for (IncomingDetail ins : incomingDetails) {
+                log.info("Here 2");
 
-                    if (ins.getExpirationDate().isAfter(gdnCreateWithDetailsDTO.getOutgoingDate())) {
+                for (IncomingDetail ins : incomingDetails) {
+                    log.info("4");
+
+                    log.info("getExpirationDate: "+ins.getExpirationDate());
+                    log.info("getOutgoingDate: "+gdnCreateWithDetailsDTO.getOutgoingDate());
+                    // TÂN: Vì gdnCreateWithDetailsDTO không có nhập vào Date nên thay thành LocalDateTime.now()
+                    if (ins.getExpirationDate().isAfter(LocalDateTime.now())) {
+                        log.warn("IncomingDetailId "+ins.getId());
+
                         if (ins.getRemainingAmount() >= totalAmount) {
                             ins.setRemainingAmount(ins.getRemainingAmount() - totalAmount);
 
@@ -93,33 +110,56 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
                             outs.setIncomingId(ins.getId());
                             outs.setAmount(totalAmount);
                             totalAmount = 0.0;
+                            log.info("5");
+
                         } else {
                         /* if totalAmount > remainingAmount, it will subtract this remainingAmount to 0 and go to next incomingDetail,
                         subtract remainingAmount until totalAmount is 0
                        */
+                            log.info("6");
                             for (int i = 0; i < incomingDetails.size(); i++) {
+
                                 Double outgoingAmount = incomingDetails.get(i).getRemainingAmount();
-                                totalAmount -= incomingDetails.get(i).getRemainingAmount();
-                                incomingDetails.get(i).setRemainingAmount(0.0);
-                                OutgoingDetail outgoingDetail = OutgoingDetail.builder()
-                                        .incomingDetail(incomingDetails.get(i))
-                                        .amount(outgoingAmount)
-                                        .price(outs.getPrice())
-                                        .discount(outs.getDiscount())
-                                        .product(product)
-                                        .goodsDeliveryNote(goodsDeliveryNote)
-                                        .build();
-                                if (totalAmount < incomingDetails.get(i + 1).getRemainingAmount()) {
-                                    OutgoingDetail outgoingDetail2 = OutgoingDetail.builder()
-                                            .incomingDetail(incomingDetails.get(i + 1))
+                                log.info("incomingDetails ID : "+incomingDetails.get(i).getId());
+                                log.info("incomingDetails Amount : "+incomingDetails.get(i).getRemainingAmount());
+                                log.info("totalAmount before : " + totalAmount);
+
+                                if (totalAmount-incomingDetails.get(i).getRemainingAmount()>0) {
+                                    totalAmount -= incomingDetails.get(i).getRemainingAmount();
+                                    log.info("totalAmount after : " + totalAmount);
+                                    incomingDetails.get(i).setRemainingAmount(0.0);
+                                    log.info("incomingDetails Amount  : " + incomingDetails.get(i).getRemainingAmount());
+
+                                    OutgoingDetail outgoingDetail = OutgoingDetail.builder()
+                                            .incomingDetail(incomingDetails.get(i))
                                             .amount(outgoingAmount)
                                             .price(outs.getPrice())
                                             .discount(outs.getDiscount())
                                             .product(product)
                                             .goodsDeliveryNote(goodsDeliveryNote)
                                             .build();
+                                    log.info("7");
+                                } else {
+                                    incomingDetails.get(i).setRemainingAmount(incomingDetails.get(i).getRemainingAmount()-totalAmount);
+
+                                    log.info("incomingDetails Amount : " + incomingDetails.get(i).getRemainingAmount());
+                                    totalAmount= (double) 0;
+                                    log.info("totalAmount after : " + totalAmount);
+
+                                    OutgoingDetail outgoingDetail = OutgoingDetail.builder()
+                                            .incomingDetail(incomingDetails.get(i))
+                                            .amount(outgoingAmount)
+                                            .price(outs.getPrice())
+                                            .discount(outs.getDiscount())
+                                            .product(product)
+                                            .goodsDeliveryNote(goodsDeliveryNote)
+                                            .build();
+                                    log.info("8");
                                 }
+                                if (totalAmount==0) break;
                             }
+
+
                         }
 
                         OutgoingDetail outgoingDetail = new OutgoingDetail();
