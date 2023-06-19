@@ -42,8 +42,8 @@ public interface CustomerAPI {
     ResponseEntity<List<CustomerAndProductStatsDTO>> getCustomersAndTotalSalesTime();
 
     @GetMapping("/customers-fromdate-todate") // localhost:8080/customers/customers-fromdate-todate?fromDate=2023-02-02&toDate=2023-02-11
-    ResponseEntity<List<CustomerAndProductStatsDTO>> getCustomersAndTotalSalesTimeBetweenDates(@RequestParam("fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fromDate,
-                                                                                               @RequestParam("toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime toDate);
+    ResponseEntity<List<CustomerAndProductStatsDTO>> getCustomersAndTotalSalesTimeBetweenDates(@RequestParam("fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+                                                                                               @RequestParam("toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate);
 
     @GetMapping("/customer-totalamount-fromdate-todate") // localhost:8080/customers/customer-totalamount-fromdate-todate?customerId=19&fromDate=2023-02-02&toDate=2023-02-11
     ResponseEntity<CustomerAndProductStatsDTO> getCustomerAndTotalAmountBetweenDates(@RequestParam("customerId") Long customerId,
