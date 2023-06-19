@@ -13,6 +13,7 @@ import com.nonit.personalproject.repository.*;
 import com.nonit.personalproject.service.GoodsReceivedNoteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -56,9 +57,12 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
         return authentication.getName();
     }
     @Override
-    public GRNCreateWithDetailDTO createGoodsReceivedNote(GRNCreateWithDetailDTO grnCreateWithDetailDTO) {
+    public GRNCreateWithDetailDTO createGoodsReceivedNote(@NotNull GRNCreateWithDetailDTO grnCreateWithDetailDTO) {
         Supplier supplier = supplierRepository.findByCode(grnCreateWithDetailDTO.getSupplierCode()).orElseThrow(WarehouseException::SupplierNotFound);
         Employee employee = employeeRepository.findByUsername(getCurrentUsername()).get();
+
+        log.info("1: "+grnCreateWithDetailDTO.getSupplierCode());
+
 
         // Create GRN
         GoodsReceivedNote goodsReceivedNote = GoodsReceivedNote.builder()
@@ -66,16 +70,19 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
                 .record(grnCreateWithDetailDTO.getRecord())
                 .supplier(supplier)
                 .employee(employee)
-                .code(grnCreateWithDetailDTO.getSupplierCode() + grnCreateWithDetailDTO.getIncomingDate().getMonthValue() + grnCreateWithDetailDTO.getIncomingDate().getDayOfMonth())
+//                .code(grnCreateWithDetailDTO.getSupplierCode() + "1")
+
+//                .code(grnCreateWithDetailDTO.getCode())
+              .code(grnCreateWithDetailDTO.getSupplierCode() + LocalDateTime.now().getMonthValue() + LocalDateTime.now().getDayOfMonth())
                 .build();
 
-        long count = goodsReceivedNoteRepository.countByCode(grnCreateWithDetailDTO.getCode());
-
-        if (count > 0) {
-            // Append the count to the code
-            String newCode = grnCreateWithDetailDTO.getCode() + "-" + count;
-            goodsReceivedNote.setCode(newCode);
-        }
+//        long count = goodsReceivedNoteRepository.countByCode(grnCreateWithDetailDTO.getCode());
+//
+//        if (count > 0) {
+//            // Append the count to the code
+//            String newCode = grnCreateWithDetailDTO.getCode() + "-" + count;
+//            goodsReceivedNote.setCode(newCode);
+//        }
 
         // Create detail
         List<IncomingDetail> incomingDetails = new ArrayList<>();
