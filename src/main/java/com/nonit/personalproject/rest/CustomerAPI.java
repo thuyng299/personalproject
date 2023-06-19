@@ -38,23 +38,23 @@ public interface CustomerAPI {
     @GetMapping("/product-customers") // localhost:8080/customers/product-customers?inputProductName=cheese
     ResponseEntity<List<CustomerStatsDTO>> getProductAndItsCustomers(@RequestParam("inputProductName") String inputProductName);
 
-    @GetMapping("/customers-salestime") // localhost:8080/customers/customerswithsalestime
+    @GetMapping("/customers-salestime") // localhost:8080/customers/customers-salestime
     ResponseEntity<List<CustomerAndProductStatsDTO>> getCustomersAndTotalSalesTime();
 
-    @GetMapping("/customers-fromdate-todate") // localhost:8080/customers/customersbetweendates?fromDate=2023-02-02&toDate=2023-02-11
+    @GetMapping("/customers-fromdate-todate") // localhost:8080/customers/customers-fromdate-todate?fromDate=2023-02-02&toDate=2023-02-11
     ResponseEntity<List<CustomerAndProductStatsDTO>> getCustomersAndTotalSalesTimeBetweenDates(@RequestParam("fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fromDate,
                                                                                                @RequestParam("toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime toDate);
 
-    @GetMapping("/customer-totalamount-fromdate-todate") // localhost:8080/customers/customerandtotalamountbetweendates?customerId=19&fromDate=2023-02-02&toDate=2023-02-11
+    @GetMapping("/customer-totalamount-fromdate-todate") // localhost:8080/customers/customer-totalamount-fromdate-todate?customerId=19&fromDate=2023-02-02&toDate=2023-02-11
     ResponseEntity<CustomerAndProductStatsDTO> getCustomerAndTotalAmountBetweenDates(@RequestParam("customerId") Long customerId,
-                                                                                     @RequestParam("fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
-                                                                                     @RequestParam("toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate);
+                                                                                     @RequestParam("fromDate") @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss") LocalDateTime fromDate,
+                                                                                     @RequestParam("toDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDateTime toDate);
 
-    @GetMapping("/customer-totalamount-beforedate/{customerId}") // localhost:8080/customers/customerandtotalamountbeforedate/20?beforeDate=2023-02-19
+    @GetMapping("/customer-totalamount-beforedate/{customerId}") // localhost:8080/customers/customer-totalamount-beforedate/20?beforeDate=2023-02-19
     ResponseEntity<CustomerAndProductStatsDTO> getCustomerAndTotalAmountBeforeDate(@PathVariable("customerId")Long customerId,
-                                                                                   @RequestParam("beforeDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate beforeDate);
+                                                                                   @RequestParam("beforeDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime beforeDate);
 
-    @GetMapping("/customers-beforedate") // localhost:8080/customers/customersbeforedate?beforeDate=2023-01-11
-    ResponseEntity<List<CustomerAndProductStatsDTO>> getCustomersAndTotalSalesTimeBeforeDate(@RequestParam("beforeDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate beforeDate);
+    @GetMapping("/customers-beforedate") // localhost:8080/customers/customers-beforedate?beforeDate=2023-01-11
+    ResponseEntity<List<CustomerAndProductStatsDTO>> getCustomersAndTotalSalesTimeBeforeDate(@RequestParam("beforeDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime beforeDate);
 
 }

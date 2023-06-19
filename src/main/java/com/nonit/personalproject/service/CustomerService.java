@@ -22,8 +22,8 @@ public interface CustomerService {
     List<CustomerStatsDTO> getProductAndItsCustomers (String inputProductName);
     List<CustomerAndProductStatsDTO> getCustomersAndTotalSalesTime();
     List<CustomerAndProductStatsDTO> getCustomersAndTotalSalesTimeBetweenDates (LocalDateTime fromDate, LocalDateTime toDate);
-    CustomerAndProductStatsDTO getCustomerAndTotalAmountBetweenDates (Long customerId, LocalDate fromDate, LocalDate toDate);
-    CustomerAndProductStatsDTO getCustomerAndTotalAmountBeforeDate (Long customerId, LocalDate beforeDate);
-    List<CustomerAndProductStatsDTO> getCustomersAndTotalSalesTimeBeforeDate (LocalDate beforeDate);
+    CustomerAndProductStatsDTO getCustomerAndTotalAmountBetweenDates (Long customerId, LocalDateTime fromDate, LocalDateTime toDate);
+    CustomerAndProductStatsDTO getCustomerAndTotalAmountBeforeDate (Long customerId, LocalDateTime beforeDate);
+    List<CustomerAndProductStatsDTO> getCustomersAndTotalSalesTimeBeforeDate (LocalDateTime beforeDate);
 
 }
