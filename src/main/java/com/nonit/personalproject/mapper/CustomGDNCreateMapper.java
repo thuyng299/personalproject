@@ -16,4 +16,5 @@ public interface CustomGDNCreateMapper {
     @Mapping(source = "customer.id", target = "customerId")
     @Mapping(source = "id", target = "gdnId")
     GDNCreateWithDetailsDTO toDto(GoodsDeliveryNote goodsDeliveryNote);
+
 }

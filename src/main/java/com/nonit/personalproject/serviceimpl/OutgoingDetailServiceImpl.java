@@ -28,7 +28,7 @@ public class OutgoingDetailServiceImpl implements OutgoingDetailService {
     private final OutgoingDetailMapper outgoingDetailMapper = OutgoingDetailMapper.INSTANCE;
 
     @Override
-    public List<OutgoingDetailDTO> getAllOutgoingDetail() {
+    public List<OutgoingDetailsCreateDTO> getAllOutgoingDetail() {
         List<OutgoingDetail> outgoingDetails = outgoingDetailRepository.findAll();
         if (outgoingDetails.isEmpty()){
             throw WarehouseException.OutgoingDetailNotFound();
@@ -37,7 +37,7 @@ public class OutgoingDetailServiceImpl implements OutgoingDetailService {
     }
 
     @Override
-    public OutgoingDetailDTO findOutgoingDetailById(Long outgoingId) {
+    public OutgoingDetailsCreateDTO findOutgoingDetailById(Long outgoingId) {
         OutgoingDetail outgoingDetail = outgoingDetailRepository.findById(outgoingId).orElseThrow(WarehouseException::OutgoingDetailNotFound);
         return outgoingDetailMapper.toDto(outgoingDetail);
     }

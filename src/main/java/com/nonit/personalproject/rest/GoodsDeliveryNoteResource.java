@@ -27,9 +27,9 @@ public class GoodsDeliveryNoteResource implements GoodsDeliveryNoteAPI {
     }
 
     @Override
-    public ResponseEntity<GoodsDeliveryNoteDTO> createGoodsDeliveryNote(GDNCreateWithDetailsDTO gdnCreateWithDetailsDTO) {
-        GoodsDeliveryNoteDTO createdgoodsDeliveryNoteDTO = goodsDeliveryNoteServiceImpl.createGoodsDeliveryNote(gdnCreateWithDetailsDTO);
-        return ResponseEntity.created(URI.create("/goodsdeliverynotes" + createdgoodsDeliveryNoteDTO.getId())).body(createdgoodsDeliveryNoteDTO);
+    public ResponseEntity<GDNCreateWithDetailsDTO> createGoodsDeliveryNote(GDNCreateWithDetailsDTO gdnCreateWithDetailsDTO) {
+        GDNCreateWithDetailsDTO createdgoodsDeliveryNoteDTO = goodsDeliveryNoteServiceImpl.createGoodsDeliveryNote(gdnCreateWithDetailsDTO);
+        return ResponseEntity.created(URI.create("/goodsdeliverynotes" + createdgoodsDeliveryNoteDTO.getGdnId())).body(createdgoodsDeliveryNoteDTO);
     }
 
     @Override

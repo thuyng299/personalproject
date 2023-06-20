@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OutgoingDetailService {
-    List<OutgoingDetailDTO> getAllOutgoingDetail();
+    List<OutgoingDetailsCreateDTO> getAllOutgoingDetail();
 
-    OutgoingDetailDTO findOutgoingDetailById(Long outgoingId);
+    OutgoingDetailsCreateDTO findOutgoingDetailById(Long outgoingId);
 
     void deleteOutgoingDetail(Long outgoingId);
 

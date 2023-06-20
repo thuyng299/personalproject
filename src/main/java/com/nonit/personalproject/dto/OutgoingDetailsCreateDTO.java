@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class OutgoingDetailsCreateDTO {
     private Double amount;
     private Double price;
-    private Double totalAmount;
+
     private Double discount;
     private Long productId;
     private Long incomingId;

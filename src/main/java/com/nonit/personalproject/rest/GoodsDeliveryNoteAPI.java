@@ -20,8 +20,8 @@ public interface GoodsDeliveryNoteAPI {
     ResponseEntity<GoodsDeliveryNoteDTO> findGoodsDeliveryNoteById(@PathVariable("gdnId") Long gdnId);
 
     @PreAuthorize("hasRole('WAREHOUSE_STAFF')")
-    @PostMapping("/{customerId}")
-    ResponseEntity<GoodsDeliveryNoteDTO> createGoodsDeliveryNote(@RequestBody GDNCreateWithDetailsDTO gdnCreateWithDetailsDTO);
+    @PostMapping
+    ResponseEntity<GDNCreateWithDetailsDTO> createGoodsDeliveryNote(@RequestBody GDNCreateWithDetailsDTO gdnCreateWithDetailsDTO);
 
     @PreAuthorize("hasRole('WAREHOUSE_STAFF')")
     @DeleteMapping("/{gdnId}")

@@ -1,6 +1,6 @@
 package com.nonit.personalproject.mapper;
 
-import com.nonit.personalproject.dto.OutgoingDetailDTO;
+import com.nonit.personalproject.dto.OutgoingDetailsCreateDTO;
 import com.nonit.personalproject.entity.OutgoingDetail;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,8 +13,8 @@ import java.util.List;
 public interface OutgoingDetailMapper {
     OutgoingDetailMapper INSTANCE = Mappers.getMapper(OutgoingDetailMapper.class);
     @Mapping(source = "outgoingDetail.product.id", target = "productId")
-    @Mapping(source = "outgoingDetail.goodsDeliveryNote.id", target = "gdnId")
     @Mapping(source = "outgoingDetail.incomingDetail.id", target = "incomingId")
-    OutgoingDetailDTO toDto (OutgoingDetail outgoingDetail);
-    List<OutgoingDetailDTO> toDtos (List<OutgoingDetail> outgoingDetails);
+
+    OutgoingDetailsCreateDTO toDto (OutgoingDetail outgoingDetail);
+    List<OutgoingDetailsCreateDTO> toDtos (List<OutgoingDetail> outgoingDetails);
 }

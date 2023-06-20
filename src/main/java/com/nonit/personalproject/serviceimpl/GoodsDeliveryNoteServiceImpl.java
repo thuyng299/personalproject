@@ -6,6 +6,7 @@ import com.nonit.personalproject.dto.OutgoingDetailsCreateDTO;
 import com.nonit.personalproject.entity.*;
 import com.nonit.personalproject.exception.WarehouseException;
 import com.nonit.personalproject.mapper.GoodsDeliveryNoteMapper;
+import com.nonit.personalproject.mapper.OutgoingDetailMapper;
 import com.nonit.personalproject.repository.*;
 import com.nonit.personalproject.service.GoodsDeliveryNoteService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,8 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
     private final IncomingDetailRepository incomingDetailRepository;
     private final GoodsDeliveryNoteMapper goodsDeliveryNoteMapper = GoodsDeliveryNoteMapper.INSTANCE;
 
+    private final OutgoingDetailRepository outgoingDetailRepository;
+
     @Override
     public List<GoodsDeliveryNoteDTO> getAllGoodsDeliveryNote() {
         List<GoodsDeliveryNote> goodsDeliveryNotes = goodsDeliveryNoteRepository.findAll();
@@ -51,10 +54,13 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
     }
 
     @Override
-    public GoodsDeliveryNoteDTO createGoodsDeliveryNote(GDNCreateWithDetailsDTO gdnCreateWithDetailsDTO) {
+    public GDNCreateWithDetailsDTO createGoodsDeliveryNote(GDNCreateWithDetailsDTO gdnCreateWithDetailsDTO) {
+        GDNCreateWithDetailsDTO finalGoodsDeliveryNoteDTO = new GDNCreateWithDetailsDTO();
         log.info("1");
         Customer customer = customerRepository.findById(gdnCreateWithDetailsDTO.getCustomerId()).orElseThrow(WarehouseException::CustomerNotFound);
         Employee employee = employeeRepository.findByUsername(getCurrentUsername()).get();
+        log.info("Employee : " + employee.getId());
+
 
         // Create GDN
         GoodsDeliveryNote goodsDeliveryNote = GoodsDeliveryNote.builder()
@@ -64,11 +70,12 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
                 .customer(customer)
                 .employee(employee)
                 .build();
+        goodsDeliveryNoteRepository.save(goodsDeliveryNote);
         log.info("2");
-//        goodsDeliveryNote = goodsDeliveryNoteRepository.save(goodsDeliveryNote);
 
         // Create Outgoing detail
         List<OutgoingDetail> outgoingDetails = new ArrayList<>();
+
 
         for (OutgoingDetailsCreateDTO outs : gdnCreateWithDetailsDTO.getOutgoingDetailsCreateDTOList()) {
 //TÂN: Vì total Amount là null nên thế là Amount
@@ -81,96 +88,89 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
             Double sumRemainingAmount = incomingDetails.stream()
                     .mapToDouble(IncomingDetail::getRemainingAmount)
                     .sum();
-            log.warn("sumRemainingAmount "+sumRemainingAmount);
-            log.warn("totalAmount "+totalAmount);
+            log.warn("sumRemainingAmount " + sumRemainingAmount);
+            log.warn("totalAmount " + totalAmount);
 
-            log.info("3");
-            log.warn("Here ");
 
             if (totalAmount > sumRemainingAmount) {
-                log.info("Here 1 ");
+                log.info(" KHÔNG HỢP LỆ  totalAmount: " + totalAmount + "& sumRemainingAmount " + sumRemainingAmount);
 
                 throw WarehouseException.badRequest("InvalidAmount", "FODs");
             } else {
-                log.info("Here 2");
+                log.info(" HỢP LỆ  totalAmount: " + totalAmount + "& sumRemainingAmount " + sumRemainingAmount);
+                log.info("--------------------------");
+
 
                 for (IncomingDetail ins : incomingDetails) {
-                    log.info("4");
 
-                    log.info("getExpirationDate: "+ins.getExpirationDate());
-                    log.info("getOutgoingDate: "+gdnCreateWithDetailsDTO.getOutgoingDate());
+                    if (totalAmount == 0) {
+                        log.info("Total amount : " + totalAmount);
+                        break;
+                    }
+
+                    log.info("ID: " + ins.getId());
+
+                    log.info("getExpirationDate: " + ins.getExpirationDate());
                     // TÂN: Vì gdnCreateWithDetailsDTO không có nhập vào Date nên thay thành LocalDateTime.now()
                     if (ins.getExpirationDate().isAfter(LocalDateTime.now())) {
-                        log.warn("IncomingDetailId "+ins.getId());
+                        log.warn("CÒN HẠN ");
 
                         if (ins.getRemainingAmount() >= totalAmount) {
+                            log.info("Đủ số lượng remain>total");
+                            log.info("getRemainingAmount before: " + ins.getRemainingAmount());
+                            log.info("totalAmount before: " + totalAmount);
+
                             ins.setRemainingAmount(ins.getRemainingAmount() - totalAmount);
 
                             // An incoming id is set to outgoing detail
                             outs.setIncomingId(ins.getId());
                             outs.setAmount(totalAmount);
                             totalAmount = 0.0;
-                            log.info("5");
+                            log.info("getRemainingAmount after: " + ins.getRemainingAmount());
+                            log.info("totalAmount after: " + totalAmount);
 
                         } else {
                         /* if totalAmount > remainingAmount, it will subtract this remainingAmount to 0 and go to next incomingDetail,
                         subtract remainingAmount until totalAmount is 0
                        */
-                            log.info("6");
-                            for (int i = 0; i < incomingDetails.size(); i++) {
 
-                                Double outgoingAmount = incomingDetails.get(i).getRemainingAmount();
-                                log.info("incomingDetails ID : "+incomingDetails.get(i).getId());
-                                log.info("incomingDetails Amount : "+incomingDetails.get(i).getRemainingAmount());
-                                log.info("totalAmount before : " + totalAmount);
+                                log.info("Không Đủ số lượng remain<total");
+                                log.info("getRemainingAmount before: " + ins.getRemainingAmount());
+                                log.info("totalAmount before: " + totalAmount);
+                                outs.setIncomingId(ins.getId());
+                                outs.setAmount(ins.getRemainingAmount());
+                                totalAmount -= ins.getRemainingAmount();
+                                ins.setRemainingAmount(0.0);
+                                log.info("getRemainingAmount after: " + ins.getRemainingAmount());
+                                log.info("totalAmount after: " + totalAmount);
+//i
 
-                                if (totalAmount-incomingDetails.get(i).getRemainingAmount()>0) {
-                                    totalAmount -= incomingDetails.get(i).getRemainingAmount();
-                                    log.info("totalAmount after : " + totalAmount);
-                                    incomingDetails.get(i).setRemainingAmount(0.0);
-                                    log.info("incomingDetails Amount  : " + incomingDetails.get(i).getRemainingAmount());
-
-                                    OutgoingDetail outgoingDetail = OutgoingDetail.builder()
-                                            .incomingDetail(incomingDetails.get(i))
-                                            .amount(outgoingAmount)
-                                            .price(outs.getPrice())
-                                            .discount(outs.getDiscount())
-                                            .product(product)
-                                            .goodsDeliveryNote(goodsDeliveryNote)
-                                            .build();
-                                    log.info("7");
-                                } else {
-                                    incomingDetails.get(i).setRemainingAmount(incomingDetails.get(i).getRemainingAmount()-totalAmount);
-
-                                    log.info("incomingDetails Amount : " + incomingDetails.get(i).getRemainingAmount());
-                                    totalAmount= (double) 0;
-                                    log.info("totalAmount after : " + totalAmount);
-
-                                    OutgoingDetail outgoingDetail = OutgoingDetail.builder()
-                                            .incomingDetail(incomingDetails.get(i))
-                                            .amount(outgoingAmount)
-                                            .price(outs.getPrice())
-                                            .discount(outs.getDiscount())
-                                            .product(product)
-                                            .goodsDeliveryNote(goodsDeliveryNote)
-                                            .build();
-                                    log.info("8");
-                                }
-                                if (totalAmount==0) break;
                             }
 
 
-                        }
+                    }
+                    incomingDetailRepository.save(ins);
 
-                        OutgoingDetail outgoingDetail = new OutgoingDetail();
+                    log.info("HERE1");
+
+                    OutgoingDetail outgoingDetail = new OutgoingDetail();
+                    log.info("HERE2");
+
+                        //Create Out Going Detail
+                    if (outs.getAmount()!=0) {
                         outgoingDetail.setGoodsDeliveryNote(goodsDeliveryNote);
                         outgoingDetail.setProduct(product);
                         outgoingDetail.setAmount(outs.getAmount());
                         outgoingDetail.setPrice(outs.getPrice());
                         outgoingDetail.setDiscount(outs.getDiscount());
+                        outgoingDetail.setIncomingDetail(ins);
+                        outgoingDetailRepository.save(outgoingDetail);
                         outgoingDetails.add(outgoingDetail);
                     }
 
+                    log.info("HERE3");
+
+                    log.info("END");
 
                 }
 
@@ -179,7 +179,15 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
 
         }
 
-        return goodsDeliveryNoteMapper.toDto(goodsDeliveryNote);
+        // GDN show out
+        finalGoodsDeliveryNoteDTO.setGdnId(goodsDeliveryNote.getId());
+        finalGoodsDeliveryNoteDTO.setCode(goodsDeliveryNote.getCode());
+        finalGoodsDeliveryNoteDTO.setCustomerId(goodsDeliveryNote.getCustomer().getId());
+        finalGoodsDeliveryNoteDTO.setOutgoingDate(LocalDateTime.now());
+        finalGoodsDeliveryNoteDTO.setEmployeeId(goodsDeliveryNote.getEmployee().getId());
+        finalGoodsDeliveryNoteDTO.setOutgoingDetailsCreateDTOList(OutgoingDetailMapper.INSTANCE.toDtos(outgoingDetails));
+
+        return finalGoodsDeliveryNoteDTO;
     }
 
     @Override
