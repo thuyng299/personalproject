@@ -1,10 +1,9 @@
-package com.nonit.personalproject.dto;
+package com.nonit.personalproject.dto.customstatsdto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data

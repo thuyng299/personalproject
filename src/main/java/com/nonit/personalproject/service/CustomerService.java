@@ -1,13 +1,10 @@
 package com.nonit.personalproject.service;
 
-import com.nonit.personalproject.dto.CustomerAndProductStatsDTO;
+import com.nonit.personalproject.dto.customstatsdto.CustomerAndProductStatsDTO;
 import com.nonit.personalproject.dto.CustomerCreateDTO;
 import com.nonit.personalproject.dto.CustomerDTO;
-import com.nonit.personalproject.dto.CustomerStatsDTO;
-import com.nonit.personalproject.entity.Customer;
-import org.springframework.data.repository.query.Param;
+import com.nonit.personalproject.dto.customstatsdto.CustomerStatsDTO;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

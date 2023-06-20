@@ -1,6 +1,8 @@
 package com.nonit.personalproject.rest;
 
-import com.nonit.personalproject.dto.*;
+import com.nonit.personalproject.dto.customstatsdto.OutgoingAmountStatsDTO;
+import com.nonit.personalproject.dto.customstatsdto.PriceStatsDTO;
+import com.nonit.personalproject.dto.customstatsdto.SalesTimeStatDTO;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -8,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @RequestMapping(value = "/outgoingdetails")
 public interface OutgoingDetailAPI {

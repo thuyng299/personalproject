@@ -1,6 +1,9 @@
 package com.nonit.personalproject.serviceimpl;
 
 import com.nonit.personalproject.dto.*;
+import com.nonit.personalproject.dto.customstatsdto.OutgoingAmountStatsDTO;
+import com.nonit.personalproject.dto.customstatsdto.PriceStatsDTO;
+import com.nonit.personalproject.dto.customstatsdto.SalesTimeStatDTO;
 import com.nonit.personalproject.entity.OutgoingDetail;
 import com.nonit.personalproject.entity.Product;
 import com.nonit.personalproject.exception.ResponseException;

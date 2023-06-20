@@ -1,7 +1,6 @@
 package com.nonit.personalproject.rest;
 
 import com.nonit.personalproject.dto.GDNCreateWithDetailsDTO;
-import com.nonit.personalproject.dto.GoodsDeliveryNoteCreateDTO;
 import com.nonit.personalproject.dto.GoodsDeliveryNoteDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

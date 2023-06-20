@@ -1,9 +1,11 @@
 package com.nonit.personalproject.service;
 
 import com.nonit.personalproject.dto.*;
+import com.nonit.personalproject.dto.customstatsdto.OutgoingAmountStatsDTO;
+import com.nonit.personalproject.dto.customstatsdto.PriceStatsDTO;
+import com.nonit.personalproject.dto.customstatsdto.SalesTimeStatDTO;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

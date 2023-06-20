@@ -1,6 +1,8 @@
 package com.nonit.personalproject.rest;
 
 import com.nonit.personalproject.dto.*;
+import com.nonit.personalproject.dto.customstatsdto.CustomerAndProductStatsDTO;
+import com.nonit.personalproject.dto.customstatsdto.CustomerStatsDTO;
 import com.nonit.personalproject.serviceimpl.CustomerServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
