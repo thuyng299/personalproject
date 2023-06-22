@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StockAmountOfCategoryStatDTO {
     private Long productId;
-    private String productName;
+    private String productCode;
     private ProductCategory productCategory;
     private Double totalStockAmount;
 }

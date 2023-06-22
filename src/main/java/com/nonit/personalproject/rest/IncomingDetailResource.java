@@ -112,4 +112,9 @@ public class IncomingDetailResource implements IncomingDetailAPI {
     public ResponseEntity<TotalStockOfProductStatDTO> getTotalStockAmountOfProduct(Long inputProductId) {
         return ResponseEntity.ok(incomingDetailServiceImpl.getTotalStockAmountOfProduct(inputProductId));
     }
+
+    @Override
+    public ResponseEntity<Object> getMonthlyInAmount() {
+        return ResponseEntity.ok(incomingDetailServiceImpl.getMonthlyInAmount());
+    }
 }

@@ -58,11 +58,11 @@ public interface IncomingDetailAPI {
     @GetMapping("/products-nearlyoutofstock") // localhost:8080/incomingdetails/products-nearlyoutofstock?inputAmount=15000
     ResponseEntity<List<ProductNearlyOutOfStockStatDTO>> getProductNearlyOutOfStock(@RequestParam("inputAmount") Double inputAmount);
 
-    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
+//    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
     @GetMapping("/totalstock-rawmaterial") // localhost:8080/incomingdetails/totalstock-rawmaterial
     ResponseEntity<List<StockAmountOfCategoryStatDTO>> getTotalStockAmountOfRawMaterial();
 
-    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
+//    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
     @GetMapping("/totalstock-finishedgood") // localhost:8080/incomingdetails/totalstock-finishedgood
     ResponseEntity<List<StockAmountOfCategoryStatDTO>> getTotalStockAmountOfFinishedGood();
 
@@ -86,4 +86,7 @@ public interface IncomingDetailAPI {
     @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
     @GetMapping("/product-stock") // localhost:8080/incomingdetails/product-stock?inputProductId=13
     ResponseEntity<TotalStockOfProductStatDTO> getTotalStockAmountOfProduct(@RequestParam("inputProductId") Long inputProductId);
+
+    @GetMapping("/total-monthly-incoming") // localhost:8080/incomingdetails/total-monthly-incoming
+    ResponseEntity<Object> getMonthlyInAmount();
 }

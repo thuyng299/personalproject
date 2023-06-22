@@ -27,4 +27,6 @@ public interface OutgoingDetailService {
     List<Object[]> getTop5Customers(String inputYear);
 
     List<PriceStatsDTO> getProductsTotalPrice();
+
+    List<OutNoteStatsDTO> getOutAmountAndCustomer();
 }

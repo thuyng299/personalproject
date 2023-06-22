@@ -93,4 +93,9 @@ public class OutgoingDetailServiceImpl implements OutgoingDetailService {
     public List<PriceStatsDTO> getProductsTotalPrice() {
         return outgoingDetailRepository.getProductsTotalPrice();
     }
+
+    @Override
+    public List<OutNoteStatsDTO> getOutAmountAndCustomer() {
+        return outgoingDetailRepository.getOutAmountAndCustomer();
+    }
 }

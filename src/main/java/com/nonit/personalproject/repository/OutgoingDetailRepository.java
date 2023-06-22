@@ -1,5 +1,6 @@
 package com.nonit.personalproject.repository;
 
+import com.nonit.personalproject.dto.OutNoteStatsDTO;
 import com.nonit.personalproject.dto.OutgoingAmountStatsDTO;
 import com.nonit.personalproject.dto.PriceStatsDTO;
 import com.nonit.personalproject.dto.SalesTimeStatDTO;
@@ -37,4 +38,6 @@ public interface OutgoingDetailRepository extends JpaRepository<OutgoingDetail, 
     @Query("select new com.nonit.personalproject.dto.PriceStatsDTO (od.product.id, p.name, sum(od.amount), sum(od.price * od.amount - od.price * od.amount * od.discount)) from OutgoingDetail od, Product p where p.id = od.product.id group by od.product.id, p.name order by sum(od.price * od.amount - od.price * od.amount * od.discount) desc")
     List<PriceStatsDTO> getProductsTotalPrice();
 
+    @Query("select new com.nonit.personalproject.dto.OutNoteStatsDTO (gdn.code, c.name, c.email, gdn.outgoingDate, sum(od.amount)) from GoodsDeliveryNote gdn, OutgoingDetail od, Customer c where gdn.id = od.goodsDeliveryNote.id and gdn.customer.id = c.id group by gdn.code, c.name, c.email, gdn.outgoingDate order by gdn.outgoingDate desc")
+    List<OutNoteStatsDTO> getOutAmountAndCustomer();
 }

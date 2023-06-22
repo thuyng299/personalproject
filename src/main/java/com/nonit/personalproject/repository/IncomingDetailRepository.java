@@ -38,10 +38,10 @@ public interface IncomingDetailRepository extends JpaRepository<IncomingDetail, 
     @Query("select new com.nonit.personalproject.dto.ProductNearlyOutOfStockStatDTO (p.id, p.name, sum(id.amount)) from IncomingDetail id, Product p where p.id = id.product.id group by p.id having sum(id.remainingAmount) < :inputAmount")
     List<ProductNearlyOutOfStockStatDTO> getProductNearlyOutOfStock (@Param("inputAmount") Double inputAmount);
 
-    @Query("select new com.nonit.personalproject.dto.StockAmountOfCategoryStatDTO (p.id, p.name, p.productCategory, sum(id.remainingAmount)) from IncomingDetail id, Product p where p.id = id.product.id group by p.productCategory, p.id having p.productCategory like '%RAW_MATERIALS%'")
+    @Query("select new com.nonit.personalproject.dto.StockAmountOfCategoryStatDTO (p.id, p.code, p.productCategory, sum(id.remainingAmount)) from IncomingDetail id, Product p where p.id = id.product.id and p.productCategory like '%RAW_MATERIALS%' group by p.productCategory, p.code, p.id")
     List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfRawMaterial();
 
-    @Query("select new com.nonit.personalproject.dto.StockAmountOfCategoryStatDTO (p.id, p.name, p.productCategory, sum(id.remainingAmount)) from IncomingDetail id, Product p where p.id = id.product.id group by p.productCategory, p.id having p.productCategory like '%FINISHED_GOODS%'")
+    @Query("select new com.nonit.personalproject.dto.StockAmountOfCategoryStatDTO (p.id, p.code, p.productCategory, sum(id.remainingAmount)) from IncomingDetail id, Product p where p.id = id.product.id and p.productCategory like '%FINISHED_GOODS%' group by p.productCategory, p.code, p.id")
     List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfFinishedGood();
 
     @Query("select new com.nonit.personalproject.dto.StockAmountOfCategoryStatDTO (p.id, p.name, p.productCategory, sum(id.remainingAmount)) from GoodsReceivedNote grn, IncomingDetail id, Product p where grn.id = id.goodsReceivedNote.id and p.id = id.product.id and grn.incomingDate < :inputDate group by p.productCategory, p.id having p.productCategory like '%RAW_MATERIALS%'")
@@ -58,4 +58,9 @@ public interface IncomingDetailRepository extends JpaRepository<IncomingDetail, 
 
     @Query("select new com.nonit.personalproject.dto.TotalStockOfProductStatDTO (p.id, p.name, sum(id.remainingAmount)) from IncomingDetail id, Product p where p.id = id.product.id and id.product.id = :inputProductId group by p.id")
     TotalStockOfProductStatDTO getTotalStockAmountOfProduct(@Param("inputProductId") Long inputProductId);
+
+
+//    @Query("select new com.nonit.personalproject.dto.TotalMonthlyAmountDTO (sum(id.amount)) from IncomingDetail id join GoodsReceivedNote grn on grn.id = id.goodsReceivedNote.id where function('year', ")
+    @Query(value = "select sum(id.incoming_amount) from incoming_detail id join goods_received_note grn on id.grn_id = grn.grn_id where TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM') = TO_CHAR(grn.incoming_date, 'YYYY-MM')", nativeQuery = true)
+    Object getMonthlyInAmount();
 }

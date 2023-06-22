@@ -156,8 +156,9 @@ public class IncomingDetailServiceImpl implements IncomingDetailService {
         return incomingDetailRepository.getTotalStockAmountOfProduct(inputProductId);
     }
 
-
-
-
+    @Override
+    public Object getMonthlyInAmount() {
+        return incomingDetailRepository.getMonthlyInAmount();
+    }
 }
 

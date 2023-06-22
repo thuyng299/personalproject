@@ -56,4 +56,9 @@ public class OutgoingDetailResource implements OutgoingDetailAPI {
     public ResponseEntity<List<PriceStatsDTO>> getProductsTotalPrice() {
         return ResponseEntity.ok(outgoingDetailServiceImpl.getProductsTotalPrice());
     }
+
+    @Override
+    public ResponseEntity<List<OutNoteStatsDTO>> getOutAmountAndCustomer() {
+        return ResponseEntity.ok(outgoingDetailServiceImpl.getOutAmountAndCustomer());
+    }
 }

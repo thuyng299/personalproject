@@ -43,4 +43,6 @@ public interface IncomingDetailService {
 
     TotalStockOfProductStatDTO getTotalStockAmountOfProduct(Long inputProductId);
 
+    Object getMonthlyInAmount();
+
 }
