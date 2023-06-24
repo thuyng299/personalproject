@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -34,4 +35,7 @@ public class GoodsDeliveryNote {
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
+
+    @OneToMany(mappedBy = "goodsDeliveryNote", cascade = CascadeType.PERSIST)
+    private List<OutgoingDetail> outgoingDetail;
 }

@@ -11,9 +11,10 @@ import java.util.List;
 
 @RequestMapping(value = "/goodsreceivednotes")
 public interface GoodsReceivedNoteAPI {
+
     @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
     @GetMapping
-    ResponseEntity<List<GoodsReceivedNoteDTO>> getAllGoodsReceivedNote();
+    ResponseEntity<List<GRNCreateWithDetailDTO>> getAllGoodsReceivedNoteWithDetails();
 
     @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
     @GetMapping("/{grnId}")
@@ -29,6 +30,6 @@ public interface GoodsReceivedNoteAPI {
 
     @PreAuthorize("hasRole('WAREHOUSE_STAFF')")
     @PutMapping("/{grnId}")
-    ResponseEntity<GoodsReceivedNoteDTO> updateGoodsReceivedNote(@PathVariable("grnId")Long grnId,
+    ResponseEntity<GoodsReceivedNoteDTO> updateGoodsReceivedNote(@PathVariable("grnId") Long grnId,
                                                                  @RequestBody GoodsReceivedNoteUpdateDTO goodsReceivedNoteUpdateDTO);
 }

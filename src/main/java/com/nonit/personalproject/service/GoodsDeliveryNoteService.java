@@ -7,7 +7,7 @@ import com.nonit.personalproject.dto.GoodsDeliveryNoteDTO;
 import java.util.List;
 
 public interface GoodsDeliveryNoteService {
-    List<GoodsDeliveryNoteDTO> getAllGoodsDeliveryNote();
+    List<GDNCreateWithDetailsDTO> getAllGoodsDeliveryNoteWithDetails();
     GoodsDeliveryNoteDTO findGoodsDeliveryNoteById (Long gdnId);
     GDNCreateWithDetailsDTO createGoodsDeliveryNote (GDNCreateWithDetailsDTO gdnCreateWithDetailsDTO);
     void deleteGoodsDeliveryNote (Long gdnId);

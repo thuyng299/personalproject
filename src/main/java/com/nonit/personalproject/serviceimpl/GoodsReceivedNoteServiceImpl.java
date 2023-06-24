@@ -1,9 +1,6 @@
 package com.nonit.personalproject.serviceimpl;
 
-import com.nonit.personalproject.dto.GRNCreateWithDetailDTO;
-import com.nonit.personalproject.dto.GoodsReceivedNoteDTO;
-import com.nonit.personalproject.dto.GoodsReceivedNoteUpdateDTO;
-import com.nonit.personalproject.dto.IncomingDetailsCreateDTO;
+import com.nonit.personalproject.dto.*;
 import com.nonit.personalproject.entity.*;
 import com.nonit.personalproject.exception.WarehouseException;
 import com.nonit.personalproject.mapper.CustomGRNCreateMapper;
@@ -38,12 +35,46 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
     private final IncomingDetailMapper incomingDetailMapper = IncomingDetailMapper.INSTANCE;
 
     @Override
-    public List<GoodsReceivedNoteDTO> getAllGoodsReceivedNote() {
+    public List<GRNCreateWithDetailDTO> getAllGoodsReceivedNoteWithDetails() {
         List<GoodsReceivedNote> goodsReceivedNotes = goodsReceivedNoteRepository.findAll();
-        if (goodsReceivedNotes.isEmpty()){
+
+        if (goodsReceivedNotes.isEmpty()) {
             throw WarehouseException.GRNNotFound();
         }
-        return goodsReceivedNoteMapper.toDtos(goodsReceivedNotes);
+
+        List<GRNCreateWithDetailDTO> grnCreateWithDetailDTOS = new ArrayList<>();
+
+        for (GoodsReceivedNote grn : goodsReceivedNotes) {
+            GRNCreateWithDetailDTO grnCreateWithDetailDTO = new GRNCreateWithDetailDTO();
+
+            grnCreateWithDetailDTO.setGrnId(grn.getId());
+            grnCreateWithDetailDTO.setCode(grn.getCode());
+            grnCreateWithDetailDTO.setSupplierCode(grn.getSupplier().getCode());
+            grnCreateWithDetailDTO.setIncomingDate(grn.getIncomingDate());
+            grnCreateWithDetailDTO.setEmployeeId(grn.getEmployee().getId());
+            grnCreateWithDetailDTO.setRecord(grn.getRecord());
+
+            List<IncomingDetailsCreateDTO> incomingDetailsCreateDTOS = new ArrayList<>();
+
+            for (IncomingDetail incomingDetail : grn.getIncomingDetail()) {
+
+                IncomingDetailsCreateDTO incomingDetailsCreateDTO = new IncomingDetailsCreateDTO();
+
+                incomingDetailsCreateDTO.setAmount(incomingDetail.getAmount());
+                incomingDetailsCreateDTO.setCost(incomingDetail.getCost());
+                incomingDetailsCreateDTO.setRemainingAmount(incomingDetail.getRemainingAmount());
+                incomingDetailsCreateDTO.setExpirationDate(incomingDetail.getExpirationDate());
+                incomingDetailsCreateDTO.setProductCode(incomingDetail.getProduct().getCode());
+                incomingDetailsCreateDTO.setAreaId(incomingDetail.getWarehouseArea().getId());
+
+                incomingDetailsCreateDTOS.add(incomingDetailsCreateDTO);
+
+                grnCreateWithDetailDTO.setIncomingDetailsCreateDTOList(incomingDetailsCreateDTOS);
+
+                grnCreateWithDetailDTOS.add(grnCreateWithDetailDTO);
+            }
+        }
+        return grnCreateWithDetailDTOS;
     }
 
     @Override
@@ -51,10 +82,12 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
         GoodsReceivedNote goodsReceivedNote = goodsReceivedNoteRepository.findById(grnId).orElseThrow(WarehouseException::GRNNotFound);
         return goodsReceivedNoteMapper.toDto(goodsReceivedNote);
     }
-    public String getCurrentUsername(){
+
+    public String getCurrentUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();
     }
+
     @Override
     public GRNCreateWithDetailDTO createGoodsReceivedNote(GRNCreateWithDetailDTO grnCreateWithDetailDTO) {
         Supplier supplier = supplierRepository.findByCode(grnCreateWithDetailDTO.getSupplierCode()).orElseThrow(WarehouseException::SupplierNotFound);
@@ -80,8 +113,8 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
         // Create detail
         List<IncomingDetail> incomingDetails = new ArrayList<>();
 
-        for (IncomingDetailsCreateDTO ins: grnCreateWithDetailDTO.getIncomingDetailsCreateDTOList()){
-            if (ins.getAmount() <= 0){
+        for (IncomingDetailsCreateDTO ins : grnCreateWithDetailDTO.getIncomingDetailsCreateDTOList()) {
+            if (ins.getAmount() <= 0) {
                 throw WarehouseException.badRequest("InvalidAmount", "Amount cannot be 0 or below 0!");
             }
             if (ins.getCost() < 0) {
@@ -113,7 +146,7 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
 
         GRNCreateWithDetailDTO returnGRNCreateWithDetailDTO = CustomGRNCreateMapper.INSTANCE.toDto(goodsReceivedNote);
         List<IncomingDetailsCreateDTO> incomingDetailsCreateDTOList = new ArrayList<>();
-        for(IncomingDetail ins : goodsReceivedNote.getIncomingDetail()){
+        for (IncomingDetail ins : goodsReceivedNote.getIncomingDetail()) {
             IncomingDetailsCreateDTO incomingDetailsCreateDto = incomingDetailMapper.toReturnDto(ins);
             incomingDetailsCreateDTOList.add(incomingDetailsCreateDto);
         }
@@ -134,7 +167,7 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
         GoodsReceivedNote goodsReceivedNote = goodsReceivedNoteRepository.findById(grnId).orElseThrow(WarehouseException::GRNNotFound);
         WarehouseArea warehouseArea = warehouseAreaRepository.findById(goodsReceivedNoteUpdateDTO.getAreaId()).orElseThrow(WarehouseException::WarehouseAreaNotFound);
         Supplier supplier = supplierRepository.findById(goodsReceivedNoteUpdateDTO.getSupplierId()).orElseThrow(WarehouseException::SupplierNotFound);
-        if (goodsReceivedNoteUpdateDTO.getIncomingDate().isAfter(LocalDate.now())){
+        if (goodsReceivedNoteUpdateDTO.getIncomingDate().isAfter(LocalDate.now())) {
             throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDate.now());
         }
         goodsReceivedNote.setSupplier(supplier);

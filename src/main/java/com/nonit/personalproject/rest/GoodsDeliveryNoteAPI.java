@@ -11,9 +11,9 @@ import java.util.List;
 
 @RequestMapping(value = "/goodsdeliverynotes")
 public interface GoodsDeliveryNoteAPI {
-    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
+//    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
     @GetMapping
-    ResponseEntity<List<GoodsDeliveryNoteDTO>> getAllGoodsDeliveryNote();
+    ResponseEntity<List<GDNCreateWithDetailsDTO>> getAllGoodsDeliveryNoteWithDetails();
 
     @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
     @GetMapping("/{gdnId}")

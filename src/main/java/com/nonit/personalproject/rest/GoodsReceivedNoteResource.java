@@ -17,8 +17,8 @@ public class GoodsReceivedNoteResource implements GoodsReceivedNoteAPI {
     private final GoodsReceivedNoteServiceImpl goodsReceivedNoteServiceImpl;
 
     @Override
-    public ResponseEntity<List<GoodsReceivedNoteDTO>> getAllGoodsReceivedNote() {
-        return ResponseEntity.ok(goodsReceivedNoteServiceImpl.getAllGoodsReceivedNote());
+    public ResponseEntity<List<GRNCreateWithDetailDTO>> getAllGoodsReceivedNoteWithDetails() {
+        return ResponseEntity.ok(goodsReceivedNoteServiceImpl.getAllGoodsReceivedNoteWithDetails());
     }
 
     @Override

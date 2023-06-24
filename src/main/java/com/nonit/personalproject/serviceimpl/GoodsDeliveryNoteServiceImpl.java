@@ -30,16 +30,49 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
     private final ProductRepository productRepository;
     private final IncomingDetailRepository incomingDetailRepository;
     private final GoodsDeliveryNoteMapper goodsDeliveryNoteMapper = GoodsDeliveryNoteMapper.INSTANCE;
-
     private final OutgoingDetailRepository outgoingDetailRepository;
 
     @Override
-    public List<GoodsDeliveryNoteDTO> getAllGoodsDeliveryNote() {
+    public List<GDNCreateWithDetailsDTO> getAllGoodsDeliveryNoteWithDetails() {
         List<GoodsDeliveryNote> goodsDeliveryNotes = goodsDeliveryNoteRepository.findAll();
+
         if (goodsDeliveryNotes.isEmpty()) {
             throw WarehouseException.GDNNotFound();
         }
-        return goodsDeliveryNoteMapper.toDtos(goodsDeliveryNotes);
+
+        List<GDNCreateWithDetailsDTO> gdnCreateWithDetailsDTOS = new ArrayList<>();
+
+        for (GoodsDeliveryNote gdn : goodsDeliveryNotes) {
+            GDNCreateWithDetailsDTO gdnCreateWithDetailsDTO = new GDNCreateWithDetailsDTO();
+
+            gdnCreateWithDetailsDTO.setGdnId(gdn.getId());
+            gdnCreateWithDetailsDTO.setCode(gdn.getCode());
+            gdnCreateWithDetailsDTO.setCustomerName(gdn.getCustomer().getName());
+            gdnCreateWithDetailsDTO.setOutgoingDate(gdn.getOutgoingDate());
+            gdnCreateWithDetailsDTO.setEmployeeName(gdn.getEmployee().getFirstName() + " " + gdn.getEmployee().getLastName());
+            gdnCreateWithDetailsDTO.setRecord(gdn.getRecord());
+
+            List<OutgoingDetailsCreateDTO> outgoingDetailsCreateDTOS = new ArrayList<>();
+
+            for (OutgoingDetail outgoingDetail : gdn.getOutgoingDetail()) {
+
+                OutgoingDetailsCreateDTO outgoingDetailsCreateDTO = new OutgoingDetailsCreateDTO();
+
+                outgoingDetailsCreateDTO.setProductName(outgoingDetail.getProduct().getName());
+                outgoingDetailsCreateDTO.setAmount(outgoingDetail.getAmount());
+                outgoingDetailsCreateDTO.setPrice(outgoingDetail.getPrice());
+                outgoingDetailsCreateDTO.setDiscount(outgoingDetail.getDiscount());
+
+                outgoingDetailsCreateDTOS.add(outgoingDetailsCreateDTO);
+
+                gdnCreateWithDetailsDTO.setOutgoingDetailsCreateDTOList(outgoingDetailsCreateDTOS);
+
+            }
+
+            gdnCreateWithDetailsDTOS.add(gdnCreateWithDetailsDTO);
+        }
+
+        return gdnCreateWithDetailsDTOS;
     }
 
     @Override
@@ -134,18 +167,18 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
                         subtract remainingAmount until totalAmount is 0
                        */
 
-                                log.info("Không Đủ số lượng remain<total");
-                                log.info("getRemainingAmount before: " + ins.getRemainingAmount());
-                                log.info("totalAmount before: " + totalAmount);
-                                outs.setIncomingId(ins.getId());
-                                outs.setAmount(ins.getRemainingAmount());
-                                totalAmount -= ins.getRemainingAmount();
-                                ins.setRemainingAmount(0.0);
-                                log.info("getRemainingAmount after: " + ins.getRemainingAmount());
-                                log.info("totalAmount after: " + totalAmount);
+                            log.info("Không Đủ số lượng remain<total");
+                            log.info("getRemainingAmount before: " + ins.getRemainingAmount());
+                            log.info("totalAmount before: " + totalAmount);
+                            outs.setIncomingId(ins.getId());
+                            outs.setAmount(ins.getRemainingAmount());
+                            totalAmount -= ins.getRemainingAmount();
+                            ins.setRemainingAmount(0.0);
+                            log.info("getRemainingAmount after: " + ins.getRemainingAmount());
+                            log.info("totalAmount after: " + totalAmount);
 //i
 
-                            }
+                        }
 
 
                     }
@@ -156,8 +189,8 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
                     OutgoingDetail outgoingDetail = new OutgoingDetail();
                     log.info("HERE2");
 
-                        //Create Out Going Detail
-                    if (outs.getAmount()!=0) {
+                    //Create Out Going Detail
+                    if (outs.getAmount() != 0) {
                         outgoingDetail.setGoodsDeliveryNote(goodsDeliveryNote);
                         outgoingDetail.setProduct(product);
                         outgoingDetail.setAmount(outs.getAmount());

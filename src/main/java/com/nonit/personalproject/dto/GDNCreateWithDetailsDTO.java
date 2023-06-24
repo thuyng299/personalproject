@@ -1,6 +1,7 @@
 package com.nonit.personalproject.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,12 +15,17 @@ import java.util.List;
 @AllArgsConstructor
 public class GDNCreateWithDetailsDTO {
     private Long gdnId;
+    @JsonIgnore
     private Long customerId;
+    private String customerName;
     private String code;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime outgoingDate;
+    private String employeeName;
+    @JsonIgnore
     private Long employeeId;
     private String record;
+
     // Outgoing details
     private List<OutgoingDetailsCreateDTO> outgoingDetailsCreateDTOList;
 

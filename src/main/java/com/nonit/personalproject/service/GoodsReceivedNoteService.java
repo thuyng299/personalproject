@@ -7,7 +7,7 @@ import com.nonit.personalproject.dto.GoodsReceivedNoteUpdateDTO;
 import java.util.List;
 
 public interface GoodsReceivedNoteService {
-    List<GoodsReceivedNoteDTO> getAllGoodsReceivedNote();
+    List<GRNCreateWithDetailDTO> getAllGoodsReceivedNoteWithDetails();
     GoodsReceivedNoteDTO findGoodsReceivedNoteById (Long grnId);
     GRNCreateWithDetailDTO createGoodsReceivedNote(GRNCreateWithDetailDTO grnCreateWithDetailDTO);
      void deleteGoodsReceivedNote (Long grnId);

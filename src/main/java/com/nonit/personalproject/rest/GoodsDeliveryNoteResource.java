@@ -17,8 +17,8 @@ public class GoodsDeliveryNoteResource implements GoodsDeliveryNoteAPI {
     private final GoodsDeliveryNoteServiceImpl goodsDeliveryNoteServiceImpl;
 
     @Override
-    public ResponseEntity<List<GoodsDeliveryNoteDTO>> getAllGoodsDeliveryNote() {
-        return ResponseEntity.ok(goodsDeliveryNoteServiceImpl.getAllGoodsDeliveryNote());
+    public ResponseEntity<List<GDNCreateWithDetailsDTO>> getAllGoodsDeliveryNoteWithDetails() {
+        return ResponseEntity.ok(goodsDeliveryNoteServiceImpl.getAllGoodsDeliveryNoteWithDetails());
     }
 
     @Override
