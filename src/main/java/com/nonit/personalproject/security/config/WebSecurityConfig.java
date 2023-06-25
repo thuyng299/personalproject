@@ -69,6 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/outgoingdetails/outnote-customer").permitAll()
                 .antMatchers("/incomingdetails/total-monthly-incoming").permitAll()
                 .antMatchers("/goodsdeliverynotes/**").permitAll()
+                .antMatchers("/goodsreceivednotes/**").permitAll()
                 .anyRequest()
                 .authenticated();
 

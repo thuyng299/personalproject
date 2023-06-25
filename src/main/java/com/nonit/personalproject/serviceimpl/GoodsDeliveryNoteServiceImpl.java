@@ -110,7 +110,7 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
 
 
         for (OutgoingDetailsCreateDTO outs : gdnCreateWithDetailsDTO.getOutgoingDetailsCreateDTOList()) {
-//TÂN: Vì total Amount là null nên thế là Amount
+
             Double totalAmount = outs.getAmount();
 
             Product product = productRepository.findById(outs.getProductId()).orElseThrow(WarehouseException::ProductNotFound);
@@ -125,11 +125,11 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
 
 
             if (totalAmount > sumRemainingAmount) {
-                log.info(" KHÔNG HỢP LỆ  totalAmount: " + totalAmount + "& sumRemainingAmount " + sumRemainingAmount);
+                log.info("Invalid  totalAmount: " + totalAmount + "& sumRemainingAmount " + sumRemainingAmount);
 
                 throw WarehouseException.badRequest("InvalidAmount", "FODs");
             } else {
-                log.info(" HỢP LỆ  totalAmount: " + totalAmount + "& sumRemainingAmount " + sumRemainingAmount);
+                log.info("Valid totalAmount: " + totalAmount + "& sumRemainingAmount " + sumRemainingAmount);
                 log.info("--------------------------");
 
 
@@ -143,9 +143,9 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
                     log.info("ID: " + ins.getId());
 
                     log.info("getExpirationDate: " + ins.getExpirationDate());
-                    // TÂN: Vì gdnCreateWithDetailsDTO không có nhập vào Date nên thay thành LocalDateTime.now()
+
                     if (ins.getExpirationDate().isAfter(LocalDateTime.now())) {
-                        log.warn("CÒN HẠN ");
+
 
                         if (ins.getRemainingAmount() >= totalAmount) {
                             log.info("Đủ số lượng remain>total");
@@ -166,7 +166,7 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
                         subtract remainingAmount until totalAmount is 0
                        */
 
-                            log.info("Không Đủ số lượng remain<total");
+                            log.info("Not enough amount remain<total");
                             log.info("getRemainingAmount before: " + ins.getRemainingAmount());
                             log.info("totalAmount before: " + totalAmount);
                             outs.setIncomingId(ins.getId());
@@ -175,34 +175,24 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
                             ins.setRemainingAmount(0.0);
                             log.info("getRemainingAmount after: " + ins.getRemainingAmount());
                             log.info("totalAmount after: " + totalAmount);
-//i
 
                         }
 
+                        //Create Out Going Detail
+                        OutgoingDetail outgoingDetail = new OutgoingDetail();
 
+                        if (outs.getAmount()!=0) {
+                            outgoingDetail.setGoodsDeliveryNote(goodsDeliveryNote);
+                            outgoingDetail.setProduct(product);
+                            outgoingDetail.setAmount(outs.getAmount());
+                            outgoingDetail.setPrice(outs.getPrice());
+                            outgoingDetail.setDiscount(outs.getDiscount());
+                            outgoingDetail.setIncomingDetail(ins);
+                            outgoingDetailRepository.save(outgoingDetail);
+                            outgoingDetails.add(outgoingDetail);
+                        }
                     }
                     incomingDetailRepository.save(ins);
-
-                    log.info("HERE1");
-
-                    OutgoingDetail outgoingDetail = new OutgoingDetail();
-                    log.info("HERE2");
-
-                    //Create Out Going Detail
-                    if (outs.getAmount()!=0) {
-                        outgoingDetail.setGoodsDeliveryNote(goodsDeliveryNote);
-                        outgoingDetail.setProduct(product);
-                        outgoingDetail.setAmount(outs.getAmount());
-                        outgoingDetail.setPrice(outs.getPrice());
-                        outgoingDetail.setDiscount(outs.getDiscount());
-                        outgoingDetail.setIncomingDetail(ins);
-                        outgoingDetailRepository.save(outgoingDetail);
-                        outgoingDetails.add(outgoingDetail);
-                    }
-
-                    log.info("HERE3");
-
-                    log.info("END");
 
                 }
 

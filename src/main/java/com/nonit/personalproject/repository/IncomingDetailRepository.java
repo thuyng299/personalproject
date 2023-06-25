@@ -59,8 +59,6 @@ public interface IncomingDetailRepository extends JpaRepository<IncomingDetail, 
     @Query("select new com.nonit.personalproject.dto.TotalStockOfProductStatDTO (p.id, p.name, sum(id.remainingAmount)) from IncomingDetail id, Product p where p.id = id.product.id and id.product.id = :inputProductId group by p.id")
     TotalStockOfProductStatDTO getTotalStockAmountOfProduct(@Param("inputProductId") Long inputProductId);
 
-
-//    @Query("select new com.nonit.personalproject.dto.TotalMonthlyAmountDTO (sum(id.amount)) from IncomingDetail id join GoodsReceivedNote grn on grn.id = id.goodsReceivedNote.id where function('year', ")
     @Query(value = "select sum(id.incoming_amount) from incoming_detail id join goods_received_note grn on id.grn_id = grn.grn_id where TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM') = TO_CHAR(grn.incoming_date, 'YYYY-MM')", nativeQuery = true)
     Object getMonthlyInAmount();
 }

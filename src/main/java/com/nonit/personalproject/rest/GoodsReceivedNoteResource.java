@@ -1,6 +1,7 @@
 package com.nonit.personalproject.rest;
 
 import com.nonit.personalproject.dto.GRNCreateWithDetailDTO;
+import com.nonit.personalproject.dto.GRNWithDetailsDTO;
 import com.nonit.personalproject.dto.GoodsReceivedNoteDTO;
 import com.nonit.personalproject.dto.GoodsReceivedNoteUpdateDTO;
 import com.nonit.personalproject.serviceimpl.GoodsReceivedNoteServiceImpl;
@@ -17,7 +18,7 @@ public class GoodsReceivedNoteResource implements GoodsReceivedNoteAPI {
     private final GoodsReceivedNoteServiceImpl goodsReceivedNoteServiceImpl;
 
     @Override
-    public ResponseEntity<List<GRNCreateWithDetailDTO>> getAllGoodsReceivedNoteWithDetails() {
+    public ResponseEntity<List<GRNWithDetailsDTO>> getAllGoodsReceivedNoteWithDetails() {
         return ResponseEntity.ok(goodsReceivedNoteServiceImpl.getAllGoodsReceivedNoteWithDetails());
     }
 

@@ -1,6 +1,7 @@
 package com.nonit.personalproject.rest;
 
 import com.nonit.personalproject.dto.GRNCreateWithDetailDTO;
+import com.nonit.personalproject.dto.GRNWithDetailsDTO;
 import com.nonit.personalproject.dto.GoodsReceivedNoteDTO;
 import com.nonit.personalproject.dto.GoodsReceivedNoteUpdateDTO;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +13,9 @@ import java.util.List;
 @RequestMapping(value = "/goodsreceivednotes")
 public interface GoodsReceivedNoteAPI {
 
-    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
+//    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
     @GetMapping
-    ResponseEntity<List<GRNCreateWithDetailDTO>> getAllGoodsReceivedNoteWithDetails();
+    ResponseEntity<List<GRNWithDetailsDTO>> getAllGoodsReceivedNoteWithDetails();
 
     @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
     @GetMapping("/{grnId}")

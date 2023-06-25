@@ -35,37 +35,36 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
     private final IncomingDetailMapper incomingDetailMapper = IncomingDetailMapper.INSTANCE;
 
     @Override
-    public List<GRNCreateWithDetailDTO> getAllGoodsReceivedNoteWithDetails() {
+    public List<GRNWithDetailsDTO> getAllGoodsReceivedNoteWithDetails() {
         List<GoodsReceivedNote> goodsReceivedNotes = goodsReceivedNoteRepository.findAll();
 
         if (goodsReceivedNotes.isEmpty()) {
             throw WarehouseException.GRNNotFound();
         }
 
-        List<GRNCreateWithDetailDTO> grnCreateWithDetailDTOS = new ArrayList<>();
+        List<GRNWithDetailsDTO> grnCreateWithDetailDTOS = new ArrayList<>();
 
         for (GoodsReceivedNote grn : goodsReceivedNotes) {
-            GRNCreateWithDetailDTO grnCreateWithDetailDTO = new GRNCreateWithDetailDTO();
+            GRNWithDetailsDTO grnCreateWithDetailDTO = new GRNWithDetailsDTO();
 
             grnCreateWithDetailDTO.setGrnId(grn.getId());
             grnCreateWithDetailDTO.setCode(grn.getCode());
-            grnCreateWithDetailDTO.setSupplierCode(grn.getSupplier().getCode());
+            grnCreateWithDetailDTO.setSupplierName(grn.getSupplier().getName());
             grnCreateWithDetailDTO.setIncomingDate(grn.getIncomingDate());
-            grnCreateWithDetailDTO.setEmployeeId(grn.getEmployee().getId());
+            grnCreateWithDetailDTO.setEmployeeName(grn.getEmployee().getFirstName() + " " + grn.getEmployee().getLastName());
             grnCreateWithDetailDTO.setRecord(grn.getRecord());
 
-            List<IncomingDetailsCreateDTO> incomingDetailsCreateDTOS = new ArrayList<>();
+            List<IncomingDetailsDTO> incomingDetailsCreateDTOS = new ArrayList<>();
 
             for (IncomingDetail incomingDetail : grn.getIncomingDetail()) {
 
-                IncomingDetailsCreateDTO incomingDetailsCreateDTO = new IncomingDetailsCreateDTO();
+                IncomingDetailsDTO incomingDetailsCreateDTO = new IncomingDetailsDTO();
 
                 incomingDetailsCreateDTO.setAmount(incomingDetail.getAmount());
                 incomingDetailsCreateDTO.setCost(incomingDetail.getCost());
-                incomingDetailsCreateDTO.setRemainingAmount(incomingDetail.getRemainingAmount());
                 incomingDetailsCreateDTO.setExpirationDate(incomingDetail.getExpirationDate());
-                incomingDetailsCreateDTO.setProductCode(incomingDetail.getProduct().getCode());
-                incomingDetailsCreateDTO.setAreaId(incomingDetail.getWarehouseArea().getId());
+                incomingDetailsCreateDTO.setProductName(incomingDetail.getProduct().getName());
+                incomingDetailsCreateDTO.setAreaName(incomingDetail.getWarehouseArea().getName());
 
                 incomingDetailsCreateDTOS.add(incomingDetailsCreateDTO);
 
