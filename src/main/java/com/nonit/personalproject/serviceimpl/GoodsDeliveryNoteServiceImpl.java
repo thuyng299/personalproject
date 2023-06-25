@@ -60,7 +60,8 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
                 outgoingDetailsCreateDTO.setAmount(outgoingDetail.getAmount());
                 outgoingDetailsCreateDTO.setPrice(outgoingDetail.getPrice());
                 outgoingDetailsCreateDTO.setDiscount(outgoingDetail.getDiscount());
-
+                outgoingDetailsCreateDTO.setIncomingDate(outgoingDetail.getIncomingDetail().getGoodsReceivedNote().getIncomingDate());
+                outgoingDetailsCreateDTO.setAreaName(outgoingDetail.getIncomingDetail().getWarehouseArea().getName());
                 outgoingDetailsCreateDTOS.add(outgoingDetailsCreateDTO);
 
                 gdnCreateWithDetailsDTO.setOutgoingDetailsCreateDTOList(outgoingDetailsCreateDTOS);
@@ -188,7 +189,7 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
                     log.info("HERE2");
 
                     //Create Out Going Detail
-                    if (outs.getAmount() != 0) {
+                    if (outs.getAmount()!=0) {
                         outgoingDetail.setGoodsDeliveryNote(goodsDeliveryNote);
                         outgoingDetail.setProduct(product);
                         outgoingDetail.setAmount(outs.getAmount());
