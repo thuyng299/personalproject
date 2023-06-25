@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GoodsReceivedNoteRepository extends JpaRepository<GoodsReceivedNote, Long> {
-    Long countByCode(String code);
+    Long countByCodeStartingWith (String code);
 }

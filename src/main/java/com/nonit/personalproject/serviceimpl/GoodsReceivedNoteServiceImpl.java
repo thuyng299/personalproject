@@ -98,16 +98,20 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
                 .record(grnCreateWithDetailDTO.getRecord())
                 .supplier(supplier)
                 .employee(employee)
-                .code(grnCreateWithDetailDTO.getSupplierCode() + LocalDateTime.now().getMonthValue() + LocalDateTime.now().getDayOfMonth())
+                .code(grnCreateWithDetailDTO.getSupplierCode() + LocalDateTime.now().getYear() + LocalDateTime.now().getMonthValue() + LocalDateTime.now().getDayOfMonth())
                 .build();
 
         // Append the count to the code
-        long count = goodsReceivedNoteRepository.countByCode(goodsReceivedNote.getCode());
+        String previousGRNCode = grnCreateWithDetailDTO.getSupplierCode() + LocalDateTime.now().getYear() + LocalDateTime.now().getMonthValue() + LocalDateTime.now().getDayOfMonth();
+        String searchGRNCode = previousGRNCode + "-";
+
+        long count = goodsReceivedNoteRepository.countByCodeStartingWith(previousGRNCode);
 
         if (count > 0) {
-            String newCode = goodsReceivedNote.getCode() + "-" + count;
+            String newCode = searchGRNCode + count;
             goodsReceivedNote.setCode(newCode);
         }
+
 
         // Create detail
         List<IncomingDetail> incomingDetails = new ArrayList<>();
