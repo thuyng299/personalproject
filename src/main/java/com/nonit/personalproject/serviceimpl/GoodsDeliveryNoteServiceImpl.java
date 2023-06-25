@@ -1,8 +1,6 @@
 package com.nonit.personalproject.serviceimpl;
 
-import com.nonit.personalproject.dto.GDNCreateWithDetailsDTO;
-import com.nonit.personalproject.dto.GoodsDeliveryNoteDTO;
-import com.nonit.personalproject.dto.OutgoingDetailsCreateDTO;
+import com.nonit.personalproject.dto.*;
 import com.nonit.personalproject.entity.*;
 import com.nonit.personalproject.exception.WarehouseException;
 import com.nonit.personalproject.mapper.GoodsDeliveryNoteMapper;
@@ -33,17 +31,17 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
     private final OutgoingDetailRepository outgoingDetailRepository;
 
     @Override
-    public List<GDNCreateWithDetailsDTO> getAllGoodsDeliveryNoteWithDetails() {
+    public List<GDNWithDetailsDTO> getAllGoodsDeliveryNoteWithDetails() {
         List<GoodsDeliveryNote> goodsDeliveryNotes = goodsDeliveryNoteRepository.findAll();
 
         if (goodsDeliveryNotes.isEmpty()) {
             throw WarehouseException.GDNNotFound();
         }
 
-        List<GDNCreateWithDetailsDTO> gdnCreateWithDetailsDTOS = new ArrayList<>();
+        List<GDNWithDetailsDTO> gdnCreateWithDetailsDTOS = new ArrayList<>();
 
         for (GoodsDeliveryNote gdn : goodsDeliveryNotes) {
-            GDNCreateWithDetailsDTO gdnCreateWithDetailsDTO = new GDNCreateWithDetailsDTO();
+            GDNWithDetailsDTO gdnCreateWithDetailsDTO = new GDNWithDetailsDTO();
 
             gdnCreateWithDetailsDTO.setGdnId(gdn.getId());
             gdnCreateWithDetailsDTO.setCode(gdn.getCode());
@@ -52,11 +50,11 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
             gdnCreateWithDetailsDTO.setEmployeeName(gdn.getEmployee().getFirstName() + " " + gdn.getEmployee().getLastName());
             gdnCreateWithDetailsDTO.setRecord(gdn.getRecord());
 
-            List<OutgoingDetailsCreateDTO> outgoingDetailsCreateDTOS = new ArrayList<>();
+            List<OutgoingDetailsDTO> outgoingDetailsCreateDTOS = new ArrayList<>();
 
             for (OutgoingDetail outgoingDetail : gdn.getOutgoingDetail()) {
 
-                OutgoingDetailsCreateDTO outgoingDetailsCreateDTO = new OutgoingDetailsCreateDTO();
+                OutgoingDetailsDTO outgoingDetailsCreateDTO = new OutgoingDetailsDTO();
 
                 outgoingDetailsCreateDTO.setProductName(outgoingDetail.getProduct().getName());
                 outgoingDetailsCreateDTO.setAmount(outgoingDetail.getAmount());

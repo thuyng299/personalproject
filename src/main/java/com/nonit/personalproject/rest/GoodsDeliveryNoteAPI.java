@@ -1,6 +1,7 @@
 package com.nonit.personalproject.rest;
 
 import com.nonit.personalproject.dto.GDNCreateWithDetailsDTO;
+import com.nonit.personalproject.dto.GDNWithDetailsDTO;
 import com.nonit.personalproject.dto.GoodsDeliveryNoteCreateDTO;
 import com.nonit.personalproject.dto.GoodsDeliveryNoteDTO;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import java.util.List;
 public interface GoodsDeliveryNoteAPI {
 //    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
     @GetMapping
-    ResponseEntity<List<GDNCreateWithDetailsDTO>> getAllGoodsDeliveryNoteWithDetails();
+    ResponseEntity<List<GDNWithDetailsDTO>> getAllGoodsDeliveryNoteWithDetails();
 
     @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
     @GetMapping("/{gdnId}")
