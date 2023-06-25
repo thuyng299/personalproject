@@ -15,14 +15,14 @@ import java.util.List;
 @AllArgsConstructor
 public class GDNCreateWithDetailsDTO {
     private Long gdnId;
-    @JsonIgnore
+
     private Long customerId;
     private String customerName;
     private String code;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime outgoingDate;
     private String employeeName;
-    @JsonIgnore
+
     private Long employeeId;
     private String record;
 
