@@ -10,11 +10,13 @@ public class JwtResponse implements Serializable {
     private String token;
     private String type = "Bearer";
     private String username;
+    private String employeeName;
     private List<String> roles;
 
-    public JwtResponse(String token, String username, List<String> roles) {
+    public JwtResponse(String token, String username, String employeeName, List<String> roles) {
         this.token = token;
         this.username = username;
+        this.employeeName = employeeName;
         this.roles = roles;
     }
 }

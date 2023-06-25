@@ -24,6 +24,8 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
 
+    private String employeeName;
+
     private Collection<? extends GrantedAuthority> authorities;
 
     public static UserDetailsImpl build(Employee employee) {
@@ -36,6 +38,7 @@ public class UserDetailsImpl implements UserDetails {
                 employee.getId(),
                 employee.getUsername(),
                 employee.getPassword(),
+                employee.getFirstName() + " " + employee.getLastName(),
                 authorities);
     }
 
@@ -56,6 +59,11 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+
+    public String getEmployeeName() {
+        return employeeName;
     }
 
     @Override

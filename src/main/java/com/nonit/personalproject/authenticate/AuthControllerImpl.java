@@ -50,6 +50,7 @@ public class AuthControllerImpl implements AuthController{
 
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getUsername(),
+                userDetails.getEmployeeName(),
                 roles));
     }
 }
