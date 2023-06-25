@@ -59,6 +59,7 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
                 OutgoingDetailsCreateDTO outgoingDetailsCreateDTO = new OutgoingDetailsCreateDTO();
 
                 outgoingDetailsCreateDTO.setProductName(outgoingDetail.getProduct().getName());
+//                outgoingDetailsCreateDTO.setAreaName(outgoingDetail.getIncomingDetail().getWarehouseArea().getName());
                 outgoingDetailsCreateDTO.setAmount(outgoingDetail.getAmount());
                 outgoingDetailsCreateDTO.setPrice(outgoingDetail.getPrice());
                 outgoingDetailsCreateDTO.setDiscount(outgoingDetail.getDiscount());

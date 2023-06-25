@@ -22,7 +22,7 @@ public class GDNCreateWithDetailsDTO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime outgoingDate;
     private String employeeName;
-    @JsonIgnore
+
     private Long employeeId;
     private String record;
 

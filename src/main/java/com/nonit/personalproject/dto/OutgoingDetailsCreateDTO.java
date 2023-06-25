@@ -13,8 +13,10 @@ public class OutgoingDetailsCreateDTO {
     private Double price;
     private String productName;
     private Double discount;
-    @JsonIgnore
+
     private Long productId;
-    @JsonIgnore
+
     private Long incomingId;
+
+    private Long areaId;
 }
