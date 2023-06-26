@@ -45,4 +45,8 @@ public interface IncomingDetailService {
 
     Object getMonthlyInAmount();
 
+    List<MonthlyAmountDTO> getMonthLyIncomingAmount();
+
+    List<YearAmountDTO> getAnnualIncomingAmount();
+
 }

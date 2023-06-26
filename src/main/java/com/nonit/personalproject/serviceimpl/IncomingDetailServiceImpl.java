@@ -160,5 +160,15 @@ public class IncomingDetailServiceImpl implements IncomingDetailService {
     public Object getMonthlyInAmount() {
         return incomingDetailRepository.getMonthlyInAmount();
     }
+
+    @Override
+    public List<MonthlyAmountDTO> getMonthLyIncomingAmount() {
+        return incomingDetailRepository.getMonthLyIncomingAmount();
+    }
+
+    @Override
+    public List<YearAmountDTO> getAnnualIncomingAmount() {
+        return incomingDetailRepository.getAnnualIncomingAmount();
+    }
 }
 

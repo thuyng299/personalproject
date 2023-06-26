@@ -117,4 +117,14 @@ public class IncomingDetailResource implements IncomingDetailAPI {
     public ResponseEntity<Object> getMonthlyInAmount() {
         return ResponseEntity.ok(incomingDetailServiceImpl.getMonthlyInAmount());
     }
+
+    @Override
+    public ResponseEntity<List<MonthlyAmountDTO>> getMonthLyIncomingAmount() {
+        return ResponseEntity.ok(incomingDetailServiceImpl.getMonthLyIncomingAmount());
+    }
+
+    @Override
+    public ResponseEntity<List<YearAmountDTO>> getAnnualIncomingAmount() {
+        return ResponseEntity.ok(incomingDetailServiceImpl.getAnnualIncomingAmount());
+    }
 }

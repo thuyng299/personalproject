@@ -61,4 +61,11 @@ public interface IncomingDetailRepository extends JpaRepository<IncomingDetail, 
 
     @Query(value = "select sum(id.incoming_amount) from incoming_detail id join goods_received_note grn on id.grn_id = grn.grn_id where TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM') = TO_CHAR(grn.incoming_date, 'YYYY-MM')", nativeQuery = true)
     Object getMonthlyInAmount();
+
+    @Query("select new com.nonit.personalproject.dto.MonthlyAmountDTO (p.code, sum(id.amount)) from Product p, IncomingDetail id, GoodsReceivedNote grn where grn.id = id.goodsReceivedNote.id and p.id = id.product.id and function('TO_CHAR', CURRENT_TIMESTAMP, 'YYYY-MM') = function('TO_CHAR', grn.incomingDate, 'YYYY-MM') group by p.code")
+    List<MonthlyAmountDTO> getMonthLyIncomingAmount();
+
+    @Query("select new com.nonit.personalproject.dto.YearAmountDTO (p.code, function('to_char', grn.incomingDate, 'Month'), sum(id.amount)) from Product p, IncomingDetail id, GoodsReceivedNote grn where grn.id = id.goodsReceivedNote.id and p.id = id.product.id and function('TO_CHAR', grn.incomingDate, 'YYYY-MM') between '2022-01' and '2022-12' group by p.code, function('to_char', grn.incomingDate, 'Month')")
+    List<YearAmountDTO> getAnnualIncomingAmount();
+
 }
