@@ -114,6 +114,7 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
             goodsDeliveryNote.setCode(newCode);
         }
         goodsDeliveryNoteRepository.save(goodsDeliveryNote);
+
         // Create Outgoing detail
         List<OutgoingDetail> outgoingDetails = new ArrayList<>();
 
@@ -155,9 +156,8 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
 
                     if (ins.getExpirationDate().isAfter(LocalDateTime.now())) {
 
-
                         if (ins.getRemainingAmount() >= totalAmount) {
-                            log.info("Đủ số lượng remain>total");
+
                             log.info("getRemainingAmount before: " + ins.getRemainingAmount());
                             log.info("totalAmount before: " + totalAmount);
 
@@ -197,9 +197,10 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
                             outgoingDetail.setPrice(outs.getPrice());
                             outgoingDetail.setDiscount(outs.getDiscount());
                             outgoingDetail.setIncomingDetail(ins);
-                            outgoingDetailRepository.save(outgoingDetail);
+                            outgoingDetail = outgoingDetailRepository.save(outgoingDetail);
                             outgoingDetails.add(outgoingDetail);
                         }
+
                     }
                     incomingDetailRepository.save(ins);
 
