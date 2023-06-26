@@ -1,9 +1,9 @@
 package com.nonit.personalproject.rest;
 
-import com.nonit.personalproject.dto.SupplierAndProductStatsDTO;
+import com.nonit.personalproject.dto.customdto.SupplierAndProductStatsDTO;
 import com.nonit.personalproject.dto.SupplierCreateDTO;
 import com.nonit.personalproject.dto.SupplierDTO;
-import com.nonit.personalproject.dto.SupplierStatsDTO;
+import com.nonit.personalproject.dto.customdto.SupplierStatsDTO;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

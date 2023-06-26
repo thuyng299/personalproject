@@ -1,6 +1,6 @@
 package com.nonit.personalproject.repository;
 
-import com.nonit.personalproject.dto.*;
+import com.nonit.personalproject.dto.customdto.*;
 import com.nonit.personalproject.entity.IncomingDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,57 +15,60 @@ public interface IncomingDetailRepository extends JpaRepository<IncomingDetail, 
 
     List<IncomingDetail> findByProductIdOrderByExpirationDate(Long productId);
 
-    @Query("select new com.nonit.personalproject.dto.IncomingAmountStatsDTO (id.product.id, p.name, sum(id.amount)) from GoodsReceivedNote grn, IncomingDetail id, Product p where grn.id = id.goodsReceivedNote.id and p.id = id.product.id and grn.incomingDate < :date group by id.product.id, p.name order by id.product.id")
+    @Query("select new com.nonit.personalproject.dto.customdto.IncomingAmountStatsDTO (id.product.id, p.name, sum(id.amount)) from GoodsReceivedNote grn, IncomingDetail id, Product p where grn.id = id.goodsReceivedNote.id and p.id = id.product.id and grn.incomingDate < :date group by id.product.id, p.name order by id.product.id")
     List<IncomingAmountStatsDTO> getNumberOfProductIncoming(@Param("date") LocalDateTime date);
 
-    @Query("select new com.nonit.personalproject.dto.PurchaseTimeStatDTO (id.product.id, p.name, count(id.product.id), sum(id.amount)) from GoodsReceivedNote grn, IncomingDetail id, Product p where grn.id = id.goodsReceivedNote.id and p.id = id.product.id group by id.product.id, p.name order by count(id.product.id) desc")
+    @Query("select new com.nonit.personalproject.dto.customdto.PurchaseTimeStatDTO (id.product.id, p.name, count(id.product.id), sum(id.amount)) from GoodsReceivedNote grn, IncomingDetail id, Product p where grn.id = id.goodsReceivedNote.id and p.id = id.product.id group by id.product.id, p.name order by count(id.product.id) desc")
     List<PurchaseTimeStatDTO> getNumberOfPurchaseTimeAndAmount();
 
-    @Query("select new com.nonit.personalproject.dto.PurchaseTimeStatDTO (id.product.id, p.name, count(id.product.id), sum(id.amount)) from GoodsReceivedNote grn, IncomingDetail id, Product p where grn.id = id.goodsReceivedNote.id and p.id = id.product.id and id.product.id = :inputId group by id.product.id, p.name")
+    @Query("select new com.nonit.personalproject.dto.customdto.PurchaseTimeStatDTO (id.product.id, p.name, count(id.product.id), sum(id.amount)) from GoodsReceivedNote grn, IncomingDetail id, Product p where grn.id = id.goodsReceivedNote.id and p.id = id.product.id and id.product.id = :inputId group by id.product.id, p.name")
     PurchaseTimeStatDTO getPurchaseTimeAndAmountOfSpecificProduct(@Param("inputId") Long inputId);
 
-    @Query("select new com.nonit.personalproject.dto.PurchaseTimeStatDTO (id.product.id, p.name, count(id.product.id), sum(id.amount)) from GoodsReceivedNote grn, IncomingDetail id, Product p where grn.id = id.goodsReceivedNote.id and p.id = id.product.id and id.product.id = :inputId and grn.incomingDate < :inputDate group by id.product.id, p.name")
+    @Query("select new com.nonit.personalproject.dto.customdto.PurchaseTimeStatDTO (id.product.id, p.name, count(id.product.id), sum(id.amount)) from GoodsReceivedNote grn, IncomingDetail id, Product p where grn.id = id.goodsReceivedNote.id and p.id = id.product.id and id.product.id = :inputId and grn.incomingDate < :inputDate group by id.product.id, p.name")
     PurchaseTimeStatDTO getPurchaseTimeAndAmountOfSpecificProductAndDate(@Param("inputId") Long inputId,
                                                                          @Param("inputDate") LocalDateTime inputDate);
 
-    @Query("select new com.nonit.personalproject.dto.PurchaseTimeStatDTO (id.product.id, p.name, count(id.product.id), sum(id.amount)) from GoodsReceivedNote grn, IncomingDetail id, Product p where grn.id = id.goodsReceivedNote.id and p.id = id.product.id and grn.incomingDate between :fromDate and :toDate group by id.product.id, p.name order by id.product.id")
+    @Query("select new com.nonit.personalproject.dto.customdto.PurchaseTimeStatDTO (id.product.id, p.name, count(id.product.id), sum(id.amount)) from GoodsReceivedNote grn, IncomingDetail id, Product p where grn.id = id.goodsReceivedNote.id and p.id = id.product.id and grn.incomingDate between :fromDate and :toDate group by id.product.id, p.name order by id.product.id")
     List<PurchaseTimeStatDTO> getPurchaseTimeAndAmountBetweenDates(@Param("fromDate") LocalDateTime fromDate,
-                                                             @Param("toDate") LocalDateTime toDate);
+                                                                   @Param("toDate") LocalDateTime toDate);
 
     @Query(value = "select grn.grn_id, p.product_id, p.product_name, (id.expiration_date - current_date), sum(id.remaining_amount)from goods_received_note grn, incoming_detail id, product p where grn.grn_id = id.grn_id and p.product_id = id.product_id and (id.expiration_date - current_date) > 0 and (id.expiration_date - current_date) <= :inputCountDays group by grn.grn_id, p.product_id, p.product_name, id.expiration_date having sum(id.remaining_amount) > 0 order by (id.expiration_date - current_date)", nativeQuery = true)
-    List<Object[]> getCountDaysAndAmountBeforeExpire (@Param("inputCountDays") Long inputCountDays);
+    List<Object[]> getCountDaysAndAmountBeforeExpire(@Param("inputCountDays") Long inputCountDays);
 
-    @Query("select new com.nonit.personalproject.dto.ProductNearlyOutOfStockStatDTO (p.id, p.name, sum(id.amount)) from IncomingDetail id, Product p where p.id = id.product.id group by p.id having sum(id.remainingAmount) < :inputAmount")
-    List<ProductNearlyOutOfStockStatDTO> getProductNearlyOutOfStock (@Param("inputAmount") Double inputAmount);
+    @Query("select new com.nonit.personalproject.dto.customdto.ProductNearlyOutOfStockStatDTO (p.id, p.name, sum(id.amount)) from IncomingDetail id, Product p where p.id = id.product.id group by p.id having sum(id.remainingAmount) < :inputAmount")
+    List<ProductNearlyOutOfStockStatDTO> getProductNearlyOutOfStock(@Param("inputAmount") Double inputAmount);
 
-    @Query("select new com.nonit.personalproject.dto.StockAmountOfCategoryStatDTO (p.id, p.code, p.productCategory, sum(id.remainingAmount)) from IncomingDetail id, Product p where p.id = id.product.id and p.productCategory like '%RAW_MATERIALS%' group by p.productCategory, p.code, p.id")
+    @Query("select new com.nonit.personalproject.dto.customdto.StockAmountOfCategoryStatDTO (p.id, p.code, p.productCategory, sum(id.remainingAmount)) from IncomingDetail id, Product p where p.id = id.product.id and p.productCategory like '%RAW_MATERIALS%' group by p.productCategory, p.code, p.id")
     List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfRawMaterial();
 
-    @Query("select new com.nonit.personalproject.dto.StockAmountOfCategoryStatDTO (p.id, p.code, p.productCategory, sum(id.remainingAmount)) from IncomingDetail id, Product p where p.id = id.product.id and p.productCategory like '%FINISHED_GOODS%' group by p.productCategory, p.code, p.id")
+    @Query("select new com.nonit.personalproject.dto.customdto.StockAmountOfCategoryStatDTO (p.id, p.code, p.productCategory, sum(id.remainingAmount)) from IncomingDetail id, Product p where p.id = id.product.id and p.productCategory like '%FINISHED_GOODS%' group by p.productCategory, p.code, p.id")
     List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfFinishedGood();
 
-    @Query("select new com.nonit.personalproject.dto.StockAmountOfCategoryStatDTO (p.id, p.name, p.productCategory, sum(id.remainingAmount)) from GoodsReceivedNote grn, IncomingDetail id, Product p where grn.id = id.goodsReceivedNote.id and p.id = id.product.id and grn.incomingDate < :inputDate group by p.productCategory, p.id having p.productCategory like '%RAW_MATERIALS%'")
+    @Query("select new com.nonit.personalproject.dto.customdto.StockAmountOfCategoryStatDTO (p.id, p.name, p.productCategory, sum(id.remainingAmount)) from GoodsReceivedNote grn, IncomingDetail id, Product p where grn.id = id.goodsReceivedNote.id and p.id = id.product.id and grn.incomingDate < :inputDate group by p.productCategory, p.id having p.productCategory like '%RAW_MATERIALS%'")
     List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfRawMaterialBeforeDate(@Param("inputDate") LocalDateTime inputDate);
 
-    @Query("select new com.nonit.personalproject.dto.StockAmountOfCategoryStatDTO (p.id, p.name, p.productCategory, sum(id.remainingAmount)) from GoodsReceivedNote grn, IncomingDetail id, Product p where grn.id = id.goodsReceivedNote.id and p.id = id.product.id and grn.incomingDate < :inputDate group by p.productCategory, p.id having p.productCategory like '%FINISHED_GOODS%'")
+    @Query("select new com.nonit.personalproject.dto.customdto.StockAmountOfCategoryStatDTO (p.id, p.name, p.productCategory, sum(id.remainingAmount)) from GoodsReceivedNote grn, IncomingDetail id, Product p where grn.id = id.goodsReceivedNote.id and p.id = id.product.id and grn.incomingDate < :inputDate group by p.productCategory, p.id having p.productCategory like '%FINISHED_GOODS%'")
     List<StockAmountOfCategoryStatDTO> getTotalStockAmountOfFinishedGoodBeforeDate(@Param("inputDate") LocalDateTime inputDate);
 
-    @Query("select new com.nonit.personalproject.dto.CostStatsDTO (id.product.id, p.name, sum(id.amount), sum(id.cost * id.amount)) from IncomingDetail id, Product p where p.id = id.product.id group by id.product.id, p.name order by sum(id.cost * id.amount) desc")
+    @Query("select new com.nonit.personalproject.dto.customdto.CostStatsDTO (id.product.id, p.name, sum(id.amount), sum(id.cost * id.amount)) from IncomingDetail id, Product p where p.id = id.product.id group by id.product.id, p.name order by sum(id.cost * id.amount) desc")
     List<CostStatsDTO> getProductsTotalCost();
 
-    @Query("select new com.nonit.personalproject.dto.IncomingProductStatDTO (grn.id, grn.incomingDate, id.amount, id.remainingAmount, id.product.id) from IncomingDetail id join GoodsReceivedNote grn on grn.id = id.goodsReceivedNote.id and id.product.id = :inputProductId order by grn.incomingDate")
-    List<IncomingProductStatDTO> getIncomingAmountOfProduct (@Param("inputProductId") Long inputProductId);
+    @Query("select new com.nonit.personalproject.dto.customdto.IncomingProductStatDTO (grn.id, grn.incomingDate, id.amount, id.remainingAmount, id.product.id) from IncomingDetail id join GoodsReceivedNote grn on grn.id = id.goodsReceivedNote.id and id.product.id = :inputProductId order by grn.incomingDate")
+    List<IncomingProductStatDTO> getIncomingAmountOfProduct(@Param("inputProductId") Long inputProductId);
 
-    @Query("select new com.nonit.personalproject.dto.TotalStockOfProductStatDTO (p.id, p.name, sum(id.remainingAmount)) from IncomingDetail id, Product p where p.id = id.product.id and id.product.id = :inputProductId group by p.id")
+    @Query("select new com.nonit.personalproject.dto.customdto.TotalStockOfProductStatDTO (p.id, p.name, sum(id.remainingAmount)) from IncomingDetail id, Product p where p.id = id.product.id and id.product.id = :inputProductId group by p.id")
     TotalStockOfProductStatDTO getTotalStockAmountOfProduct(@Param("inputProductId") Long inputProductId);
 
     @Query(value = "select sum(id.incoming_amount) from incoming_detail id join goods_received_note grn on id.grn_id = grn.grn_id where TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM') = TO_CHAR(grn.incoming_date, 'YYYY-MM')", nativeQuery = true)
-    Object getMonthlyInAmount();
+    Object getInAmountWithinMonth();
 
-    @Query("select new com.nonit.personalproject.dto.MonthlyAmountDTO (p.code, sum(id.amount)) from Product p, IncomingDetail id, GoodsReceivedNote grn where grn.id = id.goodsReceivedNote.id and p.id = id.product.id and function('TO_CHAR', CURRENT_TIMESTAMP, 'YYYY-MM') = function('TO_CHAR', grn.incomingDate, 'YYYY-MM') group by p.code")
+    @Query(value = "select SUM(id.remaining_amount) from incoming_detail id join goods_received_note grn on id.grn_id = grn.grn_id where id.expiration_date > current_timestamp ", nativeQuery = true)
+    Object getStockAmountNotExpiration();
+
+    @Query("select new com.nonit.personalproject.dto.customdto.MonthlyAmountDTO (p.code, sum(id.amount)) from Product p, IncomingDetail id, GoodsReceivedNote grn where grn.id = id.goodsReceivedNote.id and p.id = id.product.id and function('TO_CHAR', CURRENT_TIMESTAMP, 'YYYY-MM') = function('TO_CHAR', grn.incomingDate, 'YYYY-MM') group by p.code")
     List<MonthlyAmountDTO> getMonthLyIncomingAmount();
 
-    @Query("select new com.nonit.personalproject.dto.YearAmountDTO (p.code, function('to_char', grn.incomingDate, 'Month'), sum(id.amount)) from Product p, IncomingDetail id, GoodsReceivedNote grn where grn.id = id.goodsReceivedNote.id and p.id = id.product.id and function('TO_CHAR', grn.incomingDate, 'YYYY-MM') between '2022-01' and '2022-12' group by p.code, function('to_char', grn.incomingDate, 'Month')")
+    @Query("select new com.nonit.personalproject.dto.customdto.YearAmountDTO (p.code, function('to_char', grn.incomingDate, 'Month'), sum(id.amount)) from Product p, IncomingDetail id, GoodsReceivedNote grn where grn.id = id.goodsReceivedNote.id and p.id = id.product.id and function('TO_CHAR', grn.incomingDate, 'YYYY-MM') between '2022-01' and '2022-12' group by p.code, function('to_char', grn.incomingDate, 'Month') order by p.code, function('to_char', grn.incomingDate, 'Month')")
     List<YearAmountDTO> getAnnualIncomingAmount();
 
 }

@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class GDNCreateWithDetailsDTO {
     private Long gdnId;
-    private Long customerId;
+    private String customerCode;
     private String code;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime outgoingDate;

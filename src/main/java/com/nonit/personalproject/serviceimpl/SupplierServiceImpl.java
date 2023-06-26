@@ -1,23 +1,20 @@
 package com.nonit.personalproject.serviceimpl;
 
-import com.nonit.personalproject.dto.SupplierAndProductStatsDTO;
+import com.nonit.personalproject.dto.customdto.SupplierAndProductStatsDTO;
 import com.nonit.personalproject.dto.SupplierCreateDTO;
 import com.nonit.personalproject.dto.SupplierDTO;
-import com.nonit.personalproject.dto.SupplierStatsDTO;
+import com.nonit.personalproject.dto.customdto.SupplierStatsDTO;
 import com.nonit.personalproject.entity.Country;
-import com.nonit.personalproject.entity.Product;
 import com.nonit.personalproject.entity.Supplier;
 import com.nonit.personalproject.exception.WarehouseException;
 import com.nonit.personalproject.mapper.SupplierMapper;
 import com.nonit.personalproject.repository.CountryRepository;
-import com.nonit.personalproject.repository.ProductRepository;
 import com.nonit.personalproject.repository.SupplierRepository;
 import com.nonit.personalproject.service.SupplierService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

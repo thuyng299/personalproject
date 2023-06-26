@@ -13,7 +13,7 @@ import org.mapstruct.factory.Mappers;
 public interface CustomGDNCreateMapper {
     CustomGDNCreateMapper INSTANCE = Mappers.getMapper(CustomGDNCreateMapper.class);
     @Mapping(source = "employee.id", target = "employeeId")
-    @Mapping(source = "customer.id", target = "customerId")
+    @Mapping(source = "customer.code", target = "customerCode")
     @Mapping(source = "id", target = "gdnId")
     GDNCreateWithDetailsDTO toDto(GoodsDeliveryNote goodsDeliveryNote);
 

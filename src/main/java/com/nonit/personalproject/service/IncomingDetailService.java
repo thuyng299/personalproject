@@ -1,8 +1,8 @@
 package com.nonit.personalproject.service;
 
 import com.nonit.personalproject.dto.*;
+import com.nonit.personalproject.dto.customdto.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -43,7 +43,9 @@ public interface IncomingDetailService {
 
     TotalStockOfProductStatDTO getTotalStockAmountOfProduct(Long inputProductId);
 
-    Object getMonthlyInAmount();
+    Object getInAmountWithinMonth();
+
+    Object getStockAmountNotExpiration();
 
     List<MonthlyAmountDTO> getMonthLyIncomingAmount();
 

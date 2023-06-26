@@ -1,6 +1,7 @@
 package com.nonit.personalproject.rest;
 
 import com.nonit.personalproject.dto.*;
+import com.nonit.personalproject.dto.customdto.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -100,9 +101,14 @@ public interface IncomingDetailAPI {
         // localhost:8080/incomingdetails/product-stock?inputProductId=13
     ResponseEntity<TotalStockOfProductStatDTO> getTotalStockAmountOfProduct(@RequestParam("inputProductId") Long inputProductId);
 
-    @GetMapping("/total-monthly-incoming-draft")
-        // localhost:8080/incomingdetails/total-monthly-incoming
-    ResponseEntity<Object> getMonthlyInAmount();
+    @GetMapping("/total-incoming-within-month")
+        // localhost:8080/incomingdetails/total-incoming-within-month
+    ResponseEntity<Object> getInAmountWithinMonth();
+
+    //    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
+    @GetMapping("/total-stock-not-expiration")
+    // localhost:8080/incomingdetails/total-stock-not-expiration
+    ResponseEntity<Object> getStockAmountNotExpiration();
 
     //    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
     @GetMapping("/total-monthly-incoming")

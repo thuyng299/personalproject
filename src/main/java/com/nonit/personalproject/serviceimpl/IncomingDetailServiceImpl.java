@@ -1,6 +1,7 @@
 package com.nonit.personalproject.serviceimpl;
 
 import com.nonit.personalproject.dto.*;
+import com.nonit.personalproject.dto.customdto.*;
 import com.nonit.personalproject.entity.*;
 import com.nonit.personalproject.exception.ResponseException;
 import com.nonit.personalproject.exception.WarehouseException;
@@ -157,8 +158,13 @@ public class IncomingDetailServiceImpl implements IncomingDetailService {
     }
 
     @Override
-    public Object getMonthlyInAmount() {
-        return incomingDetailRepository.getMonthlyInAmount();
+    public Object getInAmountWithinMonth() {
+        return incomingDetailRepository.getInAmountWithinMonth();
+    }
+
+    @Override
+    public Object getStockAmountNotExpiration() {
+        return incomingDetailRepository.getStockAmountNotExpiration();
     }
 
     @Override

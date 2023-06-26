@@ -1,6 +1,7 @@
 package com.nonit.personalproject.rest;
 
 import com.nonit.personalproject.dto.*;
+import com.nonit.personalproject.dto.customdto.*;
 import com.nonit.personalproject.serviceimpl.IncomingDetailServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -114,8 +115,13 @@ public class IncomingDetailResource implements IncomingDetailAPI {
     }
 
     @Override
-    public ResponseEntity<Object> getMonthlyInAmount() {
-        return ResponseEntity.ok(incomingDetailServiceImpl.getMonthlyInAmount());
+    public ResponseEntity<Object> getInAmountWithinMonth() {
+        return ResponseEntity.ok(incomingDetailServiceImpl.getInAmountWithinMonth());
+    }
+
+    @Override
+    public ResponseEntity<Object> getStockAmountNotExpiration() {
+        return ResponseEntity.ok(incomingDetailServiceImpl.getStockAmountNotExpiration());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.nonit.personalproject.serviceimpl;
 
 import com.nonit.personalproject.dto.*;
+import com.nonit.personalproject.dto.customdto.*;
 import com.nonit.personalproject.entity.OutgoingDetail;
 import com.nonit.personalproject.entity.Product;
 import com.nonit.personalproject.exception.ResponseException;
@@ -98,4 +99,15 @@ public class OutgoingDetailServiceImpl implements OutgoingDetailService {
     public List<OutNoteStatsDTO> getOutAmountAndCustomer() {
         return outgoingDetailRepository.getOutAmountAndCustomer();
     }
+
+    @Override
+    public Object getOutAmountWithinMonth() {
+        return outgoingDetailRepository.getOutAmountWithinMonth();
+    }
+
+    @Override
+    public List<MonthlyAmountDTO> getMonthLyOutgoingAmount() {
+        return outgoingDetailRepository.getMonthLyOutgoingAmount();
+    }
+
 }

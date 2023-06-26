@@ -88,23 +88,32 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
     @Override
     public GDNCreateWithDetailsDTO createGoodsDeliveryNote(GDNCreateWithDetailsDTO gdnCreateWithDetailsDTO) {
         GDNCreateWithDetailsDTO finalGoodsDeliveryNoteDTO = new GDNCreateWithDetailsDTO();
-        log.info("1");
-        Customer customer = customerRepository.findById(gdnCreateWithDetailsDTO.getCustomerId()).orElseThrow(WarehouseException::CustomerNotFound);
+
+        Customer customer = customerRepository.findByCode(gdnCreateWithDetailsDTO.getCustomerCode()).orElseThrow(WarehouseException::CustomerNotFound);
         Employee employee = employeeRepository.findByUsername(getCurrentUsername()).get();
         log.info("Employee : " + employee.getId());
 
 
         // Create GDN
         GoodsDeliveryNote goodsDeliveryNote = GoodsDeliveryNote.builder()
-                .code(gdnCreateWithDetailsDTO.getCode())
+                .code(gdnCreateWithDetailsDTO.getCustomerCode() + LocalDateTime.now().getYear() + LocalDateTime.now().getMonthValue() + LocalDateTime.now().getDayOfMonth())
                 .record(gdnCreateWithDetailsDTO.getRecord())
                 .outgoingDate(LocalDateTime.now())
                 .customer(customer)
                 .employee(employee)
                 .build();
-        goodsDeliveryNoteRepository.save(goodsDeliveryNote);
-        log.info("2");
 
+        // Append the count to the code
+        String previousGDNCode = gdnCreateWithDetailsDTO.getCustomerCode() + LocalDateTime.now().getYear() + LocalDateTime.now().getMonthValue() + LocalDateTime.now().getDayOfMonth();
+        String searchGDNCode = previousGDNCode + "-";
+
+        long count = goodsDeliveryNoteRepository.countByCodeStartingWith(previousGDNCode);
+
+        if (count > 0) {
+            String newCode = searchGDNCode + count;
+            goodsDeliveryNote.setCode(newCode);
+        }
+        goodsDeliveryNoteRepository.save(goodsDeliveryNote);
         // Create Outgoing detail
         List<OutgoingDetail> outgoingDetails = new ArrayList<>();
 
@@ -204,7 +213,7 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
         // GDN show out
         finalGoodsDeliveryNoteDTO.setGdnId(goodsDeliveryNote.getId());
         finalGoodsDeliveryNoteDTO.setCode(goodsDeliveryNote.getCode());
-        finalGoodsDeliveryNoteDTO.setCustomerId(goodsDeliveryNote.getCustomer().getId());
+        finalGoodsDeliveryNoteDTO.setCustomerCode(goodsDeliveryNote.getCustomer().getCode());
         finalGoodsDeliveryNoteDTO.setOutgoingDate(LocalDateTime.now());
         finalGoodsDeliveryNoteDTO.setEmployeeId(goodsDeliveryNote.getEmployee().getId());
         finalGoodsDeliveryNoteDTO.setOutgoingDetailsCreateDTOList(OutgoingDetailMapper.INSTANCE.toDtos(outgoingDetails));

@@ -1,13 +1,14 @@
 package com.nonit.personalproject.rest;
 
 import com.nonit.personalproject.dto.*;
+import com.nonit.personalproject.dto.customdto.CustomerAndProductStatsDTO;
+import com.nonit.personalproject.dto.customdto.CustomerStatsDTO;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
 @RequestMapping(value = "/customers")

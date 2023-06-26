@@ -1,4 +1,4 @@
-package com.nonit.personalproject.dto;
+package com.nonit.personalproject.dto.customdto;
 
 import com.nonit.personalproject.entity.ProductCategory;
 import lombok.AllArgsConstructor;

@@ -1,5 +1,6 @@
-package com.nonit.personalproject.dto;
+package com.nonit.personalproject.dto.customdto;
 
+import com.nonit.personalproject.entity.ProductCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,10 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExpiryDateAndAmountStatDTO {
-    private Long grnId;
+public class TotalStockOfProductStatDTO {
     private Long productId;
     private String productName;
-    private Long countDaysBeforeExpire;
     private Double totalStockAmount;
 }

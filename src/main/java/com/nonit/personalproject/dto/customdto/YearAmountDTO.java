@@ -1,4 +1,4 @@
-package com.nonit.personalproject.dto;
+package com.nonit.personalproject.dto.customdto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

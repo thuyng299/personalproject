@@ -1,9 +1,9 @@
 package com.nonit.personalproject.service;
 
 import com.nonit.personalproject.dto.*;
+import com.nonit.personalproject.dto.customdto.*;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,4 +29,8 @@ public interface OutgoingDetailService {
     List<PriceStatsDTO> getProductsTotalPrice();
 
     List<OutNoteStatsDTO> getOutAmountAndCustomer();
+
+    List<MonthlyAmountDTO> getMonthLyOutgoingAmount();
+
+    Object getOutAmountWithinMonth();
 }

@@ -9,4 +9,5 @@ import java.time.LocalDate;
 @Repository
 public interface GoodsDeliveryNoteRepository extends JpaRepository<GoodsDeliveryNote, Long> {
     GoodsDeliveryNote findByOutgoingDate (LocalDate outgoingDate);
+    Long countByCodeStartingWith (String code);
 }

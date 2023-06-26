@@ -1,17 +1,15 @@
 package com.nonit.personalproject.rest;
 
-import com.nonit.personalproject.dto.*;
+import com.nonit.personalproject.dto.customdto.*;
 import com.nonit.personalproject.serviceimpl.OutgoingDetailServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -60,5 +58,15 @@ public class OutgoingDetailResource implements OutgoingDetailAPI {
     @Override
     public ResponseEntity<List<OutNoteStatsDTO>> getOutAmountAndCustomer() {
         return ResponseEntity.ok(outgoingDetailServiceImpl.getOutAmountAndCustomer());
+    }
+
+    @Override
+    public ResponseEntity<Object> getOutAmountWithinMonth() {
+        return ResponseEntity.ok(outgoingDetailServiceImpl.getOutAmountWithinMonth());
+    }
+
+    @Override
+    public ResponseEntity<List<MonthlyAmountDTO>> getMonthLyOutgoingAmount() {
+        return ResponseEntity.ok(outgoingDetailServiceImpl.getMonthLyOutgoingAmount());
     }
 }

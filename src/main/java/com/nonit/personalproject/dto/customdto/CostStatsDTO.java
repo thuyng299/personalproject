@@ -1,4 +1,4 @@
-package com.nonit.personalproject.dto;
+package com.nonit.personalproject.dto.customdto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OutgoingAmountStatsDTO {
+public class CostStatsDTO {
     private Long productId;
     private String productName;
-    private Double totalOutgoingAmount;
+    private Double totalAmount;
+    private Double totalCost;
 }
