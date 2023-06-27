@@ -114,12 +114,12 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
         }
 
 
-        // Create detail
+        // Create Incoming detail
         List<IncomingDetail> incomingDetails = new ArrayList<>();
 
         for (IncomingDetailsCreateDTO ins : grnCreateWithDetailDTO.getIncomingDetailsCreateDTOList()) {
             if (ins.getAmount() <= 0) {
-                throw WarehouseException.badRequest("InvalidAmount", "Amount cannot be 0 or below 0!");
+                throw WarehouseException.badRequest("InvalidAmount", "Amount must be greater than 0!");
             }
             if (ins.getCost() < 0) {
                 throw WarehouseException.badRequest("InvalidProductCost", "Product cost cannot below 0!");

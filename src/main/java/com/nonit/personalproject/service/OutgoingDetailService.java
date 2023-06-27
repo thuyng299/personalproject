@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OutgoingDetailService {
-    List<OutgoingDetailsCreateDTO> getAllOutgoingDetail();
 
     OutgoingDetailsCreateDTO findOutgoingDetailById(Long outgoingId);
 

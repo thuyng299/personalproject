@@ -12,9 +12,6 @@ import java.util.List;
 
 @RequestMapping(value = "/incomingdetails")
 public interface IncomingDetailAPI {
-    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
-    @GetMapping
-    ResponseEntity<List<IncomingDetailDTO>> getAllIncomingDetail();
 
     @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
     @GetMapping("/{incomingId}")
@@ -101,6 +98,7 @@ public interface IncomingDetailAPI {
         // localhost:8080/incomingdetails/product-stock?inputProductId=13
     ResponseEntity<TotalStockOfProductStatDTO> getTotalStockAmountOfProduct(@RequestParam("inputProductId") Long inputProductId);
 
+//    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
     @GetMapping("/total-incoming-within-month")
         // localhost:8080/incomingdetails/total-incoming-within-month
     ResponseEntity<Object> getInAmountWithinMonth();

@@ -29,14 +29,6 @@ public class IncomingDetailServiceImpl implements IncomingDetailService {
     private final GoodsReceivedNoteRepository goodsReceivedNoteRepository;
     private final IncomingDetailMapper incomingDetailMapper = IncomingDetailMapper.INSTANCE;
 
-    @Override
-    public List<IncomingDetailDTO> getAllIncomingDetail() {
-        List<IncomingDetail> incomingDetails = incomingDetailRepository.findAll();
-        if (incomingDetails.isEmpty()) {
-            throw WarehouseException.IncomingDetailNotFound();
-        }
-        return incomingDetailMapper.toDtos(incomingDetails);
-    }
 
     public IncomingDetailDTO findIncomingDetailById(Long incomingId) {
         IncomingDetail incomingDetail = incomingDetailRepository.findById(incomingId).orElseThrow(WarehouseException::IncomingDetailNotFound);

@@ -123,6 +123,9 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
 
             Double totalAmount = outs.getAmount();
 
+            if (totalAmount <= 0) {
+                throw WarehouseException.badRequest("InvalidAmount", "Amount must be greater than 0!");
+            }
             Product product = productRepository.findById(outs.getProductId()).orElseThrow(WarehouseException::ProductNotFound);
 
             List<IncomingDetail> incomingDetails = incomingDetailRepository.findByProductIdOrderByExpirationDate(outs.getProductId());
@@ -139,9 +142,6 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
 
                 throw WarehouseException.badRequest("InvalidAmount", "FODs");
             } else {
-                log.info("Valid totalAmount: " + totalAmount + "& sumRemainingAmount " + sumRemainingAmount);
-                log.info("--------------------------");
-
 
                 for (IncomingDetail ins : incomingDetails) {
 
@@ -189,7 +189,12 @@ public class GoodsDeliveryNoteServiceImpl implements GoodsDeliveryNoteService {
 
                         //Create Out Going Detail
                         OutgoingDetail outgoingDetail = new OutgoingDetail();
-
+                        if (outs.getPrice() < 0) {
+                            throw WarehouseException.badRequest("InvalidProductPrice", "Product price cannot below 0!");
+                        }
+                        if (outs.getDiscount() < 0) {
+                            throw WarehouseException.badRequest("InvalidDiscount", "Discount cannot be negative!");
+                        }
                         if (outs.getAmount()!=0) {
                             outgoingDetail.setGoodsDeliveryNote(goodsDeliveryNote);
                             outgoingDetail.setProduct(product);

@@ -18,11 +18,6 @@ public class IncomingDetailResource implements IncomingDetailAPI {
     private final IncomingDetailServiceImpl incomingDetailServiceImpl;
 
     @Override
-    public ResponseEntity<List<IncomingDetailDTO>> getAllIncomingDetail() {
-        return ResponseEntity.ok(incomingDetailServiceImpl.getAllIncomingDetail());
-    }
-
-    @Override
     public ResponseEntity<IncomingDetailDTO> findIncomingDetailById(Long incomingId) {
         return ResponseEntity.ok(incomingDetailServiceImpl.findIncomingDetailById(incomingId));
     }

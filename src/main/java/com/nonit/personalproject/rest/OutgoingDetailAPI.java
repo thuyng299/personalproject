@@ -49,6 +49,7 @@ public interface OutgoingDetailAPI {
         // localhost:8080/outgoingdetails/totalproductprice
     ResponseEntity<List<PriceStatsDTO>> getProductsTotalPrice();
 
+    @PreAuthorize("hasAnyRole('USER', 'WAREHOUSE_STAFF')")
     @GetMapping("/outnote-customer")
         // localhost:8080/outgoingdetails/outnote-customer
     ResponseEntity<List<OutNoteStatsDTO>> getOutAmountAndCustomer();

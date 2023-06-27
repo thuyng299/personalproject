@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IncomingDetailService {
-    List<IncomingDetailDTO> getAllIncomingDetail();
 
     IncomingDetailDTO findIncomingDetailById(Long incomingId);
 
