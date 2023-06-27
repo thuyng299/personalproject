@@ -70,8 +70,9 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
 
                 grnCreateWithDetailDTO.setIncomingDetailsCreateDTOList(incomingDetailsCreateDTOS);
 
-                grnCreateWithDetailDTOS.add(grnCreateWithDetailDTO);
+
             }
+            grnCreateWithDetailDTOS.add(grnCreateWithDetailDTO);
         }
         return grnCreateWithDetailDTOS;
     }
