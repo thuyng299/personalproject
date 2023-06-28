@@ -95,7 +95,7 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
 
         // Create GRN
         GoodsReceivedNote goodsReceivedNote = GoodsReceivedNote.builder()
-                .incomingDate(LocalDateTime.now())
+                .incomingDate(grnCreateWithDetailDTO.getIncomingDate())
                 .record(grnCreateWithDetailDTO.getRecord())
                 .supplier(supplier)
                 .employee(employee)
@@ -175,7 +175,6 @@ public class GoodsReceivedNoteServiceImpl implements GoodsReceivedNoteService {
             throw WarehouseException.badRequest("InvalidDate", "Date must be before " + LocalDate.now());
         }
         goodsReceivedNote.setSupplier(supplier);
-//        goodsReceivedNote.setWarehouseArea(warehouseArea);
         goodsReceivedNoteMapper.mapFromDto(goodsReceivedNoteUpdateDTO, goodsReceivedNote);
         return goodsReceivedNoteMapper.toDto(goodsReceivedNoteRepository.save(goodsReceivedNote));
     }
